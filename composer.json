@@ -1,0 +1,28 @@
+{
+    "name": "flamecore/gatekeeper",
+    "description": "Prevent spammers from ever reading your site",
+    "homepage": "http://www.flamecore.org",
+    "keywords": ["security", "antispam"],
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "Christian Neff",
+            "email": "christian.neff@gmail.com",
+            "homepage": "http://www.secondtruth.de",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/FlameCore/Gatekeeper/issues",
+        "wiki": "https://github.com/FlameCore/Gatekeeper/wiki"
+    },
+    "require": {
+        "php": ">=5.4",
+        "symfony/http-foundation": "2.6.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "FlameCore\\Gatekeeper\\": "lib/"
+        }
+    }
+}
