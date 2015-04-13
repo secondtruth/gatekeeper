@@ -38,10 +38,19 @@ class Screener implements ScreenerInterface
     protected $checks = array();
 
     /**
+     * @var array
+     */
+    protected $whitelist = array();
+
+    /**
      * {@inheritdoc}
      */
     public function screenVisitor(Visitor $visitor)
     {
+        if (Utils::matchCIDR($visitor->getIP(), $this->whitelist)) {
+            return false;
+        }
+
         foreach ($this->checks as $check) {
             $result = $check->checkVisitor($visitor);
 
@@ -67,5 +76,31 @@ class Screener implements ScreenerInterface
     public function addCheck(CheckInterface $check)
     {
         $this->checks[] = $check;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWhitelist()
+    {
+        return $this->whitelist;
+    }
+
+    /**
+     * @param array $whitelist
+     */
+    public function setWhitelist(array $whitelist)
+    {
+        $this->whitelist = array_filter($whitelist);
+    }
+
+    /**
+     * @param string $file
+     */
+    public function loadWhitelist($file)
+    {
+        $whitelist = file($file, FILE_SKIP_EMPTY_LINES);
+
+        $this->setWhitelist($whitelist);
     }
 }
