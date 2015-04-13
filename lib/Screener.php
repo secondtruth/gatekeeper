@@ -54,7 +54,15 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return \FlameCore\Gatekeeper\Check\CheckInterface[]
+     */
+    public function getChecks()
+    {
+        return $this->checks;
+    }
+
+    /**
+     * @param \FlameCore\Gatekeeper\Check\CheckInterface $check
      */
     public function addCheck(CheckInterface $check)
     {
