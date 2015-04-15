@@ -38,6 +38,17 @@ class Utils
     }
 
     /**
+     * Checks for an IPv6 address in a quick and dirty way.
+     *
+     * @param $address
+     * @return bool
+     */
+    public static function isIPv6($address)
+    {
+        return strpos($address, ':') !== false;
+    }
+
+    /**
      * Determine if an IP address resides in a CIDR netblock or netblocks.
      *
      * @param string $address
