@@ -46,6 +46,11 @@ class Visitor
 
     private $browser;
 
+    /**
+     * Creates a Visitor object.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
     public function __construct(Request $request)
     {
         $this->ip = $request->getClientIp();
@@ -57,41 +62,81 @@ class Visitor
         $this->browser = $this->determineBrowser($this->userAgent);
     }
 
+    /**
+     * Gets the client IP address.
+     *
+     * @return string
+     */
     public function getIP()
     {
         return $this->ip;
     }
 
+    /**
+     * Gets the request headers.
+     *
+     * @return \Symfony\Component\HttpFoundation\HeaderBag
+     */
     public function getRequestHeaders()
     {
         return $this->headers;
     }
 
+    /**
+     * Gets the request method.
+     *
+     * @return string
+     */
     public function getRequestMethod()
     {
         return $this->method;
     }
 
+    /**
+     * Gets the request URI.
+     *
+     * @return string
+     */
     public function getRequestURI()
     {
         return $this->uri;
     }
 
+    /**
+     * Gets the server protocol.
+     *
+     * @return string
+     */
     public function getServerProtocol()
     {
         return $this->protocol;
     }
 
+    /**
+     * Gets the user agent string.
+     *
+     * @return string
+     */
     public function getUserAgent()
     {
         return $this->userAgent;
     }
 
+    /**
+     * Returns whether the request comes from a browser and if so, which browser it is.
+     *
+     * @return bool|string
+     */
     public function isBrowser()
     {
         return $this->browser;
     }
 
+    /**
+     * Export data to array.
+     *
+     * @return array
+     */
     public function toArray()
     {
         return array(
@@ -105,6 +150,10 @@ class Visitor
         );
     }
 
+    /**
+     * @param $userAgent
+     * @return string|bool
+     */
     private function determineBrowser($userAgent)
     {
         if (stripos($userAgent, "; MSIE") !== false) {

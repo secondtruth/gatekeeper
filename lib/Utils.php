@@ -38,6 +38,8 @@ class Utils
     }
 
     /**
+     * Determine if an IP address resides in a CIDR netblock or netblocks.
+     *
      * @param string $address
      * @param string|array $cidr
      * @return bool
