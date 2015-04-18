@@ -17,6 +17,8 @@ makes your site logs cleaner, and can help prevent denial of service conditions 
 Gatekeeper is designed to work alongside existing spam prevention services to increase their effectiveness and efficiency.
 Whenever possible, you should run it in combination with a more traditional spam prevention service.
 
+The library is inspired by the [Bad Behavior](http://bad-behavior.ioerror.us/) system.
+
 
 Installation
 ------------
