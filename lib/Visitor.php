@@ -32,21 +32,45 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Visitor
 {
-    private $ip;
+    /**
+     * @var string
+     */
+    protected $ip;
 
-    private $headers;
+    /**
+     * @var \Symfony\Component\HttpFoundation\HeaderBag
+     */
+    protected $headers;
 
-    private $method;
+    /**
+     * @var string
+     */
+    protected $method;
 
-    private $uri;
+    /**
+     * @var string
+     */
+    protected $uri;
 
-    private $protocol;
+    /**
+     * @var string
+     */
+    protected $protocol;
 
-    private $userAgent;
+    /**
+     * @var string
+     */
+    protected $userAgent;
 
-    private $browser;
+    /**
+     * @var bool|string
+     */
+    protected $browser;
 
-    private $searchEngine;
+    /**
+     * @var bool|string
+     */
+    protected $searchEngine;
 
     /**
      * Creates a Visitor object.
@@ -165,24 +189,24 @@ class Visitor
     }
 
     /**
-     * @param $userAgent
+     * @param string $userAgent
      * @return string|bool
      */
-    private function determineBrowser($userAgent)
+    protected function determineBrowser($userAgent)
     {
-        if (stripos($userAgent, "; MSIE") !== false) {
+        if (stripos($userAgent, '; MSIE') !== false) {
             return 'ie';
-        } elseif (stripos($userAgent, "Konqueror") !== false) {
+        } elseif (stripos($userAgent, 'Konqueror') !== false) {
             return 'konqueror';
-        } elseif (stripos($userAgent, "Opera") !== false) {
+        } elseif (stripos($userAgent, 'Opera') !== false) {
             return 'opera';
-        } elseif (stripos($userAgent, "Safari") !== false) {
+        } elseif (stripos($userAgent, 'Safari') !== false) {
             return 'safari';
-        } elseif (stripos($userAgent, "Mozilla") !== false && stripos($userAgent, "Mozilla") == 0) {
+        } elseif (stripos($userAgent, 'Mozilla') !== false && stripos($userAgent, 'Mozilla') == 0) {
             return 'mozilla';
-        } elseif (stripos($userAgent, "Lynx") !== false) {
+        } elseif (stripos($userAgent, 'Lynx') !== false) {
             return 'lynx';
-        } elseif (stripos($userAgent, "MovableType") !== false) {
+        } elseif (stripos($userAgent, 'MovableType') !== false) {
             return 'movabletype';
         } else {
             return false;
@@ -193,7 +217,7 @@ class Visitor
      * @param string $userAgent
      * @return bool|string
      */
-    private function determineSearchEngine($userAgent)
+    protected function determineSearchEngine($userAgent)
     {
         if (stripos($userAgent, 'bingbot') !== false || stripos($userAgent, 'msnbot') !== false || stripos($userAgent, 'MS Search') !== false) {
             return 'bing';
