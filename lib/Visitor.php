@@ -46,6 +46,8 @@ class Visitor
 
     private $browser;
 
+    private $searchEngine;
+
     /**
      * Creates a Visitor object.
      *
@@ -60,6 +62,7 @@ class Visitor
         $this->protocol = $request->getScheme();
         $this->userAgent = $request->headers->get('user-agent');
         $this->browser = $this->determineBrowser($this->userAgent);
+        $this->searchEngine = $this->determineSearchEngine($this->userAgent);
     }
 
     /**
@@ -133,6 +136,16 @@ class Visitor
     }
 
     /**
+     * Returns whether the request comes from a search engine bot and if so, which bot it is.
+     *
+     * @return bool|string
+     */
+    public function isSearchEngine()
+    {
+        return $this->searchEngine;
+    }
+
+    /**
      * Export data to array.
      *
      * @return array
@@ -146,7 +159,8 @@ class Visitor
             'uri'        => $this->uri,
             'protocol'   => $this->protocol,
             'user_agent' => $this->userAgent,
-            'is_browser' => $this->isBrowser()
+            'is_browser' => $this->isBrowser(),
+            'is_se'      => $this->isSearchEngine()
         );
     }
 
@@ -170,6 +184,25 @@ class Visitor
             return 'lynx';
         } elseif (stripos($userAgent, "MovableType") !== false) {
             return 'movabletype';
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param string $userAgent
+     * @return bool|string
+     */
+    private function determineSearchEngine($userAgent)
+    {
+        if (stripos($userAgent, 'bingbot') !== false || stripos($userAgent, 'msnbot') !== false || stripos($userAgent, 'MS Search') !== false) {
+            return 'bing';
+        } elseif (stripos($userAgent, 'Googlebot') !== false || stripos($userAgent, 'Mediapartners-Google') !== false || stripos($userAgent, 'Google Web Preview') !== false) {
+            return 'google';
+        } elseif (stripos($userAgent, 'Yahoo! Slurp') !== false || stripos($userAgent, 'Yahoo! SearchMonkey') !== false) {
+            return 'yahoo';
+        } elseif (stripos($userAgent, 'Baidu') !== false) {
+            return 'baidu';
         } else {
             return false;
         }
