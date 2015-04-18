@@ -23,7 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Storage;
 
-use Symfony\Component\HttpFoundation\Request;
+use FlameCore\Gatekeeper\Visitor;
 
 /**
  * Interface StorageInterface
@@ -33,11 +33,11 @@ use Symfony\Component\HttpFoundation\Request;
 interface StorageInterface
 {
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \FlameCore\Gatekeeper\Visitor $visitor
      * @param string $result
      * @return bool
      */
-    public function insert(Request $request, $result);
+    public function insert(Visitor $visitor, $result);
 
     /**
      * @return bool
