@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper;
 
+use FlameCore\Webtools\UserAgent;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -58,19 +59,9 @@ class Visitor
     protected $protocol;
 
     /**
-     * @var string
+     * @var \FlameCore\Webtools\UserAgent
      */
     protected $userAgent;
-
-    /**
-     * @var bool|string
-     */
-    protected $browser;
-
-    /**
-     * @var bool|string
-     */
-    protected $searchEngine;
 
     /**
      * Creates a Visitor object.
@@ -84,9 +75,9 @@ class Visitor
         $this->method = $request->getRealMethod();
         $this->uri = $request->getRequestUri();
         $this->protocol = $request->getScheme();
-        $this->userAgent = $request->headers->get('user-agent');
-        $this->browser = $this->determineBrowser($this->userAgent);
-        $this->searchEngine = $this->determineSearchEngine($this->userAgent);
+
+        $userAgent = $request->headers->get('user-agent');
+        $this->userAgent = new UserAgent($userAgent);
     }
 
     /**
@@ -140,33 +131,13 @@ class Visitor
     }
 
     /**
-     * Gets the user agent string.
+     * Gets the user agent information.
      *
-     * @return string
+     * @return \FlameCore\Webtools\UserAgent
      */
     public function getUserAgent()
     {
         return $this->userAgent;
-    }
-
-    /**
-     * Returns whether the request comes from a browser and if so, which browser it is.
-     *
-     * @return bool|string
-     */
-    public function isBrowser()
-    {
-        return $this->browser;
-    }
-
-    /**
-     * Returns whether the request comes from a search engine bot and if so, which bot it is.
-     *
-     * @return bool|string
-     */
-    public function isSearchEngine()
-    {
-        return $this->searchEngine;
     }
 
     /**
@@ -182,53 +153,7 @@ class Visitor
             'method'     => $this->method,
             'uri'        => $this->uri,
             'protocol'   => $this->protocol,
-            'user_agent' => $this->userAgent,
-            'is_browser' => $this->isBrowser(),
-            'is_se'      => $this->isSearchEngine()
+            'user_agent' => $this->userAgent
         );
-    }
-
-    /**
-     * @param string $userAgent
-     * @return string|bool
-     */
-    protected function determineBrowser($userAgent)
-    {
-        if (stripos($userAgent, '; MSIE') !== false) {
-            return 'ie';
-        } elseif (stripos($userAgent, 'Konqueror') !== false) {
-            return 'konqueror';
-        } elseif (stripos($userAgent, 'Opera') !== false) {
-            return 'opera';
-        } elseif (stripos($userAgent, 'Safari') !== false) {
-            return 'safari';
-        } elseif (stripos($userAgent, 'Mozilla') !== false && stripos($userAgent, 'Mozilla') == 0) {
-            return 'mozilla';
-        } elseif (stripos($userAgent, 'Lynx') !== false) {
-            return 'lynx';
-        } elseif (stripos($userAgent, 'MovableType') !== false) {
-            return 'movabletype';
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param string $userAgent
-     * @return bool|string
-     */
-    protected function determineSearchEngine($userAgent)
-    {
-        if (stripos($userAgent, 'bingbot') !== false || stripos($userAgent, 'msnbot') !== false || stripos($userAgent, 'MS Search') !== false) {
-            return 'bing';
-        } elseif (stripos($userAgent, 'Googlebot') !== false || stripos($userAgent, 'Mediapartners-Google') !== false || stripos($userAgent, 'Google Web Preview') !== false) {
-            return 'google';
-        } elseif (stripos($userAgent, 'Yahoo! Slurp') !== false || stripos($userAgent, 'Yahoo! SearchMonkey') !== false) {
-            return 'yahoo';
-        } elseif (stripos($userAgent, 'Baidu') !== false) {
-            return 'baidu';
-        } else {
-            return false;
-        }
     }
 }
