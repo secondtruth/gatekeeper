@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Check;
 
+use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
@@ -33,7 +34,7 @@ use FlameCore\Gatekeeper\Visitor;
 class BlacklistCheck implements CheckInterface
 {
     /**
-     * @var array
+     * @var string[]
      */
     protected $blacklist = array();
 
@@ -48,7 +49,7 @@ class BlacklistCheck implements CheckInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getBlacklist()
     {

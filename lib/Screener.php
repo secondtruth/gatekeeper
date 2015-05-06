@@ -38,7 +38,7 @@ class Screener implements ScreenerInterface
     protected $checks = array();
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $whitelist = array();
 
@@ -79,7 +79,7 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getWhitelist()
     {
@@ -87,7 +87,7 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param array $whitelist
+     * @param string[] $whitelist
      */
     public function setWhitelist(array $whitelist)
     {

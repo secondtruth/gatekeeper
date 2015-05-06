@@ -34,7 +34,7 @@ use FlameCore\Gatekeeper\Visitor;
 class BlackholeCheck implements CheckInterface
 {
     /**
-     * @var array
+     * @var string[]
      */
     protected $lists = array();
 
@@ -56,7 +56,7 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getLists()
     {
@@ -76,7 +76,7 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
-     * @param array $lists
+     * @param string[] $lists
      */
     public function addLists(array $lists)
     {
@@ -84,7 +84,7 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
-     * @param $ip
+     * @param string $ip
      * @return string
      */
     protected function getIPv4Arpa($ip)
@@ -93,7 +93,7 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
-     * @param $ip
+     * @param string $ip
      * @return string
      */
     protected function getIPv6Arpa($ip)
