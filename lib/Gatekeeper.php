@@ -89,7 +89,7 @@ class Gatekeeper
      */
     public function blockRequest()
     {
-        die($this->settings['block_message']);
+        throw new AccessDeniedException($this->settings['block_message']);
     }
 
     /**
