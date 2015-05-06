@@ -1,7 +1,9 @@
 FlameCore Gatekeeper
 ====================
 
-[![Code Climate](http://img.shields.io/codeclimate/github/FlameCore/Gatekeeper.svg)](https://codeclimate.com/github/FlameCore/Gatekeeper)
+[![Build Status](https://img.shields.io/travis/FlameCore/Gatekeeper.svg)](https://travis-ci.org/FlameCore/Gatekeeper)
+[![Scrutinizer](http://img.shields.io/scrutinizer/g/FlameCore/Gatekeeper.svg)](https://scrutinizer-ci.com/g/FlameCore/Gatekeeper)
+[![Coverage](http://img.shields.io/codeclimate/coverage/github/FlameCore/Gatekeeper.svg)](https://codeclimate.com/github/FlameCore/Gatekeeper/coverage)
 [![License](http://img.shields.io/packagist/l/flamecore/gatekeeper.svg)](https://packagist.org/packages/flamecore/gatekeeper)
 
 This library prevents spammers from delivering their junk, and in many cases, from ever reading your site in the first place.
