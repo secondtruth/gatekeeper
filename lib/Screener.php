@@ -43,6 +43,11 @@ class Screener implements ScreenerInterface
     protected $whitelist = array();
 
     /**
+     * @var int
+     */
+    protected $ratingThreshold = 2;
+
+    /**
      * {@inheritdoc}
      */
     public function screenVisitor(Visitor $visitor)
@@ -51,11 +56,17 @@ class Screener implements ScreenerInterface
             return false;
         }
 
+        $rating = 0;
+
         foreach ($this->checks as $check) {
             $result = $check->checkVisitor($visitor);
 
-            if ($result !== false) {
-                return $result;
+            if ($result === CheckInterface::RESULT_UNSURE) {
+                if (++$rating == $this->ratingThreshold) {
+                    return true;
+                }
+            } elseif ($result !== CheckInterface::RESULT_OKAY) {
+                return is_string($result) ? $result : true;
             }
         }
 
@@ -102,5 +113,27 @@ class Screener implements ScreenerInterface
         $whitelist = file($file, FILE_SKIP_EMPTY_LINES);
 
         $this->setWhitelist($whitelist);
+    }
+
+    /**
+     * @return int
+     */
+    public function getRatingThreshold()
+    {
+        return $this->ratingThreshold;
+    }
+
+    /**
+     * @param int $ratingThreshold
+     */
+    public function setRatingThreshold($ratingThreshold)
+    {
+        $ratingThreshold = (int) $ratingThreshold;
+
+        if ($ratingThreshold < 1) {
+            throw new \InvalidArgumentException('The screener\'s rating threshold value must be at least 1.');
+        }
+
+        $this->ratingThreshold = $ratingThreshold;
     }
 }

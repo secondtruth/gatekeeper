@@ -46,7 +46,7 @@ class BlacklistCheckTest extends CheckTestCase
 
         $result = $this->check->checkVisitor($visitor);
 
-        $this->assertEquals(true, $result);
+        $this->assertEquals(CheckInterface::RESULT_BLOCK, $result);
     }
 
     public function testCheckNegative()
@@ -56,6 +56,6 @@ class BlacklistCheckTest extends CheckTestCase
 
         $result = $this->check->checkVisitor($visitor);
 
-        $this->assertEquals(false, $result);
+        $this->assertEquals(CheckInterface::RESULT_OKAY, $result);
     }
 }

@@ -44,8 +44,10 @@ class BlacklistCheck implements CheckInterface
     public function checkVisitor(Visitor $visitor)
     {
         if (Utils::matchCIDR($visitor->getIP(), $this->blacklist)) {
-            return true;
+            return CheckInterface::RESULT_BLOCK;
         }
+
+        return CheckInterface::RESULT_OKAY;
     }
 
     /**

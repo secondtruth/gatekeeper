@@ -48,11 +48,11 @@ class BlackholeCheck implements CheckInterface
 
         foreach ($this->lists as $list) {
             if (checkdnsrr("$revip.$list.", 'A')) {
-                return true;
+                return CheckInterface::RESULT_BLOCK;
             }
         }
 
-        return false;
+        return CheckInterface::RESULT_OKAY;
     }
 
     /**

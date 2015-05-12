@@ -32,6 +32,10 @@ use FlameCore\Gatekeeper\Visitor;
  */
 interface CheckInterface
 {
+    const RESULT_OKAY = 0;
+    const RESULT_UNSURE = 1;
+    const RESULT_BLOCK = 2;
+
     /**
      * @param \FlameCore\Gatekeeper\Visitor $visitor
      * @return bool|string

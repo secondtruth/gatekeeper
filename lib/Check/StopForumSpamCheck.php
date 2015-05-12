@@ -46,15 +46,15 @@ class StopForumSpamCheck implements CheckInterface
         $response = @simplexml_load_file(self::CHECK_URL.'?'.$params);
 
         if ($response === false) {
-            return false;
+            return CheckInterface::RESULT_OKAY;
         }
 
         foreach ($response->appears as $appears) {
             if ($appears == 'yes') {
-                return true;
+                return CheckInterface::RESULT_BLOCK;
             }
         }
 
-        return false;
+        return CheckInterface::RESULT_OKAY;
     }
 }
