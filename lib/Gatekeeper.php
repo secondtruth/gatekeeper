@@ -64,6 +64,39 @@ class Gatekeeper
     }
 
     /**
+     * @return array
+     */
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    /**
+     * @param $setting
+     * @param $value
+     */
+    public function setSetting($setting, $value)
+    {
+        $this->settings[$setting] = $value;
+    }
+
+    /**
+     * @return \FlameCore\Gatekeeper\Storage\StorageInterface
+     */
+    public function getStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     * @param \FlameCore\Gatekeeper\Storage\StorageInterface $storage
+     */
+    public function setStorage($storage)
+    {
+        $this->storage = $storage;
+    }
+
+    /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \FlameCore\Gatekeeper\ScreenerInterface $screener
      */
@@ -88,6 +121,7 @@ class Gatekeeper
      * Perform actions for bad requests.
      *
      * @param bool|string $result
+     * @throws \FlameCore\Gatekeeper\AccessDeniedException
      */
     public function blockRequest($result = true)
     {
