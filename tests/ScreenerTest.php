@@ -23,18 +23,23 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
+use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Test class for Screener
  */
-class ScreenerTest extends ScreenerTestCase
+class ScreenerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \FlameCore\Gatekeeper\Screener
+     */
+    private $screener;
+
     protected function setUp()
     {
-        parent::setUp();
-
+        $this->screener = new Screener();
         $this->screener->setWhitelist(['127.0.0.1/32', '127.0.0.2']);
     }
 

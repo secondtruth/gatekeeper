@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
+use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Check\StopForumSpamCheck;
 use FlameCore\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,14 +31,11 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Test class for StopForumSpamCheck
  */
-class StopForumSpamCheckTest extends ScreenerTestCase
+class StopForumSpamCheckTest extends CheckTestCase
 {
     protected function setUp()
     {
-        parent::setUp();
-
-        $check = new StopForumSpamCheck();
-        $this->screener->addCheck($check);
+        $this->check = new StopForumSpamCheck();
     }
 
     public function testCheckPositive()
@@ -45,7 +43,7 @@ class StopForumSpamCheckTest extends ScreenerTestCase
         $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '1.2.3.4'], null);
         $visitor = new Visitor($request);
 
-        $result = $this->screener->screenVisitor($visitor);
+        $result = $this->check->checkVisitor($visitor);
 
         $this->assertEquals(true, $result);
     }
@@ -55,7 +53,7 @@ class StopForumSpamCheckTest extends ScreenerTestCase
         $request = Request::create('/', null, [], [], [], [], null);
         $visitor = new Visitor($request);
 
-        $result = $this->screener->screenVisitor($visitor);
+        $result = $this->check->checkVisitor($visitor);
 
         $this->assertEquals(false, $result);
     }

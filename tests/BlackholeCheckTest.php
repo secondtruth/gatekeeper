@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
+use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Check\BlackholeCheck;
 use FlameCore\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,15 +31,12 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Test class for BlackholeCheck
  */
-class BlackholeCheckTest extends ScreenerTestCase
+class BlackholeCheckTest extends CheckTestCase
 {
     protected function setUp()
     {
-        parent::setUp();
-
-        $check = new BlackholeCheck();
-        $check->addList('dnsbl.test.flamecore.org');
-        $this->screener->addCheck($check);
+        $this->check = new BlackholeCheck();
+        $this->check->addList('dnsbl.test.flamecore.org');
     }
 
     public function testCheckPositive()
@@ -46,7 +44,7 @@ class BlackholeCheckTest extends ScreenerTestCase
         $request = Request::create('/', null, [], [], [], [], null);
         $visitor = new Visitor($request);
 
-        $result = $this->screener->screenVisitor($visitor);
+        $result = $this->check->checkVisitor($visitor);
 
         $this->assertEquals(true, $result);
     }
@@ -56,7 +54,7 @@ class BlackholeCheckTest extends ScreenerTestCase
         $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2'], null);
         $visitor = new Visitor($request);
 
-        $result = $this->screener->screenVisitor($visitor);
+        $result = $this->check->checkVisitor($visitor);
 
         $this->assertEquals(false, $result);
     }

@@ -23,20 +23,17 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
-use FlameCore\Gatekeeper\Screener;
-
 /**
- * Test case class for Screener
+ * Test case for Check classes
  */
-class ScreenerTestCase extends \PHPUnit_Framework_TestCase
+abstract class CheckTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \FlameCore\Gatekeeper\Screener
+     * @var \FlameCore\Gatekeeper\Check\CheckInterface
      */
-    protected $screener;
+    protected $check;
 
-    protected function setUp()
-    {
-        $this->screener = new Screener();
-    }
+    abstract public function testCheckPositive();
+
+    abstract public function testCheckNegative();
 }
