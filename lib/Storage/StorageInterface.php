@@ -30,19 +30,24 @@ use FlameCore\Gatekeeper\Visitor;
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-interface StorageInterface
+interface StorageInterface extends \Countable
 {
     /**
      * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @param string $result
+     * @param bool|string $result
      * @return bool
      */
     public function insert(Visitor $visitor, $result);
 
     /**
-     * @return bool
+     * @return int
      */
     public function count();
+    
+    /**
+     * @return int
+     */
+    public function countBlocked();
 
     /**
      * @return bool

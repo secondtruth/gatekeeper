@@ -74,7 +74,7 @@ class Gatekeeper
         $result = $screener->screenVisitor($this->visitor);
 
         if ($this->storage) {
-            $this->storage->insert($request, $result !== false ? $result : '00000000');
+            $this->storage->insert($request, $result);
         }
 
         if ($result !== false) {
