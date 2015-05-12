@@ -78,7 +78,7 @@ class Gatekeeper
         }
 
         if ($result !== false) {
-            $this->blockRequest();
+            $this->blockRequest($result);
         } else {
             $this->approveRequest();
         }
@@ -86,9 +86,13 @@ class Gatekeeper
 
     /**
      * Perform actions for bad requests.
+     *
+     * @param bool|string $result
      */
-    public function blockRequest()
+    public function blockRequest($result = true)
     {
+        $this->penalize($result);
+
         throw new AccessDeniedException($this->settings['block_message']);
     }
 
@@ -98,5 +102,26 @@ class Gatekeeper
     public function approveRequest()
     {
         // do nothing
+    }
+
+    /**
+     * Penalizes blocked visitors.
+     *
+     * @param bool|string $result
+     */
+    protected function penalize($result)
+    {
+        // Some spambots hit too hard. Slow them down a bit.
+        sleep(2);
+
+        if ($this->storage) {
+            // Penalize the spammers some more
+            $this->storage->cleanup();
+
+            // Waste a bunch more of the spammer's time, sometimes.
+            if (rand(1, 1000) == 1) {
+                $this->storage->optimize();
+            }
+        }
     }
 }
