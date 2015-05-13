@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
+use FlameCore\Gatekeeper\Check\BlacklistCheck;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +42,10 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
     {
         $this->screener = new Screener();
         $this->screener->setWhitelist(['127.0.0.1/32', '127.0.0.2']);
+
+        $check = new BlacklistCheck();
+        $check->setBlacklist(['127.0.0.3/32']);
+        $this->screener->addCheck($check);
     }
 
     public function testWhitelist()
@@ -50,6 +55,22 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->screener->screenVisitor($visitor);
 
-        $this->assertEquals(false, $result);
+        $this->assertEquals(false, $result->getValue());
+
+        $expected = [get_class($this->screener)];
+        $this->assertEquals($expected, $result->getReportingClasses());
+    }
+
+    public function testBlacklist()
+    {
+        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.3'], null);
+        $visitor = new Visitor($request);
+
+        $result = $this->screener->screenVisitor($visitor);
+
+        $this->assertEquals(true, $result->getValue());
+
+        $expected = array_map('get_class', $this->screener->getChecks());
+        $this->assertEquals($expected, $result->getReportingClasses());
     }
 }
