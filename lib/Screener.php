@@ -24,7 +24,8 @@
 namespace FlameCore\Gatekeeper;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
-use FlameCore\Gatekeeper\Result\Result;
+use FlameCore\Gatekeeper\Result\NegativeResult;
+use FlameCore\Gatekeeper\Result\PositiveResult;
 
 /**
  * Class Screener
@@ -59,12 +60,16 @@ class Screener implements ScreenerInterface
     public function screenVisitor(Visitor $visitor)
     {
         if (Utils::matchCIDR($visitor->getIP(), $this->whitelist)) {
-            return new Result(false, [__CLASS__]);
+            return new NegativeResult([__CLASS__]);
         }
 
         $result = $this->doScreening($visitor);
 
-        return new Result($result, $this->reporting);
+        if ($result !== false) {
+            return new PositiveResult($this->reporting, is_string($result) ? $result : null);
+        } else {
+            return new NegativeResult();
+        }
     }
 
     /**
@@ -150,7 +155,7 @@ class Screener implements ScreenerInterface
                         return true;
                     }
                 } else {
-                    return is_string($result) ? $result : true;
+                    return $result;
                 }
             }
         }

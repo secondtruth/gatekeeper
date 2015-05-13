@@ -21,18 +21,19 @@
  * @license  ISC License <http://opensource.org/licenses/ISC>
  */
 
-namespace FlameCore\Gatekeeper;
+namespace FlameCore\Gatekeeper\Result;
 
 /**
- * Interface ScreenerInterface
+ * This interface represents a result.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-interface ScreenerInterface
+interface ResultInterface
 {
     /**
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return \FlameCore\Gatekeeper\Result\ResultInterface
+     * Gets the list of reporting Check classes.
+     *
+     * @return string[]
      */
-    public function screenVisitor(Visitor $visitor);
+    public function getReportingClasses();
 }

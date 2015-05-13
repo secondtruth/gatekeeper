@@ -24,41 +24,51 @@
 namespace FlameCore\Gatekeeper\Result;
 
 /**
- * Class Result
+ * This class represents a positive result.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class Result
+class PositiveResult implements ResultInterface
 {
     /**
-     * @var string|bool
+     * The result code
+     *
+     * @var string|null
      */
-    protected $value;
+    protected $code;
 
     /**
+     * List of reporting Check classes
+     *
      * @var string[]
      */
     protected $reporting = array();
 
     /**
-     * @param string|bool $value
-     * @param array $reporting
+     * Creates a PositiveResult object.
+     *
+     * @param string[] $reporting List of reporting Check classes
+     * @param string $code The result code
      */
-    public function __construct($value, array $reporting)
+    public function __construct(array $reporting, $code = null)
     {
-        $this->value = $value;
         $this->reporting = $reporting;
+        $this->code = $code;
     }
 
     /**
-     * @return string|bool
+     * Gets the result code.
+     *
+     * @return string|null
      */
-    public function getValue()
+    public function getCode()
     {
-        return $this->value;
+        return $this->code;
     }
 
     /**
+     * Gets the list of reporting Check classes.
+     *
      * @return string[]
      */
     public function getReportingClasses()

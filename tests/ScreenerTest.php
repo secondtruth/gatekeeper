@@ -50,9 +50,10 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
     public function testWhitelist()
     {
+        /** @var \FlameCore\Gatekeeper\Result\NegativeResult $result */
         $result = $this->runTestScreening('127.0.0.2');
 
-        $this->assertEquals(false, $result->getValue());
+        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\NegativeResult', $result);
 
         $expected = [get_class($this->screener)];
         $this->assertEquals($expected, $result->getReportingClasses());
@@ -60,9 +61,10 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
     public function testPositive()
     {
+        /** @var \FlameCore\Gatekeeper\Result\PositiveResult $result */
         $result = $this->runTestScreening('127.0.0.3');
 
-        $this->assertEquals(true, $result->getValue());
+        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
 
         $expected = array_map('get_class', $this->screener->getChecks());
         $this->assertEquals($expected, $result->getReportingClasses());
@@ -70,7 +72,7 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $ip
-     * @return \FlameCore\Gatekeeper\Result\Result
+     * @return \FlameCore\Gatekeeper\Result\ResultInterface
      */
     protected function runTestScreening($ip)
     {

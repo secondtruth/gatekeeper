@@ -21,18 +21,39 @@
  * @license  ISC License <http://opensource.org/licenses/ISC>
  */
 
-namespace FlameCore\Gatekeeper;
+namespace FlameCore\Gatekeeper\Result;
 
 /**
- * Interface ScreenerInterface
+ * This class represents a negative result.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-interface ScreenerInterface
+class NegativeResult implements ResultInterface
 {
     /**
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return \FlameCore\Gatekeeper\Result\ResultInterface
+     * List of reporting Check classes
+     *
+     * @var string[]|null
      */
-    public function screenVisitor(Visitor $visitor);
+    protected $reporting;
+
+    /**
+     * Creates a NegativeResult object.
+     *
+     * @param string[]|null $reporting List of reporting Check classes
+     */
+    public function __construct(array $reporting = null)
+    {
+        $this->reporting = $reporting;
+    }
+
+    /**
+     * Gets the list of reporting Check classes.
+     *
+     * @return string[]|null Returns the list of reporting classes, or NULL if no class reported the result.
+     */
+    public function getReportingClasses()
+    {
+        return $this->reporting;
+    }
 }

@@ -23,7 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Storage;
 
-use FlameCore\Gatekeeper\Result\Result;
+use FlameCore\Gatekeeper\Result\ResultInterface;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
@@ -35,10 +35,10 @@ interface StorageInterface extends \Countable
 {
     /**
      * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @param \FlameCore\Gatekeeper\Result\Result $result
+     * @param \FlameCore\Gatekeeper\Result\ResultInterface $result
      * @return bool
      */
-    public function insert(Visitor $visitor, Result $result);
+    public function insert(Visitor $visitor, ResultInterface $result);
 
     /**
      * @return int

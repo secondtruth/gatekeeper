@@ -23,7 +23,8 @@
 
 namespace FlameCore\Gatekeeper;
 
-use FlameCore\Gatekeeper\Result\Result;
+use FlameCore\Gatekeeper\Result\Explainer;
+use FlameCore\Gatekeeper\Result\PositiveResult;
 use FlameCore\Gatekeeper\Storage\StorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -111,7 +112,7 @@ class Gatekeeper
             $this->storage->insert($this->visitor, $result);
         }
 
-        if ($result !== false) {
+        if ($result instanceof PositiveResult) {
             $this->blockRequest($result);
         } else {
             $this->approveRequest();
@@ -121,10 +122,10 @@ class Gatekeeper
     /**
      * Perform actions for bad requests.
      *
-     * @param \FlameCore\Gatekeeper\Result\Result $result
+     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result
      * @throws \FlameCore\Gatekeeper\AccessDeniedException
      */
-    protected function blockRequest(Result $result)
+    protected function blockRequest(PositiveResult $result)
     {
         $this->penalize($result);
 
@@ -142,9 +143,9 @@ class Gatekeeper
     /**
      * Penalizes blocked visitors.
      *
-     * @param \FlameCore\Gatekeeper\Result\Result $result
+     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result
      */
-    protected function penalize(Result $result)
+    protected function penalize(PositiveResult $result)
     {
         // reserved for future use, maybe for reporting to stopforumspam.com or so
     }
