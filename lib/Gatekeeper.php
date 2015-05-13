@@ -107,7 +107,7 @@ class Gatekeeper
         $result = $screener->screenVisitor($this->visitor);
 
         if ($this->storage) {
-            $this->storage->insert($request, $result);
+            $this->storage->insert($this->visitor, $result);
         }
 
         if ($result !== false) {
@@ -123,7 +123,7 @@ class Gatekeeper
      * @param bool|string $result
      * @throws \FlameCore\Gatekeeper\AccessDeniedException
      */
-    public function blockRequest($result = true)
+    protected function blockRequest($result)
     {
         $this->penalize($result);
 
@@ -133,7 +133,7 @@ class Gatekeeper
     /**
      * Perform actions for good requests.
      */
-    public function approveRequest()
+    protected function approveRequest()
     {
         // do nothing
     }
