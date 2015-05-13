@@ -24,6 +24,7 @@
 namespace FlameCore\Gatekeeper;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
+use FlameCore\Gatekeeper\Result\Result;
 
 /**
  * Class Screener
@@ -48,15 +49,22 @@ class Screener implements ScreenerInterface
     protected $ratingThreshold = 2;
 
     /**
+     * @var string[]
+     */
+    private $reporting = array();
+
+    /**
      * {@inheritdoc}
      */
     public function screenVisitor(Visitor $visitor)
     {
         if (Utils::matchCIDR($visitor->getIP(), $this->whitelist)) {
-            return false;
+            return new Result(false, [__CLASS__]);
         }
 
-        return $this->doScreening($visitor);
+        $result = $this->doScreening($visitor);
+
+        return new Result($result, $this->reporting);
     }
 
     /**
@@ -134,12 +142,16 @@ class Screener implements ScreenerInterface
         foreach ($this->checks as $check) {
             $result = $check->checkVisitor($visitor);
 
-            if ($result === CheckInterface::RESULT_UNSURE) {
-                if (++$rating == $this->ratingThreshold) {
-                    return true;
+            if ($result !== CheckInterface::RESULT_OKAY) {
+                $this->reporting[] = get_class($check);
+
+                if ($result === CheckInterface::RESULT_UNSURE) {
+                    if (++$rating == $this->ratingThreshold) {
+                        return true;
+                    }
+                } else {
+                    return is_string($result) ? $result : true;
                 }
-            } elseif ($result !== CheckInterface::RESULT_OKAY) {
-                return is_string($result) ? $result : true;
             }
         }
 

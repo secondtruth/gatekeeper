@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper;
 
+use FlameCore\Gatekeeper\Result\Result;
 use FlameCore\Gatekeeper\Storage\StorageInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -120,10 +121,10 @@ class Gatekeeper
     /**
      * Perform actions for bad requests.
      *
-     * @param bool|string $result
+     * @param \FlameCore\Gatekeeper\Result\Result $result
      * @throws \FlameCore\Gatekeeper\AccessDeniedException
      */
-    protected function blockRequest($result)
+    protected function blockRequest(Result $result)
     {
         $this->penalize($result);
 
@@ -141,9 +142,9 @@ class Gatekeeper
     /**
      * Penalizes blocked visitors.
      *
-     * @param bool|string $result
+     * @param \FlameCore\Gatekeeper\Result\Result $result
      */
-    protected function penalize($result)
+    protected function penalize(Result $result)
     {
         // Some spambots hit too hard. Slow them down a bit.
         sleep(2);

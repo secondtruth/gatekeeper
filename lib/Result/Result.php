@@ -21,42 +21,48 @@
  * @license  ISC License <http://opensource.org/licenses/ISC>
  */
 
-namespace FlameCore\Gatekeeper\Storage;
-
-use FlameCore\Gatekeeper\Result\Result;
-use FlameCore\Gatekeeper\Visitor;
+namespace FlameCore\Gatekeeper\Result;
 
 /**
- * Interface StorageInterface
+ * Class Result
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-interface StorageInterface extends \Countable
+class Result
 {
     /**
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @param \FlameCore\Gatekeeper\Result\Result $result
-     * @return bool
+     * @var string|bool
      */
-    public function insert(Visitor $visitor, Result $result);
+    protected $value;
 
     /**
-     * @return int
+     * @var string[]
      */
-    public function count();
-    
-    /**
-     * @return int
-     */
-    public function countBlocked();
+    protected $reporting = array();
 
     /**
-     * @return bool
+     * @param string|bool $value
+     * @param array $reporting
      */
-    public function cleanup();
+    public function __construct($value, array $reporting)
+    {
+        $this->value = $value;
+        $this->reporting = $reporting;
+    }
 
     /**
-     * @return bool
+     * @return string|bool
      */
-    public function optimize();
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getReportingClasses()
+    {
+        return $this->reporting;
+    }
 }
