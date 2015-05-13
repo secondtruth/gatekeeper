@@ -41,6 +41,11 @@ class Gatekeeper
     protected $storage;
 
     /**
+     * @var \FlameCore\Gatekeeper\Result\Explainer
+     */
+    protected $explainer;
+
+    /**
      * @var \FlameCore\Gatekeeper\Visitor
      */
     protected $visitor;
@@ -57,7 +62,7 @@ class Gatekeeper
     public function __construct(array $settings = [], StorageInterface $storage = null)
     {
         $defaults = array(
-            'block_message' => 'Your request has been blocked.'
+            'block_message' => "<p>Your request has been blocked.</p>\n<p>{explanation}</p>"
         );
 
         $this->settings = array_replace($defaults, $settings);
@@ -99,6 +104,22 @@ class Gatekeeper
     }
 
     /**
+     * @return \FlameCore\Gatekeeper\Result\Explainer
+     */
+    public function getExplainer()
+    {
+        return $this->explainer;
+    }
+
+    /**
+     * @param \FlameCore\Gatekeeper\Result\Explainer $explainer
+     */
+    public function setExplainer($explainer)
+    {
+        $this->explainer = $explainer;
+    }
+
+    /**
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \FlameCore\Gatekeeper\ScreenerInterface $screener
      */
@@ -107,6 +128,13 @@ class Gatekeeper
         $this->visitor = new Visitor($request);
 
         $result = $screener->screenVisitor($this->visitor);
+
+        if ($result instanceof PositiveResult) {
+            $explainer = $this->explainer ?: new Explainer();
+
+            $explanation = $explainer->explain($result);
+            $result->setExplanation($explanation);
+        }
 
         if ($this->storage) {
             $this->storage->insert($this->visitor, $result);
@@ -129,7 +157,8 @@ class Gatekeeper
     {
         $this->penalize($result);
 
-        throw new AccessDeniedException($this->settings['block_message']);
+        $message = $this->interpolate($this->settings['block_message']);
+        throw new AccessDeniedException($message);
     }
 
     /**
@@ -148,5 +177,22 @@ class Gatekeeper
     protected function penalize(PositiveResult $result)
     {
         // reserved for future use, maybe for reporting to stopforumspam.com or so
+    }
+
+    /**
+     * Interpolates context values into the message placeholders.
+     *
+     * @param string $message The message
+     * @param array $context The context values (optional)
+     * @return string
+     */
+    protected function interpolate($message, array $context = [])
+    {
+        $replace = array();
+        foreach ($context as $key => $value) {
+            $replace['{'.$key.'}'] = $value;
+        }
+
+        return strtr($message, $replace);
     }
 }

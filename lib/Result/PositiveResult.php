@@ -45,6 +45,11 @@ class PositiveResult implements ResultInterface
     protected $reporting = array();
 
     /**
+     * @var array|bool
+     */
+    protected $explanation = false;
+
+    /**
      * Creates a PositiveResult object.
      *
      * @param string[] $reporting List of reporting Check classes
@@ -74,5 +79,23 @@ class PositiveResult implements ResultInterface
     public function getReportingClasses()
     {
         return $this->reporting;
+    }
+
+    /**
+     * Gets
+     *
+     * @return array|bool
+     */
+    public function getExplanation()
+    {
+        return $this->explanation;
+    }
+
+    /**
+     * @param array $explanation
+     */
+    public function setExplanation(array $explanation)
+    {
+        $this->explanation = $explanation;
     }
 }
