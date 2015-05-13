@@ -38,7 +38,7 @@ interface CheckInterface
 
     /**
      * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return bool|string
+     * @return int|string
      */
     public function checkVisitor(Visitor $visitor);
 }

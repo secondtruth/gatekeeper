@@ -79,7 +79,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be MSIE.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int|string
      */
     protected function checkMsie(Visitor $visitor)
     {
@@ -108,7 +108,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be Konqueror.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int|string
      */
     protected function checkKonqueror(Visitor $visitor)
     {
@@ -123,7 +123,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be Lynx.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int|string
      */
     protected function checkLynx(Visitor $visitor)
     {
@@ -138,7 +138,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be Mozilla.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int|string
      */
     protected function checkMozilla(Visitor $visitor)
     {
@@ -159,7 +159,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be Opera.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int|string
      */
     protected function checkOpera(Visitor $visitor)
     {
@@ -174,7 +174,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be Safari.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int|string
      */
     protected function checkSafari(Visitor $visitor)
     {
@@ -189,7 +189,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be Googlebot.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int
      */
     protected function checkGoogleBot(Visitor $visitor)
     {
@@ -208,7 +208,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be msnbot.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int
      */
     protected function checkMsnBot(Visitor $visitor)
     {
@@ -227,7 +227,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be Yahoo! Slurp.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int
      */
     protected function checkYahooBot(Visitor $visitor)
     {
@@ -246,7 +246,7 @@ class UserAgentCheck implements CheckInterface
      * Analyzes user agents claiming to be Baidu Spider.
      *
      * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
-     * @return bool
+     * @return int
      */
     protected function checkBaiduBot(Visitor $visitor)
     {
