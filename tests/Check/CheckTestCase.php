@@ -21,7 +21,7 @@
  * @license  ISC License <http://opensource.org/licenses/ISC>
  */
 
-namespace FlameCore\Gatekeeper\Tests;
+namespace FlameCore\Gatekeeper\Tests\Check;
 
 /**
  * Test case for Check classes
