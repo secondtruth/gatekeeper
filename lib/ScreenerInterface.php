@@ -23,8 +23,6 @@
 
 namespace FlameCore\Gatekeeper;
 
-use FlameCore\Gatekeeper\Check\CheckInterface;
-
 /**
  * Interface ScreenerInterface
  *
@@ -34,7 +32,7 @@ interface ScreenerInterface
 {
     /**
      * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return bool|string
+     * @return \FlameCore\Gatekeeper\Result\Result
      */
     public function screenVisitor(Visitor $visitor);
 }
