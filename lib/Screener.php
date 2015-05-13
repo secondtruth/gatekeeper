@@ -56,21 +56,7 @@ class Screener implements ScreenerInterface
             return false;
         }
 
-        $rating = 0;
-
-        foreach ($this->checks as $check) {
-            $result = $check->checkVisitor($visitor);
-
-            if ($result === CheckInterface::RESULT_UNSURE) {
-                if (++$rating == $this->ratingThreshold) {
-                    return true;
-                }
-            } elseif ($result !== CheckInterface::RESULT_OKAY) {
-                return is_string($result) ? $result : true;
-            }
-        }
-
-        return false;
+        return $this->doScreening($visitor);
     }
 
     /**
@@ -135,5 +121,28 @@ class Screener implements ScreenerInterface
         }
 
         $this->ratingThreshold = $ratingThreshold;
+    }
+
+    /**
+     * @param \FlameCore\Gatekeeper\Visitor $visitor
+     * @return string|bool
+     */
+    protected function doScreening(Visitor $visitor)
+    {
+        $rating = 0;
+
+        foreach ($this->checks as $check) {
+            $result = $check->checkVisitor($visitor);
+
+            if ($result === CheckInterface::RESULT_UNSURE) {
+                if (++$rating == $this->ratingThreshold) {
+                    return true;
+                }
+            } elseif ($result !== CheckInterface::RESULT_OKAY) {
+                return is_string($result) ? $result : true;
+            }
+        }
+
+        return false;
     }
 }
