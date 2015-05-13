@@ -146,17 +146,6 @@ class Gatekeeper
      */
     protected function penalize(Result $result)
     {
-        // Some spambots hit too hard. Slow them down a bit.
-        sleep(2);
-
-        if ($this->storage) {
-            // Penalize the spammers some more
-            $this->storage->cleanup();
-
-            // Waste a bunch more of the spammer's time, sometimes.
-            if (rand(1, 1000) == 1) {
-                $this->storage->optimize();
-            }
-        }
+        // reserved for future use, maybe for reporting to stopforumspam.com or so
     }
 }
