@@ -27,13 +27,15 @@ use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Class BlacklistCheck
+ * Blacklist visitor IPs which should get blocked.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
 class BlacklistCheck implements CheckInterface
 {
     /**
+     * The IP blacklist
+     *
      * @var string[]
      */
     protected $blacklist = array();
@@ -51,6 +53,8 @@ class BlacklistCheck implements CheckInterface
     }
 
     /**
+     * Gets the IP blacklist.
+     *
      * @return string[]
      */
     public function getBlacklist()
@@ -59,7 +63,9 @@ class BlacklistCheck implements CheckInterface
     }
 
     /**
-     * @param array $blacklist
+     * Sets the IP blacklist.
+     *
+     * @param array $blacklist The IP blacklist
      */
     public function setBlacklist(array $blacklist)
     {
@@ -67,7 +73,9 @@ class BlacklistCheck implements CheckInterface
     }
 
     /**
-     * @param string $file
+     * Loads the IP blacklist from the given file.
+     *
+     * @param string $file The blacklist file
      */
     public function loadBlacklist($file)
     {

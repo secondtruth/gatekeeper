@@ -26,7 +26,7 @@ namespace FlameCore\Gatekeeper\Check;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Class StopForumSpamCheck
+ * Query the StopForumSpam API and block visitors with matching IPs.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */

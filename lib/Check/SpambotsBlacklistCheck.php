@@ -26,7 +26,7 @@ namespace FlameCore\Gatekeeper\Check;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Class SpambotsBlacklistCheck
+ * Check for known spam bots and block them.
  *
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
@@ -70,6 +70,8 @@ class SpambotsBlacklistCheck implements CheckInterface
     }
 
     /**
+     * Gets list of user agent parts at the beginning which determine a bad bot.
+     *
      * @return string[]
      */
     protected function getSpambotNamesBeginning()
@@ -140,6 +142,8 @@ class SpambotsBlacklistCheck implements CheckInterface
     }
 
     /**
+     * Gets list of user agent parts at an arbitrary position which determine a bad bot.
+     *
      * @return string[]
      */
     protected function getSpambotNamesAnywhere()
@@ -197,6 +201,8 @@ class SpambotsBlacklistCheck implements CheckInterface
     }
 
     /**
+     * Gets list of user agent regexes which determine a bad bot.
+     *
      * @return string[]
      */
     protected function getSpambotNamesRegex()
@@ -209,6 +215,8 @@ class SpambotsBlacklistCheck implements CheckInterface
     }
 
     /**
+     * Gets list of request URL parts which determine a bad bot.
+     *
      * @return string[]
      */
     protected function getSpambotUrls()

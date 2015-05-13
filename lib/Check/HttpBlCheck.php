@@ -27,31 +27,37 @@ use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Class HttpBlCheck
+ * Query the http:BL API and block visitors with matching IPs.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
 class HttpBlCheck implements CheckInterface
 {
     /**
+     * The API key
+     *
      * @var string
      */
     protected $apiKey;
 
     /**
+     * The minimum threat level for found matches
+     *
      * @var int
      */
     protected $threatLevel;
 
     /**
+     * The maximum age for found matches
+     *
      * @var int
      */
     protected $maxAge;
 
     /**
-     * @param string $apiKey
-     * @param int $threatLevel
-     * @param int $maxAge
+     * @param string $apiKey The API key
+     * @param int $threatLevel The minimum threat level for found matches
+     * @param int $maxAge The maximum age for found matches
      */
     public function __construct($apiKey, $threatLevel = null, $maxAge = null)
     {
@@ -61,6 +67,8 @@ class HttpBlCheck implements CheckInterface
     }
 
     /**
+     * Gets the API key.
+     *
      * @return string
      */
     public function getApiKey()
@@ -69,7 +77,9 @@ class HttpBlCheck implements CheckInterface
     }
 
     /**
-     * @param string $apiKey
+     * Sets the API key.
+     *
+     * @param string $apiKey The API key
      */
     public function setApiKey($apiKey)
     {
@@ -83,6 +93,8 @@ class HttpBlCheck implements CheckInterface
     }
 
     /**
+     * Gets the minimum threat level for found matches.
+     *
      * @return int
      */
     public function getThreatLevel()
@@ -91,7 +103,9 @@ class HttpBlCheck implements CheckInterface
     }
 
     /**
-     * @param int $threatLevel
+     * Sets the minimum threat level for found matches.
+     *
+     * @param int $threatLevel The minimum threat level for found matches
      */
     public function setThreatLevel($threatLevel)
     {
@@ -105,6 +119,8 @@ class HttpBlCheck implements CheckInterface
     }
 
     /**
+     * Gets the maximum age for found matches.
+     *
      * @return int
      */
     public function getMaxAge()
@@ -113,7 +129,9 @@ class HttpBlCheck implements CheckInterface
     }
 
     /**
-     * @param int $maxAge
+     * Sets the maximum age for found matches.
+     *
+     * @param int $maxAge The maximum age for found matches
      */
     public function setMaxAge($maxAge)
     {
@@ -153,7 +171,9 @@ class HttpBlCheck implements CheckInterface
     }
 
     /**
-     * @param string $ip
+     * Gets the .arpa version of an IPv4 address.
+     *
+     * @param string $ip The IPv4 address
      * @return string
      */
     protected function getIPv4Arpa($ip)

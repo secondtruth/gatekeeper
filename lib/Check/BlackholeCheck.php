@@ -27,13 +27,15 @@ use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Class BlackholeCheck
+ * Query DNS blackhole lists and block visitors with matching IPs.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
 class BlackholeCheck implements CheckInterface
 {
     /**
+     * The registered blackhole lists
+     *
      * @var string[]
      */
     protected $lists = array();
@@ -56,6 +58,8 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
+     * Gets the registered blackhole lists.
+     *
      * @return string[]
      */
     public function getLists()
@@ -64,7 +68,9 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
-     * @param string $list
+     * Registers a blackhole list.
+     *
+     * @param string $list The blackhole list to add
      */
     public function addList($list)
     {
@@ -76,7 +82,9 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
-     * @param string[] $lists
+     * Registers blackhole lists.
+     *
+     * @param string[] $lists The blackhole lists to query
      */
     public function addLists(array $lists)
     {
@@ -84,7 +92,9 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
-     * @param string $ip
+     * Gets the .arpa version of an IPv4 address.
+     *
+     * @param string $ip The IPv4 address
      * @return string
      */
     protected function getIPv4Arpa($ip)
@@ -93,7 +103,9 @@ class BlackholeCheck implements CheckInterface
     }
 
     /**
-     * @param string $ip
+     * Gets the .arpa version of an IPv6 address.
+     *
+     * @param string $ip The IPv6 address
      * @return string
      */
     protected function getIPv6Arpa($ip)

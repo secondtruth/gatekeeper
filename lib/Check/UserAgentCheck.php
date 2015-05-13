@@ -27,7 +27,7 @@ use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Class UserAgentCheck
+ * Check for bad bots which pretend to be legitimate visitors.
  *
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
