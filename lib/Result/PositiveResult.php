@@ -82,7 +82,7 @@ class PositiveResult implements ResultInterface
     }
 
     /**
-     * Gets
+     * Gets the explanation.
      *
      * @return array|bool
      */
@@ -92,7 +92,9 @@ class PositiveResult implements ResultInterface
     }
 
     /**
-     * @param array $explanation
+     * Sets the explanation.
+     *
+     * @param array $explanation The explanation
      */
     public function setExplanation(array $explanation)
     {

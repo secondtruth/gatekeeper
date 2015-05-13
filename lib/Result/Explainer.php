@@ -234,13 +234,15 @@ class Explainer
     ];
 
     /**
-     * @param string $result
+     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result
      * @return array|bool
      */
-    public function explain($result)
+    public function explain(PositiveResult $result)
     {
-        if (isset(self::$responses[$result])) {
-            return self::$responses[$result];
+        $code = $result->getCode();
+
+        if ($code !== null && isset(self::$responses[$code])) {
+            return self::$responses[$code];
         }
 
         return false;
