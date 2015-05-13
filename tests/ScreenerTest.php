@@ -50,10 +50,7 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
     public function testWhitelist()
     {
-        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2'], null);
-        $visitor = new Visitor($request);
-
-        $result = $this->screener->screenVisitor($visitor);
+        $result = $this->runTestScreening('127.0.0.2');
 
         $this->assertEquals(false, $result->getValue());
 
@@ -61,16 +58,25 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result->getReportingClasses());
     }
 
-    public function testBlacklist()
+    public function testPositive()
     {
-        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.3'], null);
-        $visitor = new Visitor($request);
-
-        $result = $this->screener->screenVisitor($visitor);
+        $result = $this->runTestScreening('127.0.0.3');
 
         $this->assertEquals(true, $result->getValue());
 
         $expected = array_map('get_class', $this->screener->getChecks());
         $this->assertEquals($expected, $result->getReportingClasses());
+    }
+
+    /**
+     * @param string $ip
+     * @return \FlameCore\Gatekeeper\Result\Result
+     */
+    protected function runTestScreening($ip)
+    {
+        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => $ip], null);
+        $visitor = new Visitor($request);
+
+        return $this->screener->screenVisitor($visitor);
     }
 }
