@@ -56,6 +56,11 @@ class Visitor
     /**
      * @var string
      */
+    protected $scheme;
+
+    /**
+     * @var string
+     */
     protected $protocol;
 
     /**
@@ -74,7 +79,8 @@ class Visitor
         $this->headers = $request->headers;
         $this->method = $request->getRealMethod();
         $this->uri = $request->getRequestUri();
-        $this->protocol = $request->getScheme();
+        $this->scheme = $request->getScheme();
+        $this->protocol = $request->server->get('SERVER_PROTOCOL');
 
         $userAgent = $request->headers->get('user-agent');
         $this->userAgent = new UserAgent($userAgent);
@@ -118,6 +124,16 @@ class Visitor
     public function getRequestURI()
     {
         return $this->uri;
+    }
+
+    /**
+     * Gets the request scheme.
+     *
+     * @return string
+     */
+    public function getRequestScheme()
+    {
+        return $this->scheme;
     }
 
     /**
