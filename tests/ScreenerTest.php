@@ -66,8 +66,6 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
 
-        $this->assertEmpty($result->getExplanation());
-
         $expected = array_map('get_class', $this->screener->getChecks());
         $this->assertEquals($expected, $result->getReportingClasses());
     }

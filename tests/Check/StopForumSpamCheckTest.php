@@ -40,20 +40,14 @@ class StopForumSpamCheckTest extends CheckTestCase
 
     public function testCheckPositive()
     {
-        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '1.2.3.4'], null);
-        $visitor = new Visitor($request);
-
-        $result = $this->check->checkVisitor($visitor);
+        $result = $this->runTestCheck(null, null, [], [], [], ['REMOTE_ADDR' => '1.2.3.4']);
 
         $this->assertEquals(CheckInterface::RESULT_BLOCK, $result);
     }
 
     public function testCheckNegative()
     {
-        $request = Request::create('/', null, [], [], [], [], null);
-        $visitor = new Visitor($request);
-
-        $result = $this->check->checkVisitor($visitor);
+        $result = $this->runTestCheck();
 
         $this->assertEquals(CheckInterface::RESULT_OKAY, $result);
     }

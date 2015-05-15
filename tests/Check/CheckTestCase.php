@@ -23,6 +23,9 @@
 
 namespace FlameCore\Gatekeeper\Tests\Check;
 
+use FlameCore\Gatekeeper\Visitor;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Test case for Check classes
  */
@@ -33,7 +36,29 @@ abstract class CheckTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $check;
 
-    abstract public function testCheckPositive();
+    /**
+     * @param string $uri
+     * @param string $method
+     * @param array $parameters
+     * @param array $cookies
+     * @param array $files
+     * @param array $server
+     * @param string $content
+     * @return int|string
+     */
+    protected function runTestCheck($uri = '/', $method = 'GET', $parameters = [], $cookies = [], $files = [], $server = [], $content = null)
+    {
+        $request = Request::create($uri, $method, $parameters, $cookies, $files, $server, $content);
+        return $this->runCustomTestCheck($request);
+    }
 
-    abstract public function testCheckNegative();
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return int|string
+     */
+    protected function runCustomTestCheck(Request $request)
+    {
+        $visitor = new Visitor($request);
+        return $this->check->checkVisitor($visitor);
+    }
 }
