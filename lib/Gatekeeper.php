@@ -157,9 +157,9 @@ class Gatekeeper
     {
         $this->penalize($result);
 
-        $context = $result->getExplanation();
-        $message = $this->interpolate($this->settings['block_message'], $context);
-        throw new AccessDeniedException($message);
+        $explanation = $result->getExplanation();
+        $message = $this->interpolate($this->settings['block_message'], $explanation);
+        throw new AccessDeniedException($message, $explanation['response']);
     }
 
     /**
