@@ -45,9 +45,11 @@ class PositiveResult implements ResultInterface
     protected $reporting = array();
 
     /**
-     * @var array|bool
+     * The explanation
+     *
+     * @var array
      */
-    protected $explanation = false;
+    protected $explanation = array();
 
     /**
      * Creates a PositiveResult object.
@@ -84,7 +86,7 @@ class PositiveResult implements ResultInterface
     /**
      * Gets the explanation.
      *
-     * @return array|bool
+     * @return array
      */
     public function getExplanation()
     {
