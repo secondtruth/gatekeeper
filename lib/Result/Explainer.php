@@ -235,7 +235,7 @@ class Explainer
 
     /**
      * @param \FlameCore\Gatekeeper\Result\PositiveResult $result
-     * @return array|bool
+     * @return array
      */
     public function explain(PositiveResult $result)
     {
@@ -245,6 +245,10 @@ class Explainer
             return self::$responses[$code];
         }
 
-        return false;
+        return [
+            'response' => 403,
+            'explanation' => 'You do not have permission to access this server.',
+            'logtext' => sprintf('Request blocked by %s', implode(', ', $result->getReportingClasses()))
+        ];
     }
 }
