@@ -169,7 +169,8 @@ class Visitor
             'method'     => $this->method,
             'uri'        => $this->uri,
             'protocol'   => $this->protocol,
-            'user_agent' => $this->userAgent
+            'scheme'     => $this->scheme,
+            'user_agent' => $this->userAgent->getUserAgentString()
         );
     }
 }
