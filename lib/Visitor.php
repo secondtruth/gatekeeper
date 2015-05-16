@@ -54,6 +54,11 @@ class Visitor
     protected $uri;
 
     /**
+     * @var \Symfony\Component\HttpFoundation\ParameterBag
+     */
+    protected $data;
+
+    /**
      * @var string
      */
     protected $scheme;
@@ -69,6 +74,11 @@ class Visitor
     protected $userAgent;
 
     /**
+     * @var bool
+     */
+    protected $isBrowser;
+
+    /**
      * Creates a Visitor object.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -79,11 +89,13 @@ class Visitor
         $this->headers = $request->headers;
         $this->method = $request->getRealMethod();
         $this->uri = $request->getRequestUri();
+        $this->data = $request->request;
         $this->scheme = $request->getScheme();
         $this->protocol = $request->server->get('SERVER_PROTOCOL');
 
         $userAgent = $request->headers->get('user-agent');
         $this->userAgent = new UserAgent($userAgent);
+        $this->isBrowser = !$this->userAgent->isBot();
     }
 
     /**
@@ -127,6 +139,16 @@ class Visitor
     }
 
     /**
+     * Gets the request data.
+     *
+     * @return \Symfony\Component\HttpFoundation\ParameterBag
+     */
+    public function getRequestData()
+    {
+        return $this->data;
+    }
+
+    /**
      * Gets the request scheme.
      *
      * @return string
@@ -157,6 +179,16 @@ class Visitor
     }
 
     /**
+     * Request comes from a browser?
+     *
+     * @return bool
+     */
+    public function isBrowser()
+    {
+        return $this->isBrowser;
+    }
+
+    /**
      * Export data to array.
      *
      * @return array
@@ -168,9 +200,11 @@ class Visitor
             'headers'    => $this->headers->all(),
             'method'     => $this->method,
             'uri'        => $this->uri,
+            'data'       => $this->data->all(),
             'protocol'   => $this->protocol,
             'scheme'     => $this->scheme,
-            'user_agent' => $this->userAgent->getUserAgentString()
+            'user_agent' => $this->userAgent->getUserAgentString(),
+            'is_browser' => $this->isBrowser()
         );
     }
 }
