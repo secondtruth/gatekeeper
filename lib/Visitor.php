@@ -95,7 +95,9 @@ class Visitor
 
         $userAgent = $request->headers->get('user-agent');
         $this->userAgent = new UserAgent($userAgent);
-        $this->isBrowser = !$this->userAgent->isBot();
+
+        $knownBrowsers = ['msie', 'firefox', 'chrome', 'safari', 'opera', 'konqueror', 'edge', 'lynx'];
+        $this->isBrowser = in_array($this->userAgent->getBrowserName(), $knownBrowsers);
     }
 
     /**
