@@ -1,7 +1,7 @@
 <?php
 /**
- * Webtools Library
- * Copyright (C) 2014 IceFlame.net
+ * Gatekeeper Library
+ * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -15,8 +15,8 @@
  * IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING
  * OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
- * @package  FlameCore\Webtools
- * @version  1.2
+ * @package  FlameCore\Gatekeeper
+ * @version  0.1-dev
  * @link     http://www.flamecore.org
  * @license  ISC License <http://opensource.org/licenses/ISC>
  */
@@ -25,8 +25,6 @@ namespace FlameCore\Gatekeeper\Tests\Check;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Check\StopForumSpamCheck;
-use FlameCore\Gatekeeper\Visitor;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Test class for StopForumSpamCheck
