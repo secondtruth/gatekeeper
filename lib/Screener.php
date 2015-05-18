@@ -45,6 +45,11 @@ class Screener implements ScreenerInterface
     protected $whitelist = array();
 
     /**
+     * @var string[]
+     */
+    protected $trustedUserAgents = array();
+
+    /**
      * @var int
      */
     protected $ratingThreshold = 2;
@@ -60,6 +65,11 @@ class Screener implements ScreenerInterface
     public function screenVisitor(Visitor $visitor)
     {
         if (Utils::matchCIDR($visitor->getIP(), $this->whitelist)) {
+            return new NegativeResult([__CLASS__]);
+        }
+
+        $uastring = $visitor->getUserAgent()->getUserAgentString();
+        if (in_array($uastring, $this->trustedUserAgents)) {
             return new NegativeResult([__CLASS__]);
         }
 
@@ -112,6 +122,22 @@ class Screener implements ScreenerInterface
         $whitelist = file($file, FILE_SKIP_EMPTY_LINES);
 
         $this->setWhitelist($whitelist);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTrustedUserAgents()
+    {
+        return $this->trustedUserAgents;
+    }
+
+    /**
+     * @param string[] $trustedUserAgents
+     */
+    public function setTrustedUserAgents($trustedUserAgents)
+    {
+        $this->trustedUserAgents = $trustedUserAgents;
     }
 
     /**
