@@ -35,11 +35,19 @@ class BlacklistCheckTest extends CheckTestCase
     {
         $this->check = new BlacklistCheck();
         $this->check->setBlacklist(['127.0.0.1/32']);
+        $this->check->setUntrustedUserAgents(['Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
     }
 
-    public function testCheckPositive()
+    public function testCheckPositiveIP()
     {
         $result = $this->runTestCheck();
+
+        $this->assertEquals(CheckInterface::RESULT_BLOCK, $result);
+    }
+
+    public function testCheckPositiveUserAgent()
+    {
+        $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
 
         $this->assertEquals(CheckInterface::RESULT_BLOCK, $result);
     }
