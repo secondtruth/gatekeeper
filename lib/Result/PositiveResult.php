@@ -28,7 +28,7 @@ namespace FlameCore\Gatekeeper\Result;
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class PositiveResult implements ResultInterface
+class PositiveResult extends AbstractResult
 {
     /**
      * The result code
@@ -38,28 +38,15 @@ class PositiveResult implements ResultInterface
     protected $code;
 
     /**
-     * List of reporting Check classes
-     *
-     * @var string[]
-     */
-    protected $reporting = array();
-
-    /**
-     * The explanation
-     *
-     * @var array
-     */
-    protected $explanation = array();
-
-    /**
      * Creates a PositiveResult object.
      *
      * @param string[] $reporting List of reporting Check classes
      * @param string $code The result code
      */
-    public function __construct(array $reporting, $code = null)
+    public function __construct(array $reporting = [], $code = null)
     {
-        $this->reporting = $reporting;
+        parent::__construct($reporting);
+
         $this->code = $code;
     }
 
@@ -71,35 +58,5 @@ class PositiveResult implements ResultInterface
     public function getCode()
     {
         return $this->code;
-    }
-
-    /**
-     * Gets the list of reporting Check classes.
-     *
-     * @return string[]
-     */
-    public function getReportingClasses()
-    {
-        return $this->reporting;
-    }
-
-    /**
-     * Gets the explanation.
-     *
-     * @return array
-     */
-    public function getExplanation()
-    {
-        return $this->explanation;
-    }
-
-    /**
-     * Sets the explanation.
-     *
-     * @param array $explanation The explanation
-     */
-    public function setExplanation(array $explanation)
-    {
-        $this->explanation = $explanation;
     }
 }

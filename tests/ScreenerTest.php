@@ -76,7 +76,7 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
         $result = $this->runTestScreening('127.0.0.4');
 
         $this->assertInstanceOf('FlameCore\Gatekeeper\Result\NegativeResult', $result);
-        $this->assertEquals(null, $result->getReportingClasses());
+        $this->assertEmpty($result->getReportingClasses());
     }
 
     /**

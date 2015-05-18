@@ -28,32 +28,6 @@ namespace FlameCore\Gatekeeper\Result;
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class NegativeResult implements ResultInterface
+class NegativeResult extends AbstractResult
 {
-    /**
-     * List of reporting Check classes
-     *
-     * @var string[]|null
-     */
-    protected $reporting;
-
-    /**
-     * Creates a NegativeResult object.
-     *
-     * @param string[]|null $reporting List of reporting Check classes
-     */
-    public function __construct(array $reporting = null)
-    {
-        $this->reporting = $reporting;
-    }
-
-    /**
-     * Gets the list of reporting Check classes.
-     *
-     * @return string[]|null Returns the list of reporting classes, or NULL if no class reported the result.
-     */
-    public function getReportingClasses()
-    {
-        return $this->reporting;
-    }
 }

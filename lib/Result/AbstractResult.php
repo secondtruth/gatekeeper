@@ -24,30 +24,57 @@
 namespace FlameCore\Gatekeeper\Result;
 
 /**
- * This interface represents a result.
+ * The base class for results
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-interface ResultInterface
+abstract class AbstractResult implements ResultInterface
 {
     /**
-     * Gets the list of reporting Check classes.
+     * List of reporting Check classes
      *
-     * @return string[]
+     * @var string[]
      */
-    public function getReportingClasses();
+    protected $reporting = array();
 
     /**
-     * Gets the explanation.
+     * The explanation
      *
-     * @return array
+     * @var array
      */
-    public function getExplanation();
+    protected $explanation = array();
 
     /**
-     * Sets the explanation.
+     * Creates a PositiveResult object.
      *
-     * @param array $explanation The explanation
+     * @param string[] $reporting List of reporting Check classes
      */
-    public function setExplanation(array $explanation);
+    public function __construct(array $reporting = [])
+    {
+        $this->reporting = $reporting;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReportingClasses()
+    {
+        return $this->reporting;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExplanation()
+    {
+        return $this->explanation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExplanation(array $explanation)
+    {
+        $this->explanation = $explanation;
+    }
 }
