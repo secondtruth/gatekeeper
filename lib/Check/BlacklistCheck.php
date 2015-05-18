@@ -27,7 +27,7 @@ use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Blacklist visitor IPs which should get blocked.
+ * Blacklist visitor IPs and User Agents which should get blocked.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
@@ -41,11 +41,23 @@ class BlacklistCheck implements CheckInterface
     protected $blacklist = array();
 
     /**
+     * List of untrusted User Agents
+     *
+     * @var string[]
+     */
+    protected $untrustedUserAgents = array();
+
+    /**
      * {@inheritdoc}
      */
     public function checkVisitor(Visitor $visitor)
     {
         if (Utils::matchCIDR($visitor->getIP(), $this->blacklist)) {
+            return CheckInterface::RESULT_BLOCK;
+        }
+
+        $uastring = $visitor->getUserAgent()->getUserAgentString();
+        if (in_array($uastring, $this->untrustedUserAgents)) {
             return CheckInterface::RESULT_BLOCK;
         }
 
@@ -82,5 +94,25 @@ class BlacklistCheck implements CheckInterface
         $whitelist = file($file, FILE_SKIP_EMPTY_LINES);
 
         $this->setBlacklist($whitelist);
+    }
+
+    /**
+     * Sets the list of untrusted User Agents.
+     *
+     * @return string[]
+     */
+    public function getUntrustedUserAgents()
+    {
+        return $this->untrustedUserAgents;
+    }
+
+    /**
+     * Gets the list of untrusted User Agents.
+     *
+     * @param string[] $untrustedUserAgents List of untrusted User Agents
+     */
+    public function setUntrustedUserAgents($untrustedUserAgents)
+    {
+        $this->untrustedUserAgents = $untrustedUserAgents;
     }
 }
