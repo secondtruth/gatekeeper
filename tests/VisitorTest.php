@@ -100,10 +100,19 @@ class VisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $array);
 
         $keys = ['ip', 'headers', 'method', 'uri', 'data', 'protocol', 'scheme', 'user_agent', 'is_browser'];
-        $this->assertArrayHasKey($keys, $array);
+        foreach ($keys as $key) {
+            $this->assertArrayHasKey($key, $array);
+        }
+
+        $this->assertEquals('127.0.0.1', $array['ip']);
+        $this->assertEquals('POST', $array['method']);
+        $this->assertEquals('/', $array['uri']);
+        $this->assertEquals('HTTP/1.1', $array['protocol']);
+        $this->assertEquals('http', $array['scheme']);
+        $this->assertEquals(self::USER_AGENT, $array['user_agent']);
+        $this->assertEquals(true, $array['is_browser']);
 
         $this->assertInternalType('array', $array['headers']);
         $this->assertInternalType('array', $array['data']);
-        $this->assertEquals(self::USER_AGENT, $array['user_agent']);
     }
 }
