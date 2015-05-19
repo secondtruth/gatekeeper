@@ -129,12 +129,10 @@ class Gatekeeper
 
         $result = $screener->screenVisitor($this->visitor);
 
-        if ($result instanceof PositiveResult) {
-            $explainer = $this->explainer ?: new Explainer();
+        $explainer = $this->explainer ?: new Explainer();
 
-            $explanation = $explainer->explain($result);
-            $result->setExplanation($explanation);
-        }
+        $explanation = $explainer->explain($result);
+        $result->setExplanation($explanation);
 
         if ($this->storage) {
             $this->storage->insert($this->visitor, $result);
