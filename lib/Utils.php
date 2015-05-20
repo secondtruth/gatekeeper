@@ -64,14 +64,15 @@ class Utils
                 }
             }
         } else {
-            @list($ip, $mask) = explode('/', $cidr);
+            if (strpos($cidr, '/')) {
+                list($ip, $mask) = explode('/', $cidr);
 
-            if (!$mask) {
-                $mask = 32;
+                $mask = pow(2, 32) - pow(2, (32 - $mask));
+
+                return ((ip2long($address) & $mask) == (ip2long($ip) & $mask));
+            } else {
+                return $address === $cidr;
             }
-
-            $mask = pow(2, 32) - pow(2, (32 - $mask));
-            return ((ip2long($address) & $mask) == (ip2long($ip) & $mask));
         }
 
         return false;
