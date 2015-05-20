@@ -241,8 +241,10 @@ class Explainer
     {
         if ($result instanceof PositiveResult) {
             return $this->explainPositiveResult($result);
-        } else {
+        } elseif ($result instanceof NegativeResult) {
             return $this->explainNegativeResult($result);
+        } else {
+            return [];
         }
     }
 

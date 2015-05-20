@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Storage;
 
+use FlameCore\Gatekeeper\Result\NegativeResult;
 use FlameCore\Gatekeeper\Result\PositiveResult;
 use FlameCore\Gatekeeper\Result\ResultInterface;
 use FlameCore\Gatekeeper\Visitor;
@@ -58,7 +59,7 @@ class LogStorage implements StorageInterface, LoggerAwareInterface
 
         if ($result instanceof PositiveResult) {
             $this->logPositiveResult($message, $context);
-        } else {
+        } elseif ($result instanceof NegativeResult) {
             $this->logNegativeResult($message, $context);
         }
     }
