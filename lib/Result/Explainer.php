@@ -240,23 +240,41 @@ class Explainer
     public function explain(ResultInterface $result)
     {
         if ($result instanceof PositiveResult) {
-            $code = $result->getCode();
-
-            if ($code !== null && isset(self::$responses[$code])) {
-                return self::$responses[$code];
-            }
-
-            return [
-                'response' => 403,
-                'explanation' => 'You do not have permission to access this server.',
-                'logtext' => sprintf('Request blocked by %s', implode(', ', $result->getReportingClasses()))
-            ];
+            return $this->explainPositiveResult($result);
         } else {
-            if (in_array('FlameCore\Gatekeeper\Screener', $result->getReportingClasses())) {
-                return ['logtext' => 'Visitor is whitelisted'];
-            }
-
-            return ['logtext' => 'Request permitted'];
+            return $this->explainNegativeResult($result);
         }
+    }
+
+    /**
+     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result
+     * @return array
+     */
+    protected function explainPositiveResult(PositiveResult $result)
+    {
+        $code = $result->getCode();
+
+        if ($code !== null && isset(self::$responses[$code])) {
+            return self::$responses[$code];
+        }
+
+        return [
+            'response' => 403,
+            'explanation' => 'You do not have permission to access this server.',
+            'logtext' => sprintf('Request blocked by %s', implode(', ', $result->getReportingClasses()))
+        ];
+    }
+
+    /**
+     * @param \FlameCore\Gatekeeper\Result\NegativeResult $result
+     * @return array
+     */
+    protected function explainNegativeResult(NegativeResult $result)
+    {
+        if (in_array('FlameCore\Gatekeeper\Screener', $result->getReportingClasses())) {
+            return ['logtext' => 'Visitor is whitelisted'];
+        }
+
+        return ['logtext' => 'Request permitted'];
     }
 }
