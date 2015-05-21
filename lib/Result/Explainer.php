@@ -33,18 +33,13 @@ class Explainer
     protected static $responses = [
         '136673cd' => [
             'response' => 403,
-            'explanation' => 'Your Internet Protocol address is listed on a blacklist of addresses involved in malicious or illegal activity. See the listing below for more details on specific blacklists and removal procedures.',
+            'explanation' => 'Your IP address is listed on a blacklist of addresses involved in malicious or illegal activity. See the listing below for more details on specific blacklists and removal procedures.',
             'logtext' => 'IP address found on external blacklist'
         ],
         '17566707' => [
             'response' => 403,
             'explanation' => 'An invalid request was received from your browser. This may be caused by a malfunctioning proxy server or browser privacy software.',
             'logtext' => 'Required header "Accept" missing'
-        ],
-        '17f4e8c8' => [
-            'response' => 403,
-            'explanation' => 'You do not have permission to access this server.',
-            'logtext' => 'User-Agent was found on blacklist'
         ],
         '21f11d3f' => [
             'response' => 403,
