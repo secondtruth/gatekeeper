@@ -66,12 +66,6 @@ class AbsurditiesCheck implements CheckInterface
      */
     protected function checkUri(Visitor $visitor)
     {
-        // Broken spambots send URLs with various invalid characters. Some broken browsers send the #vector in the referer field.
-        // Worse yet, some Javascript client-side apps do the same in blatant violation of the protocol and good sense.
-        if ($this->settings['strict'] && strpos($visitor->getRequestHeaders()->get('Referer'), '#') !== false) {
-            return 'dfd9b1ad';
-        }
-
         // A pretty nasty SQL injection attack on IIS servers
         if (strpos($visitor->getRequestURI(), ';DECLARE%20@') !== false) {
             return 'dfd9b1ad';

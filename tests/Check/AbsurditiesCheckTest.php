@@ -41,12 +41,7 @@ class AbsurditiesCheckTest extends CheckTestCase
 
     public function testCheckPositiveURI()
     {
-        // Broken spambots send URLs with various invalid characters
-        $result = $this->runTestCheck('/', null, [], [], [], ['HTTP_REFERER' => 'http://example.com/#foo']);
-
-        $this->assertEquals('dfd9b1ad', $result);
-
-        // A pretty nasty SQL injection attack on IIS servers
+        // Check #1
         $result = $this->runTestCheck('/?;DECLARE%20@');
 
         $this->assertEquals('dfd9b1ad', $result);
