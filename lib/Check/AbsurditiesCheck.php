@@ -51,11 +51,36 @@ class AbsurditiesCheck implements CheckInterface
      */
     public function checkVisitor(Visitor $visitor)
     {
+        if ($result = $this->checkCookies($visitor)) {
+            return $result;
+        }
+
         if ($result = $this->checkUri($visitor)) {
             return $result;
         }
 
         return CheckInterface::RESULT_OKAY;
+    }
+
+    /**
+     * Enforces RFC 2965 sec 3.3.5 and 9.1.
+     *
+     * @param \FlameCore\Gatekeeper\Visitor $visitor
+     * @return bool|string
+     */
+    protected function checkCookies(Visitor $visitor)
+    {
+        $headers = $visitor->getRequestHeaders();
+        $uastring = $visitor->getUserAgent()->getUserAgentString();
+
+        // The only valid value for $Version is 1 and when present, the user agent MUST send a Cookie2 header.
+        // NOTE: RFC 2965 is obsoleted by RFC 6265. Current software MUST NOT use Cookie2 or $Version in Cookie.
+        // First-gen Amazon Kindle is broken.
+        if (strpos($headers->get('Cookie'), '$Version=0') !== false && !$headers->has('Cookie2') && strpos($uastring, 'Kindle/') === false) {
+            return '6c502ff1';
+        }
+
+        return false;
     }
 
     /**
