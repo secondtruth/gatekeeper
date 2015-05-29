@@ -6,7 +6,8 @@ FlameCore Gatekeeper
 [![Coverage](http://img.shields.io/codeclimate/coverage/github/FlameCore/Gatekeeper.svg)](https://codeclimate.com/github/FlameCore/Gatekeeper/coverage)
 [![License](http://img.shields.io/packagist/l/flamecore/gatekeeper.svg)](https://packagist.org/packages/flamecore/gatekeeper)
 
-This library prevents spammers from delivering their junk, and in many cases, from ever reading your site in the first place.
+This library protects websites from spam and other attacks. It prevents bad bots from delivering their junk, and in many cases,
+from ever reading your site in the first place.
 
 
 Description
@@ -16,10 +17,14 @@ Welcome to a whole new way of keeping your service, forum, wiki or content manag
 Gatekeeper is a PHP-based solution for blocking spam and the robots which deliver it. This keeps your site's load down,
 makes your site logs cleaner, and can help prevent denial of service conditions caused by spammers.
 
+Gatekeeper also transcends other anti-spam solutions by working in a completely different, unique way. Instead of merely
+looking at the content of potential spam, Gatekeeper analyzes the delivery method as well as the software the spammer
+is using. In this way, Gatekeeper can stop spam attacks even when nobody has ever seen the particular spam before.
+
 Gatekeeper is designed to work alongside existing spam prevention services to increase their effectiveness and efficiency.
 Whenever possible, you should run it in combination with a more traditional spam prevention service.
 
-The library is inspired by the [Bad Behavior](http://bad-behavior.ioerror.us/) system.
+The library is inspired by the [Bad Behavior](http://bad-behavior.ioerror.us) anti-spam system by [Michael Hampton](http://ioerror.us).
 
 
 Installation
@@ -71,3 +76,4 @@ If you want to contribute, please see the [CONTRIBUTING](CONTRIBUTING.md) file f
 Thanks to the contributors:
 
 * Christian Neff (secondtruth)
+* Michael Hampton
