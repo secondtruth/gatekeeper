@@ -57,7 +57,7 @@ class BlacklistCheck implements CheckInterface
         }
 
         $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if (in_array($uastring, $this->untrustedUserAgents)) {
+        if (Utils::matchList($uastring, $this->untrustedUserAgents)) {
             return CheckInterface::RESULT_BLOCK;
         }
 
@@ -99,7 +99,7 @@ class BlacklistCheck implements CheckInterface
     /**
      * Sets the list of untrusted User Agents.
      *
-     * @return string[]
+     * @return array
      */
     public function getUntrustedUserAgents()
     {
@@ -109,7 +109,7 @@ class BlacklistCheck implements CheckInterface
     /**
      * Gets the list of untrusted User Agents.
      *
-     * @param string[] $untrustedUserAgents List of untrusted User Agents
+     * @param array $untrustedUserAgents List of untrusted User Agents
      */
     public function setUntrustedUserAgents($untrustedUserAgents)
     {

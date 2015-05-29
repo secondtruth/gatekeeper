@@ -69,7 +69,7 @@ class Screener implements ScreenerInterface
         }
 
         $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if (in_array($uastring, $this->trustedUserAgents)) {
+        if (Utils::matchList($uastring, $this->trustedUserAgents)) {
             return new NegativeResult([__CLASS__]);
         }
 
@@ -125,7 +125,7 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     public function getTrustedUserAgents()
     {
@@ -133,7 +133,7 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param string[] $trustedUserAgents
+     * @param array $trustedUserAgents
      */
     public function setTrustedUserAgents($trustedUserAgents)
     {
