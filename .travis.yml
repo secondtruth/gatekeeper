@@ -12,18 +12,17 @@ matrix:
     - php: hhvm
   fast_finish: true
 
-install:
-  - composer install
-
-before_script:
+before_install:
   - travis_retry composer self-update
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
-script: phpunit --coverage-clover build/logs/clover.xml
+install:
+  - composer install --prefer-source
+
+script: phpunit --coverage-text --coverage-clover=coverage.clover
 
 after_script:
-  - php vendor/bin/ocular code-coverage:upload --format=php-clover build/logs/clover.xml
-  - vendor/bin/test-reporter --stdout > codeclimate.json
+  - php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+  - php vendor/bin/test-reporter --coverage-report=coverage.clover --stdout > codeclimate.json
   - "curl -X POST -d @codeclimate.json -H 'Content-Type: application/json' -H 'User-Agent: Code Climate (PHP Test Reporter v0.1.1)' https://codeclimate.com/test_reports"
 
 addons:
