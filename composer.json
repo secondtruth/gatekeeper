@@ -36,5 +36,8 @@
         "psr-4": {
             "FlameCore\\Gatekeeper\\Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }

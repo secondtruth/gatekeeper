@@ -1,5 +1,5 @@
 language: php
-php: 
+php:
   - 5.4
   - 5.5
   - 5.6
@@ -14,6 +14,10 @@ matrix:
 
 install:
   - composer install
+
+before_script:
+  - travis_retry composer self-update
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
 
 script: phpunit --coverage-clover build/logs/clover.xml
 
