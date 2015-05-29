@@ -64,6 +64,10 @@ class AbsurditiesCheck implements CheckInterface
             return $result;
         }
 
+        if ($result = $this->checkHeaders($visitor)) {
+            return $result;
+        }
+
         // More intensive screening applies to POST requests
         if ($visitor->getRequestMethod() == 'POST') {
             if ($result = $this->checkPostRequest($visitor)) {
@@ -132,6 +136,100 @@ class AbsurditiesCheck implements CheckInterface
         // A pretty nasty SQL injection attack on IIS servers
         if (strpos($visitor->getRequestURI(), ';DECLARE%20@') !== false) {
             return 'dfd9b1ad';
+        }
+
+        return false;
+    }
+
+    /**
+     * Analyzes the request headers.
+     *
+     * @param \FlameCore\Gatekeeper\Visitor $visitor
+     * @return bool|string
+     */
+    protected function checkHeaders(Visitor $visitor)
+    {
+        $headers = $visitor->getRequestHeaders();
+        $uastring = $visitor->getUserAgent()->getUserAgentString();
+
+        if ($visitor->getRequestMethod() != 'POST' && empty($uastring)) {
+            return 'f9f2b8b9';
+        }
+
+        // 'Range:' field exists and begins with 0. Real user-agents do not start ranges at 0.
+        // NOTE: This also blocks the whois.sc bot. No big loss.
+        // Exceptions: MT (not fixable); LJ (refuses to fix; may be blocked again in the future); Facebook
+        if ($this->settings['strict'] && $headers->has('Range') && strpos($headers->get('Range'), '=0-') !== false) {
+            if (strncmp($uastring, 'MovableType', 11) && strncmp($uastring, 'URI::Fetch', 10) && strncmp($uastring, 'php-openid/', 11) && strncmp($uastring, 'facebookexternalhit', 19)) {
+                return '7ad04a8a';
+            }
+        }
+
+        // Content-Range is a response header, not a request header
+        if ($headers->has('Content-Range')) {
+            return '7d12528e';
+        }
+
+        // pinappleproxy is used by referrer spammers
+        if ($headers->has('Via')) {
+            if (stripos($headers->get('Via'), 'pinappleproxy') !== false || stripos($headers->get('Via'), 'PCNETSERVER') !== false || stripos($headers->get('Via'), 'Invisiware') !== false) {
+                return '939a6fbb';
+            }
+        }
+
+        // 'TE:' if present must have 'Connection: TE' (RFC 2616 14.39)
+        // Blocks Microsoft ISA Server 2004 in strict mode. Contact Microsoft to obtain a hotfix.
+        if ($this->settings['strict'] && $headers->has('Te')) {
+            if (!preg_match('/\bTE\b/', $headers->get('Connection'))) {
+                return '582ec5e4';
+            }
+        }
+
+        if ($headers->has('Connection')) {
+            // 'Connection: keep-alive' and close are mutually exclusive
+            if (preg_match('/\bKeep-Alive\b/i', $headers->get('Connection')) && preg_match('/\bClose\b/i', $headers->get('Connection'))) {
+                return 'a52f0448';
+            }
+
+            // Close shouldn't appear twice
+            if (preg_match('/\bclose,\s?close\b/i', $headers->get('Connection'))) {
+                return 'a52f0448';
+            }
+
+            // Keey-Alive shouldn't appear twice either
+            if (preg_match('/\bkeep-alive,\s?keep-alive\b/i', $headers->get('Connection'))) {
+                return 'a52f0448';
+            }
+
+            // Keep-Alive format in RFC 2068; some bots mangle these headers
+            if (stripos($headers->get('Connection'), 'Keep-Alive: ') !== false) {
+                return 'b0924802';
+            }
+        }
+
+        // Headers which are not seen from normal user agents; only malicious bots
+        if ($headers->has('X-Aaaaaaaaaaaa') || $headers->has('X-Aaaaaaaaaa')) {
+            return 'b9cc1d86';
+        }
+
+        // 'Proxy-Connection' does not exist and should never be seen in the wild.
+        // - http://lists.w3.org/Archives/Public/ietf-http-wg-old/1999JanApr/0032.html
+        // - http://lists.w3.org/Archives/Public/ietf-http-wg-old/1999JanApr/0040.html
+        if ($this->settings['strict'] && $headers->has('Proxy-Connection')) {
+            return 'b7830251';
+        }
+
+        if ($headers->has('Referer')) {
+            // Referer, if it exists, must not be blank
+            if ($headers->get('Referer') === '') {
+                return '69920ee5';
+            }
+
+            // 'Referer', if it exists, must contain a ':'.
+            // While a relative URL is technically valid in Referer, all known legitimate user-agents send an absolute URL.
+            if (strpos($headers->get('Referer'), ':') === false) {
+                return '45b35e30';
+            }
         }
 
         return false;
