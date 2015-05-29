@@ -43,7 +43,7 @@ class BlacklistCheck implements CheckInterface
     /**
      * List of untrusted User Agents
      *
-     * @var string[]
+     * @var array
      */
     protected $untrustedUserAgents = array();
 

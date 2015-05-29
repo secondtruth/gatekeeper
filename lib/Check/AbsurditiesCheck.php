@@ -34,6 +34,13 @@ use FlameCore\Gatekeeper\Visitor;
 class AbsurditiesCheck implements CheckInterface
 {
     /**
+     * The settings
+     *
+     * @var array
+     */
+    protected $settings = array();
+
+    /**
      * @param array $settings
      */
     public function __construct(array $settings = [])

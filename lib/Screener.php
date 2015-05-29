@@ -45,7 +45,7 @@ class Screener implements ScreenerInterface
     protected $whitelist = array();
 
     /**
-     * @var string[]
+     * @var array
      */
     protected $trustedUserAgents = array();
 

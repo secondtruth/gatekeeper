@@ -34,13 +34,13 @@ class BlacklistCheckTest extends CheckTestCase
     protected function setUp()
     {
         $this->check = new BlacklistCheck();
-        $this->check->setBlacklist(['127.0.0.1/32']);
-        $this->check->setUntrustedUserAgents(['Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
+        $this->check->setBlacklist(['127.0.0.2/32']);
+        $this->check->setUntrustedUserAgents(['equal' => ['Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']]);
     }
 
     public function testCheckPositiveIP()
     {
-        $result = $this->runTestCheck();
+        $result = $this->runTestCheck(null, null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
 
         $this->assertEquals(CheckInterface::RESULT_BLOCK, $result);
     }
@@ -54,7 +54,7 @@ class BlacklistCheckTest extends CheckTestCase
 
     public function testCheckNegative()
     {
-        $result = $this->runTestCheck(null, null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
+        $result = $this->runTestCheck();
 
         $this->assertEquals(CheckInterface::RESULT_OKAY, $result);
     }

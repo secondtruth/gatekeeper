@@ -34,8 +34,7 @@ class AbsurditiesCheckTest extends CheckTestCase
     protected function setUp()
     {
         $this->check = new AbsurditiesCheck([
-            'strict' => true,
-            'offsite_forms' => true
+            'strict' => true
         ]);
     }
 
