@@ -50,10 +50,14 @@ class BlacklistCheck implements CheckInterface
 
     /**
      * Creates a BlacklistCheck object.
+     *
+     * @param array $blacklist The IP blacklist
+     * @param \FlameCore\Gatekeeper\Listing $untrustedUserAgents List of untrusted User Agents
      */
-    public function __construct()
+    public function __construct(array $blacklist = [], Listing $untrustedUserAgents = null)
     {
-        $this->untrustedUserAgents = new Listing();
+        $this->blacklist = $blacklist;
+        $this->untrustedUserAgents = $untrustedUserAgents ?: new Listing();
     }
 
     /**
