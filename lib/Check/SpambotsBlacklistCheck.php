@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Check;
 
+use FlameCore\Gatekeeper\Listing;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
@@ -34,36 +35,52 @@ use FlameCore\Gatekeeper\Visitor;
 class SpambotsBlacklistCheck implements CheckInterface
 {
     /**
+     * The User Agents blacklist
+     *
+     * @var \FlameCore\Gatekeeper\Listing
+     */
+    protected $blacklist;
+
+    /**
+     * Creates a SpambotsBlacklistCheck object.
+     *
+     * @param \FlameCore\Gatekeeper\Listing $blacklist The User Agents blacklist
+     */
+    public function __construct(Listing $blacklist = null)
+    {
+        $blacklist = $blacklist ?: new Listing();
+        $blacklist->beginsWith($this->getSpambotNamesBeginning());
+        $blacklist->contains($this->getSpambotNamesAnywhere());
+        $blacklist->matches($this->getSpambotNamesRegex());
+
+        $this->blacklist = $blacklist;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function checkVisitor(Visitor $visitor)
     {
         $uastring = $visitor->getUserAgent()->getUserAgentString();
-
-        foreach ($this->getSpambotNamesBeginning() as $value) {
-            $pos = strpos($uastring, $value);
-            if ($pos !== false && $pos == 0) {
-                return '17f4e8c8';
-            }
-        }
-
-        foreach ($this->getSpambotNamesAnywhere() as $value) {
-            if (strpos($uastring, $value) !== false) {
-                return '17f4e8c8';
-            }
-        }
-
-        foreach ($this->getSpambotNamesRegex() as $value) {
-            if (preg_match($value, $uastring)) {
-                return '17f4e8c8';
-            }
+        if ($this->blacklist->match($uastring)) {
+            return '17f4e8c8';
         }
 
         return CheckInterface::RESULT_OKAY;
     }
 
     /**
-     * Gets list of user agent parts at the beginning which determine a bad bot.
+     * Gets the User Agents blacklist.
+     *
+     * @return \FlameCore\Gatekeeper\Listing
+     */
+    public function getBlacklist()
+    {
+        return $this->blacklist;
+    }
+
+    /**
+     * Gets list of User Agent string parts at the beginning which determine a bad bot.
      *
      * @return string[]
      */
@@ -135,7 +152,7 @@ class SpambotsBlacklistCheck implements CheckInterface
     }
 
     /**
-     * Gets list of user agent parts at an arbitrary position which determine a bad bot.
+     * Gets list of User Agent string parts at an arbitrary position which determine a bad bot.
      *
      * @return string[]
      */
@@ -193,7 +210,7 @@ class SpambotsBlacklistCheck implements CheckInterface
     }
 
     /**
-     * Gets list of user agent regexes which determine a bad bot.
+     * Gets list of User Agent string regexes which determine a bad bot.
      *
      * @return string[]
      */
