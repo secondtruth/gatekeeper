@@ -61,10 +61,14 @@ class Screener implements ScreenerInterface
 
     /**
      * Creates a Screener object.
+     *
+     * @param array $whitelist
+     * @param \FlameCore\Gatekeeper\Listing $trustedUserAgents
      */
-    public function __construct()
+    public function __construct(array $whitelist = [], Listing $trustedUserAgents = null)
     {
-        $this->trustedUserAgents = new Listing();
+        $this->whitelist = $whitelist;
+        $this->trustedUserAgents = $trustedUserAgents ?: new Listing();
     }
 
     /**
