@@ -57,13 +57,6 @@ class SpambotsBlacklistCheckTest extends CheckTestCase
         $this->assertEquals('17f4e8c8', $result);
     }
 
-    public function testCheckPositiveSpambotUris()
-    {
-        $result = $this->runTestCheck('/?0x31303235343830303536');
-
-        $this->assertEquals('96c0bd29', $result);
-    }
-
     public function testCheckNegative()
     {
         $result = $this->runTestCheck();

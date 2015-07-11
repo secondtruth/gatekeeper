@@ -145,6 +145,13 @@ class AbsurditiesCheck implements CheckInterface
             return 'dfd9b1ad';
         }
 
+        // Case-insensitive checks
+        foreach ($this->getBadUriParts() as $badUriPart) {
+            if (stripos($visitor->getRequestURI(), $badUriPart) !== false) {
+                return '96c0bd29';
+            }
+        }
+
         return false;
     }
 
@@ -315,5 +322,33 @@ class AbsurditiesCheck implements CheckInterface
         }
 
         return false;
+    }
+
+    /**
+     * Gets list of request URI parts which determine a bad bot.
+     *
+     * @return string[]
+     */
+    protected function getBadUriParts()
+    {
+        return array(
+            '0x31303235343830303536', // Havij
+            '../', // path traversal
+            '..\\', // path traversal
+            '%60information_schema%60', // SQL injection probe
+            '+%2F*%21', // SQL injection probe
+            '%27--', // SQL injection
+            '%27 --', // SQL injection
+            '%27%23', // SQL injection
+            '%27 %23', // SQL injection
+            'benchmark%28', // SQL injection probe
+            'insert+into+', // SQL injection
+            'r3dm0v3', // SQL injection probe
+            'select+1+from', // SQL injection probe
+            'union+all+select', // SQL injection probe
+            'union+select', // SQL injection probe
+            'waitfor+delay+', // SQL injection probe
+            'w00tw00t', // vulnerability scanner
+        );
     }
 }
