@@ -45,9 +45,9 @@ class Screener implements ScreenerInterface
     protected $whitelist = array();
 
     /**
-     * @var array
+     * @var \FlameCore\Gatekeeper\Listing
      */
-    protected $trustedUserAgents = array();
+    protected $trustedUserAgents;
 
     /**
      * @var int
@@ -60,6 +60,14 @@ class Screener implements ScreenerInterface
     private $reporting = array();
 
     /**
+     * Creates a Screener object.
+     */
+    public function __construct()
+    {
+        $this->trustedUserAgents = new Listing();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function screenVisitor(Visitor $visitor)
@@ -69,7 +77,7 @@ class Screener implements ScreenerInterface
         }
 
         $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if (Utils::matchList($uastring, $this->trustedUserAgents)) {
+        if ($this->trustedUserAgents->match($uastring)) {
             return new NegativeResult([__CLASS__]);
         }
 
@@ -125,7 +133,7 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @return array
+     * @return \FlameCore\Gatekeeper\Listing
      */
     public function getTrustedUserAgents()
     {
@@ -133,9 +141,9 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param array $trustedUserAgents
+     * @param \FlameCore\Gatekeeper\Listing $trustedUserAgents
      */
-    public function setTrustedUserAgents($trustedUserAgents)
+    public function setTrustedUserAgents(Listing $trustedUserAgents)
     {
         $this->trustedUserAgents = $trustedUserAgents;
     }

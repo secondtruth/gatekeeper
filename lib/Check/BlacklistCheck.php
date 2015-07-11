@@ -23,6 +23,7 @@
 
 namespace FlameCore\Gatekeeper\Check;
 
+use FlameCore\Gatekeeper\Listing;
 use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
 
@@ -43,9 +44,17 @@ class BlacklistCheck implements CheckInterface
     /**
      * List of untrusted User Agents
      *
-     * @var array
+     * @var \FlameCore\Gatekeeper\Listing
      */
-    protected $untrustedUserAgents = array();
+    protected $untrustedUserAgents;
+
+    /**
+     * Creates a BlacklistCheck object.
+     */
+    public function __construct()
+    {
+        $this->untrustedUserAgents = new Listing();
+    }
 
     /**
      * {@inheritdoc}
@@ -57,7 +66,7 @@ class BlacklistCheck implements CheckInterface
         }
 
         $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if (Utils::matchList($uastring, $this->untrustedUserAgents)) {
+        if ($this->untrustedUserAgents->match($uastring)) {
             return CheckInterface::RESULT_BLOCK;
         }
 
@@ -99,7 +108,7 @@ class BlacklistCheck implements CheckInterface
     /**
      * Sets the list of untrusted User Agents.
      *
-     * @return array
+     * @return \FlameCore\Gatekeeper\Listing
      */
     public function getUntrustedUserAgents()
     {
@@ -109,9 +118,9 @@ class BlacklistCheck implements CheckInterface
     /**
      * Gets the list of untrusted User Agents.
      *
-     * @param array $untrustedUserAgents List of untrusted User Agents
+     * @param \FlameCore\Gatekeeper\Listing $untrustedUserAgents List of untrusted User Agents
      */
-    public function setUntrustedUserAgents($untrustedUserAgents)
+    public function setUntrustedUserAgents(Listing $untrustedUserAgents)
     {
         $this->untrustedUserAgents = $untrustedUserAgents;
     }

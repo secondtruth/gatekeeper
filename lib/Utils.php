@@ -77,46 +77,4 @@ class Utils
 
         return false;
     }
-
-    /**
-     * Checks if the string matches the list.
-     *
-     * @param string $string
-     * @param array $list
-     * @return bool
-     */
-    public static function matchList($string, array $list)
-    {
-        if (isset($list['equal']) && is_array($list['equal'])) {
-            if (in_array($string, $list['equal'])) {
-                return true;
-            }
-        }
-
-        if (isset($list['beginning']) && is_array($list['beginning'])) {
-            foreach ($list['beginning'] as $value) {
-                if (strpos($string, $value) === 0) {
-                    return true;
-                }
-            }
-        }
-
-        if (isset($list['contains']) && is_array($list['contains'])) {
-            foreach ($list['contains'] as $value) {
-                if (strpos($string, $value) !== false) {
-                    return true;
-                }
-            }
-        }
-
-        if (isset($list['regex']) && is_array($list['regex'])) {
-            foreach ($list['regex'] as $value) {
-                if (preg_match($value, $string)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
 }
