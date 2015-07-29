@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper;
@@ -36,28 +36,38 @@ use Symfony\Component\HttpFoundation\Request;
 class Gatekeeper
 {
     /**
+     * The storage to use
+     *
      * @var \FlameCore\Gatekeeper\Storage\StorageInterface
      */
     protected $storage;
 
     /**
+     * The explainer to use
+     *
      * @var \FlameCore\Gatekeeper\Result\Explainer
      */
     protected $explainer;
 
     /**
+     * The current visitor
+     *
      * @var \FlameCore\Gatekeeper\Visitor
      */
     protected $visitor;
 
     /**
+     * List of defined settings
+     *
      * @var array
      */
     protected $settings = array();
 
     /**
-     * @param array $settings
-     * @param \FlameCore\Gatekeeper\Storage\StorageInterface $storage
+     * Creates a Gatekeeper object.
+     *
+     * @param array $settings The settings
+     * @param \FlameCore\Gatekeeper\Storage\StorageInterface $storage The storage to use
      */
     public function __construct(array $settings = [], StorageInterface $storage = null)
     {
@@ -71,6 +81,8 @@ class Gatekeeper
     }
 
     /**
+     * Returns a list of defined settings.
+     *
      * @return array
      */
     public function getSettings()
@@ -79,8 +91,10 @@ class Gatekeeper
     }
 
     /**
-     * @param $setting
-     * @param $value
+     * Sets the value for the given setting.
+     *
+     * @param string $setting The setting
+     * @param mixed $value The value
      */
     public function setSetting($setting, $value)
     {
@@ -88,6 +102,8 @@ class Gatekeeper
     }
 
     /**
+     * Returns the storage.
+     *
      * @return \FlameCore\Gatekeeper\Storage\StorageInterface
      */
     public function getStorage()
@@ -96,7 +112,9 @@ class Gatekeeper
     }
 
     /**
-     * @param \FlameCore\Gatekeeper\Storage\StorageInterface $storage
+     * Sets the storage to use.
+     *
+     * @param \FlameCore\Gatekeeper\Storage\StorageInterface $storage The storage to use
      */
     public function setStorage($storage)
     {
@@ -104,6 +122,8 @@ class Gatekeeper
     }
 
     /**
+     * Returns the explainer.
+     *
      * @return \FlameCore\Gatekeeper\Result\Explainer
      */
     public function getExplainer()
@@ -112,7 +132,9 @@ class Gatekeeper
     }
 
     /**
-     * @param \FlameCore\Gatekeeper\Result\Explainer $explainer
+     * Sets the explainer to use.
+     *
+     * @param \FlameCore\Gatekeeper\Result\Explainer $explainer The explainer to use
      */
     public function setExplainer($explainer)
     {
@@ -120,8 +142,10 @@ class Gatekeeper
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \FlameCore\Gatekeeper\ScreenerInterface $screener
+     * Runs the system.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request The request of the visitor
+     * @param \FlameCore\Gatekeeper\ScreenerInterface $screener The screener to use
      */
     public function run(Request $request, ScreenerInterface $screener)
     {
@@ -148,7 +172,7 @@ class Gatekeeper
     /**
      * Perform actions for bad requests.
      *
-     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result
+     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result The result
      * @throws \FlameCore\Gatekeeper\AccessDeniedException
      */
     protected function blockRequest(PositiveResult $result)
@@ -171,7 +195,7 @@ class Gatekeeper
     /**
      * Penalizes blocked visitors.
      *
-     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result
+     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result The result
      */
     protected function penalize(PositiveResult $result)
     {
@@ -182,7 +206,7 @@ class Gatekeeper
      * Interpolates context values into the message placeholders.
      *
      * @param string $message The message
-     * @param array $context The context values (optional)
+     * @param array $context The context values
      * @return string
      */
     protected function interpolate($message, array $context = [])

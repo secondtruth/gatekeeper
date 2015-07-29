@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper;
@@ -31,8 +31,10 @@ namespace FlameCore\Gatekeeper;
 interface ScreenerInterface
 {
     /**
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return \FlameCore\Gatekeeper\Result\ResultInterface
+     * Screens the visitor.
+     *
+     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
+     * @return \FlameCore\Gatekeeper\Result\ResultInterface Returns the result.
      */
     public function screenVisitor(Visitor $visitor);
 }

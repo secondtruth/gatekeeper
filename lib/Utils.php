@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper;
@@ -40,8 +40,8 @@ class Utils
     /**
      * Checks for an IPv6 address in a quick and dirty way.
      *
-     * @param $address
-     * @return bool
+     * @param string $address The IP address
+     * @return bool Returns TRUE if the IP address is IPv6, FALSE otherwise.
      */
     public static function isIPv6($address)
     {
@@ -51,9 +51,9 @@ class Utils
     /**
      * Determine if an IP address resides in a CIDR netblock or netblocks.
      *
-     * @param string $address
-     * @param string|array $cidr
-     * @return bool
+     * @param string $address The IP address
+     * @param string|array $cidr The CIDR netblock or netblocks
+     * @return bool Returns TRUE if the IP address resides in the given CIDR netblock or netblocks, FALSE otherwise.
      */
     public static function matchCIDR($address, $cidr)
     {

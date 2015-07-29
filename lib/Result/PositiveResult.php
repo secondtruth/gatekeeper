@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper\Result;

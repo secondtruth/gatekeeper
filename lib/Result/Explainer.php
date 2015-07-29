@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper\Result;
@@ -30,6 +30,11 @@ namespace FlameCore\Gatekeeper\Result;
  */
 class Explainer
 {
+    /**
+     * List of responses for known result codes
+     *
+     * @var array
+     */
     protected static $responses = [
         '136673cd' => [
             'response' => 403,
@@ -229,8 +234,10 @@ class Explainer
     ];
 
     /**
-     * @param \FlameCore\Gatekeeper\Result\ResultInterface $result
-     * @return array
+     * Explains the given result.
+     *
+     * @param \FlameCore\Gatekeeper\Result\ResultInterface $result The result
+     * @return array Returns the explanation.
      */
     public function explain(ResultInterface $result)
     {
@@ -244,8 +251,10 @@ class Explainer
     }
 
     /**
-     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result
-     * @return array
+     * Explains a positive result.
+     *
+     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result The result
+     * @return array Returns the explanation.
      */
     protected function explainPositiveResult(PositiveResult $result)
     {
@@ -263,8 +272,10 @@ class Explainer
     }
 
     /**
-     * @param \FlameCore\Gatekeeper\Result\NegativeResult $result
-     * @return array
+     * Explains a negative result.
+     *
+     * @param \FlameCore\Gatekeeper\Result\NegativeResult $result The result
+     * @return array Returns the explanation.
      */
     protected function explainNegativeResult(NegativeResult $result)
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper\Storage;
@@ -34,29 +34,39 @@ use FlameCore\Gatekeeper\Visitor;
 interface StorageInterface extends \Countable
 {
     /**
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @param \FlameCore\Gatekeeper\Result\ResultInterface $result
-     * @return bool
+     * Inserts a result into the storage.
+     *
+     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
+     * @param \FlameCore\Gatekeeper\Result\ResultInterface $result The result
+     * @return bool Returns TRUE on success, FALSE on failure.
      */
     public function insert(Visitor $visitor, ResultInterface $result);
 
     /**
+     * Returns the number of entries in the storage.
+     *
      * @return int
      */
     public function count();
-    
+
     /**
+     * Returns the number of blocked visitors.
+     *
      * @return int
      */
     public function countBlocked();
 
     /**
-     * @return bool
+     * Cleans up the storage.
+     *
+     * @return bool Returns TRUE on success, FALSE on failure.
      */
     public function cleanup();
 
     /**
-     * @return bool
+     * Optimizes the storage.
+     *
+     * @return bool Returns TRUE on success, FALSE on failure.
      */
     public function optimize();
 }

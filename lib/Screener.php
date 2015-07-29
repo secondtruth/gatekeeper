@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper;
@@ -35,26 +35,36 @@ use FlameCore\Gatekeeper\Result\PositiveResult;
 class Screener implements ScreenerInterface
 {
     /**
+     * The registered checks
+     *
      * @var \FlameCore\Gatekeeper\Check\CheckInterface[]
      */
     protected $checks = array();
 
     /**
+     * The IP whitelist
+     *
      * @var string[]
      */
     protected $whitelist = array();
 
     /**
+     * The list of trusted user agents
+     *
      * @var \FlameCore\Gatekeeper\Listing
      */
     protected $trustedUserAgents;
 
     /**
+     * The rating threshold
+     *
      * @var int
      */
     protected $ratingThreshold = 2;
 
     /**
+     * The list of reporting classes
+     *
      * @var string[]
      */
     private $reporting = array();
@@ -62,8 +72,8 @@ class Screener implements ScreenerInterface
     /**
      * Creates a Screener object.
      *
-     * @param array $whitelist
-     * @param \FlameCore\Gatekeeper\Listing $trustedUserAgents
+     * @param array $whitelist The IP whitelist
+     * @param \FlameCore\Gatekeeper\Listing $trustedUserAgents The list of trusted user agents
      */
     public function __construct(array $whitelist = [], Listing $trustedUserAgents = null)
     {
@@ -95,6 +105,8 @@ class Screener implements ScreenerInterface
     }
 
     /**
+     * Returns a list of registered checks.
+     *
      * @return \FlameCore\Gatekeeper\Check\CheckInterface[]
      */
     public function getChecks()
@@ -103,7 +115,9 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param \FlameCore\Gatekeeper\Check\CheckInterface $check
+     * Registers the given check.
+     *
+     * @param \FlameCore\Gatekeeper\Check\CheckInterface $check The check to register
      */
     public function addCheck(CheckInterface $check)
     {
@@ -111,6 +125,8 @@ class Screener implements ScreenerInterface
     }
 
     /**
+     * Returns the IP whitelist.
+     *
      * @return string[]
      */
     public function getWhitelist()
@@ -119,7 +135,9 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param string[] $whitelist
+     * Sets the IP whitelist.
+     *
+     * @param string[] $whitelist The IP whitelist
      */
     public function setWhitelist(array $whitelist)
     {
@@ -127,7 +145,9 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param string $file
+     * Loads the IP whitelist from the given file.
+     *
+     * @param string $file The name of the whitelist file
      */
     public function loadWhitelist($file)
     {
@@ -137,6 +157,8 @@ class Screener implements ScreenerInterface
     }
 
     /**
+     * Returns the list of trusted user agents.
+     *
      * @return \FlameCore\Gatekeeper\Listing
      */
     public function getTrustedUserAgents()
@@ -145,7 +167,9 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param \FlameCore\Gatekeeper\Listing $trustedUserAgents
+     * Sets the list of trusted user agents.
+     *
+     * @param \FlameCore\Gatekeeper\Listing $trustedUserAgents The list of trusted user agents
      */
     public function setTrustedUserAgents(Listing $trustedUserAgents)
     {
@@ -153,6 +177,8 @@ class Screener implements ScreenerInterface
     }
 
     /**
+     * Returns the rating threshold.
+     *
      * @return int
      */
     public function getRatingThreshold()
@@ -161,7 +187,9 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param int $ratingThreshold
+     * Sets the rating threshold.
+     *
+     * @param int $ratingThreshold The rating threshold
      */
     public function setRatingThreshold($ratingThreshold)
     {
@@ -175,8 +203,10 @@ class Screener implements ScreenerInterface
     }
 
     /**
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return string|bool
+     * Performs the real screening.
+     *
+     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
+     * @return string|bool The abstract result
      */
     protected function doScreening(Visitor $visitor)
     {

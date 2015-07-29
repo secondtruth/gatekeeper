@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,48 +18,58 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper;
 
 /**
- * Class List
+ * Generic string matching list
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
 class Listing
 {
     /**
+     * List of strings to match equally
+     *
      * @var string[]
      */
     protected $equal = array();
 
     /**
+     * List of strings to match at the beginning
+     *
      * @var string[]
      */
     protected $beginsWith = array();
 
     /**
+     * List of strings to match at the end
+     *
      * @var string[]
      */
     protected $endsWith = array();
 
     /**
+     * List of strings to match anywhere
+     *
      * @var string[]
      */
     protected $contains = array();
 
     /**
+     * List of regular expressions to match
+     *
      * @var string[]
      */
     protected $regexes = array();
 
     /**
-     * Checks if the string matches the list.
+     * Checks if the given string matches the list.
      *
-     * @param string $string
-     * @return bool
+     * @param string $string The string to test
+     * @return bool Returns TRUE if the string matches the list, FALSE otherwise.
      */
     public function match($string)
     {
@@ -95,7 +105,9 @@ class Listing
     }
 
     /**
-     * @param string|string[] $string
+     * Adds a string or an array of strings to match equally.
+     *
+     * @param string|string[] $string The string(s) to add
      */
     public function is($string)
     {
@@ -108,7 +120,9 @@ class Listing
     }
 
     /**
-     * @param string|string[] $string
+     * Adds a string or an array of strings to match at the beginning.
+     *
+     * @param string|string[] $string The string(s) to add
      */
     public function beginsWith($string)
     {
@@ -121,7 +135,9 @@ class Listing
     }
 
     /**
-     * @param string|string[] $string
+     * Adds a string or an array of strings to match at the end.
+     *
+     * @param string|string[] $string The string(s) to add
      */
     public function endsWith($string)
     {
@@ -134,7 +150,9 @@ class Listing
     }
 
     /**
-     * @param string|string[] $string
+     * Adds a string or an array of strings to match anywhere.
+     *
+     * @param string|string[] $string The string(s) to add
      */
     public function contains($string)
     {
@@ -147,7 +165,9 @@ class Listing
     }
 
     /**
-     * @param string|string[] $regex
+     * Adds a regular expression or an array of regular expressions to match.
+     *
+     * @param string|string[] $regex The regular expression(s) to add
      */
     public function matches($regex)
     {

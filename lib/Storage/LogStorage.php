@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper\Storage;
@@ -41,7 +41,9 @@ class LogStorage implements StorageInterface, LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @param \Psr\Log\LoggerInterface $logger
+     * Creates a LogStorage object.
+     *
+     * @param \Psr\Log\LoggerInterface $logger The logger
      */
     public function __construct(LoggerInterface $logger)
     {
@@ -97,8 +99,10 @@ class LogStorage implements StorageInterface, LoggerAwareInterface
     }
 
     /**
-     * @param string $message
-     * @param array $context
+     * Logs a positive result.
+     *
+     * @param string $message The message to log
+     * @param array $context The context values
      */
     protected function logPositiveResult($message, array $context)
     {
@@ -106,8 +110,10 @@ class LogStorage implements StorageInterface, LoggerAwareInterface
     }
 
     /**
-     * @param string $message
-     * @param array $context
+     * Logs a negative result.
+     *
+     * @param string $message The message to log
+     * @param array $context The context values
      */
     protected function logNegativeResult($message, array $context)
     {

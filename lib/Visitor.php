@@ -1,6 +1,6 @@
 <?php
 /**
- * Gatekeeper Library
+ * FlameCore Gatekeeper
  * Copyright (C) 2015 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
@@ -18,7 +18,7 @@
  * @package  FlameCore\Gatekeeper
  * @version  0.1-dev
  * @link     http://www.flamecore.org
- * @license  ISC License <http://opensource.org/licenses/ISC>
+ * @license  http://opensource.org/licenses/ISC ISC License
  */
 
 namespace FlameCore\Gatekeeper;
@@ -34,46 +34,64 @@ use Symfony\Component\HttpFoundation\Request;
 class Visitor
 {
     /**
+     * The client IP address
+     *
      * @var string
      */
     protected $ip;
 
     /**
+     * The request headers
+     *
      * @var \Symfony\Component\HttpFoundation\HeaderBag
      */
     protected $headers;
 
     /**
+     * The request method
+     *
      * @var string
      */
     protected $method;
 
     /**
+     * The request URI
+     *
      * @var string
      */
     protected $uri;
 
     /**
+     * The request data
+     *
      * @var \Symfony\Component\HttpFoundation\ParameterBag
      */
     protected $data;
 
     /**
+     * The request scheme
+     *
      * @var string
      */
     protected $scheme;
 
     /**
+     * The server protocol
+     *
      * @var string
      */
     protected $protocol;
 
     /**
+     * The user agent information
+     *
      * @var \FlameCore\Webtools\UserAgent
      */
     protected $userAgent;
 
     /**
+     * Request comes from a browser?
+     *
      * @var bool
      */
     protected $isBrowser;
@@ -81,7 +99,7 @@ class Visitor
     /**
      * Creates a Visitor object.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request The request of the visitor
      */
     public function __construct(Request $request)
     {
