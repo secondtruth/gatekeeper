@@ -25,6 +25,7 @@ namespace FlameCore\Gatekeeper\Check;
 
 use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
+use FlameCore\Gatekeeper\Check\Traits\BlackholeTrait;
 
 /**
  * Query the http:BL API and block visitors with matching IPs.
@@ -33,6 +34,8 @@ use FlameCore\Gatekeeper\Visitor;
  */
 class HttpBlCheck implements CheckInterface
 {
+    use BlackholeTrait;
+
     /**
      * The API key
      *
@@ -168,16 +171,5 @@ class HttpBlCheck implements CheckInterface
         }
 
         return CheckInterface::RESULT_OKAY;
-    }
-
-    /**
-     * Gets the .arpa version of an IPv4 address.
-     *
-     * @param string $ip The IPv4 address
-     * @return string
-     */
-    protected function getIPv4Arpa($ip)
-    {
-        return implode('.', array_reverse(explode('.', $ip)));
     }
 }
