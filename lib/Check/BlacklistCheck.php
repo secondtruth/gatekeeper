@@ -56,8 +56,8 @@ class BlacklistCheck implements CheckInterface
      */
     public function __construct(array $blacklist = [], Listing $untrustedUserAgents = null)
     {
-        $this->blacklist = $blacklist;
-        $this->untrustedUserAgents = $untrustedUserAgents ?: new Listing();
+        $this->setBlacklist($blacklist);
+        $this->setUntrustedUserAgents($untrustedUserAgents ?: new Listing());
     }
 
     /**
