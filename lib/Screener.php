@@ -77,8 +77,8 @@ class Screener implements ScreenerInterface
      */
     public function __construct(array $whitelist = [], Listing $trustedUserAgents = null)
     {
-        $this->whitelist = $whitelist;
-        $this->trustedUserAgents = $trustedUserAgents ?: new Listing();
+        $this->setWhitelist($whitelist);
+        $this->setTrustedUserAgents($trustedUserAgents ?: new Listing());
     }
 
     /**
