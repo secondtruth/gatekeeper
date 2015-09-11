@@ -191,26 +191,9 @@ class AbsurditiesCheck implements CheckInterface
             }
         }
 
-        if ($headers->has('Connection')) {
-            // 'Connection: keep-alive' and close are mutually exclusive
-            if (preg_match('/\bKeep-Alive\b/i', $headers->get('Connection')) && preg_match('/\bClose\b/i', $headers->get('Connection'))) {
-                return 'a52f0448';
-            }
-
-            // Close shouldn't appear twice
-            if (preg_match('/\bclose,\s?close\b/i', $headers->get('Connection'))) {
-                return 'a52f0448';
-            }
-
-            // Keey-Alive shouldn't appear twice either
-            if (preg_match('/\bkeep-alive,\s?keep-alive\b/i', $headers->get('Connection'))) {
-                return 'a52f0448';
-            }
-
-            // Keep-Alive format in RFC 2068; some bots mangle these headers
-            if (stripos($headers->get('Connection'), 'Keep-Alive: ') !== false) {
-                return 'b0924802';
-            }
+        // Analyze the Connection header if it exists
+        if ($headers->has('Connection') && $result = $this->checkConnectionHeader($headers->get('Connection'))) {
+            return $result;
         }
 
         // Headers which are not seen from normal user agents; only malicious bots
@@ -225,17 +208,61 @@ class AbsurditiesCheck implements CheckInterface
             return 'b7830251';
         }
 
-        if ($headers->has('Referer')) {
-            // Referer, if it exists, must not be blank
-            if ($headers->get('Referer') === '') {
-                return '69920ee5';
-            }
+        // Analyze the Referer header if it exists
+        if ($headers->has('Referer') && $result = $this->checkRefererHeader($headers->get('Referer'))) {
+            return $result;
+        }
 
-            // 'Referer', if it exists, must contain a ':'.
-            // While a relative URL is technically valid in Referer, all known legitimate user-agents send an absolute URL.
-            if (strpos($headers->get('Referer'), ':') === false) {
-                return '45b35e30';
-            }
+        return false;
+    }
+
+    /**
+     * Analyzes the Connection header.
+     *
+     * @param string $value The header value
+     * @return bool|string
+     */
+    protected function checkConnectionHeader($value)
+    {
+        // 'Connection: keep-alive' and 'close' are mutually exclusive
+        if (preg_match('/\bKeep-Alive\b/i', $value) && preg_match('/\bClose\b/i', $value)) {
+            return 'a52f0448';
+        }
+
+        // Close shouldn't appear twice
+        if (preg_match('/\bclose,\s?close\b/i', $value)) {
+            return 'a52f0448';
+        }
+
+        // Keey-Alive shouldn't appear twice either
+        if (preg_match('/\bkeep-alive,\s?keep-alive\b/i', $value)) {
+            return 'a52f0448';
+        }
+
+        // Keep-Alive format in RFC 2068; some bots mangle these headers
+        if (stripos($value, 'Keep-Alive: ') !== false) {
+            return 'b0924802';
+        }
+
+        return false;
+    }
+
+    /**
+     * Analyzes the Referer header.
+     *
+     * @param string $value The header value
+     * @return bool|string
+     */
+    protected function checkRefererHeader($value)
+    {
+        // Referer must not be blank
+        if ($value === '') {
+            return '69920ee5';
+        }
+
+        // While a relative URL is technically valid in Referer, all known legitimate user-agents send an absolute URL.
+        if (strpos($value, ':') === false) {
+            return '45b35e30';
         }
 
         return false;

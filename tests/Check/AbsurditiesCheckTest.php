@@ -41,6 +41,36 @@ class AbsurditiesCheckTest extends CheckTestCase
         $this->assertEquals('96c0bd29', $result);
     }
 
+    public function testCheckConnectionHeader()
+    {
+        // Check #1
+        $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_CONNECTION' => 'Keep-Alive, Close']);
+        $this->assertEquals('a52f0448', $result);
+
+        // Check #2
+        $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_CONNECTION' => 'Close, Close']);
+        $this->assertEquals('a52f0448', $result);
+
+        // Check #3
+        $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_CONNECTION' => 'Keep-Alive, Keep-Alive']);
+        $this->assertEquals('a52f0448', $result);
+
+        // Check #4
+        $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_CONNECTION' => 'Keep-Alive: xyz']);
+        $this->assertEquals('b0924802', $result);
+    }
+
+    public function testCheckRefererHeader()
+    {
+        // Check #1
+        $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_REFERER' => '']);
+        $this->assertEquals('69920ee5', $result);
+
+        // Check #2
+        $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_REFERER' => '/index.html']);
+        $this->assertEquals('45b35e30', $result);
+    }
+
     public function testCheckNegative()
     {
         $result = $this->runTestCheck();
