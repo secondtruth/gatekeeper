@@ -27,6 +27,46 @@ Whenever possible, you should run it in combination with a more traditional spam
 The library is inspired by the [Bad Behavior](http://bad-behavior.ioerror.us) anti-spam system by [Michael Hampton](http://ioerror.us).
 
 
+Usage
+-----
+
+Include the vendor autoloader and use the classes:
+
+```php
+namespace Acme\MyApplication;
+
+use FlameCore\Gatekeeper\Screener;
+use FlameCore\Gatekeeper\Gatekeeper;
+// ...
+
+require 'vendor/autoload.php';
+```
+
+Create the `Check` object(s) you want to use:
+
+```php
+$check = new BlacklistCheck();
+$check->setBlacklist(['127.0.0.3/32']);
+```
+
+Create a `Screener` object and add the checks to it:
+
+```php
+$screener = new Screener();
+$screener->setWhitelist(['127.0.0.1/32', '127.0.0.2']);
+$screener->addCheck($check);
+```
+
+Create a `Gatekeeper` object and run it using the screener:
+
+```php
+$request = Request::createFromGlobals();
+
+$gatekeeper = new Gatekeeper();
+$gatekeeper->run($request, $screener);
+```
+
+
 Installation
 ------------
 
@@ -42,24 +82,13 @@ Create a file called `composer.json` in your project directory and put the follo
 }
 ```
 
-[Install Composer](https://getcomposer.org/doc/00-intro.md#installation-nix) if you don't already have it present on your system:
+[Install Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) if you don't already have it present on your system:
 
     $ curl -sS https://getcomposer.org/installer | php
 
 Use Composer to [download the vendor libraries](https://getcomposer.org/doc/00-intro.md#using-composer) and generate the vendor/autoload.php file:
 
     $ php composer.phar install
-
-Include the vendor autoloader and use the classes:
-
-```php
-namespace Acme\MyApplication;
-
-use FlameCore\Gatekeeper\Gatekeeper;
-use FlameCore\Gatekeeper\Screener;
-
-require 'vendor/autoload.php';
-```
 
 
 Requirements
