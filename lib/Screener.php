@@ -79,7 +79,7 @@ class Screener implements ScreenerInterface
     public function screenVisitor(Visitor $visitor)
     {
         if ($this->isWhitelisted($visitor)) {
-            return new NegativeResult([__CLASS__]);
+            return new NegativeResult(__CLASS__);
         }
 
         $result = $this->doScreening($visitor);

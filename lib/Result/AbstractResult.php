@@ -37,13 +37,13 @@ abstract class AbstractResult implements ResultInterface
     protected $explanation = array();
 
     /**
-     * Creates a PositiveResult object.
+     * Creates a AbstractResult object.
      *
-     * @param string[] $reporting List of reporting Check classes
+     * @param string[]|string $reporting List of reporting Check classes
      */
-    public function __construct(array $reporting = [])
+    public function __construct($reporting = [])
     {
-        $this->reporting = $reporting;
+        $this->reporting = (array) $reporting;
     }
 
     /**
