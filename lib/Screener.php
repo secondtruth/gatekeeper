@@ -78,12 +78,7 @@ class Screener implements ScreenerInterface
      */
     public function screenVisitor(Visitor $visitor)
     {
-        if (Utils::matchCIDR($visitor->getIP(), $this->whitelist)) {
-            return new NegativeResult([__CLASS__]);
-        }
-
-        $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if ($this->trustedUserAgents->match($uastring)) {
+        if ($this->isWhitelisted($visitor)) {
             return new NegativeResult([__CLASS__]);
         }
 
@@ -218,6 +213,26 @@ class Screener implements ScreenerInterface
                     return $result;
                 }
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the visitor is whitelisted.
+     *
+     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
+     * @return bool
+     */
+    protected function isWhitelisted(Visitor $visitor)
+    {
+        if (Utils::matchCIDR($visitor->getIP(), $this->whitelist)) {
+            return true;
+        }
+
+        $uastring = $visitor->getUserAgent()->getUserAgentString();
+        if ($this->trustedUserAgents->match($uastring)) {
+            return true;
         }
 
         return false;
