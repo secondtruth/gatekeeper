@@ -59,11 +59,11 @@ class AbsurditiesCheck implements CheckInterface
             return $result;
         }
 
-        if ($result = $this->checkUri($visitor)) {
+        if ($result = $this->checkHeaders($visitor)) {
             return $result;
         }
 
-        if ($result = $this->checkHeaders($visitor)) {
+        if ($result = $this->checkUri($visitor)) {
             return $result;
         }
 
@@ -162,8 +162,7 @@ class AbsurditiesCheck implements CheckInterface
             return 'f9f2b8b9';
         }
 
-        // 'Range:' field exists and begins with 0. Real user-agents do not start ranges at 0.
-        // NOTE: This also blocks the whois.sc bot. No big loss.
+        // 'Range:' field exists and begins with 0. Real user-agents do not start ranges at 0. (Also blocks whois.sc bot. No big loss.)
         // Exceptions: MT (not fixable); LJ (refuses to fix; may be blocked again in the future); Facebook
         if ($this->settings['strict'] && $headers->has('Range') && strpos($headers->get('Range'), '=0-') !== false) {
             if (strncmp($uastring, 'MovableType', 11) && strncmp($uastring, 'URI::Fetch', 10) && strncmp($uastring, 'php-openid/', 11) && strncmp($uastring, 'facebookexternalhit', 19)) {
@@ -331,9 +330,7 @@ class AbsurditiesCheck implements CheckInterface
             return 'd60b87c7';
         }
 
-        // Fake WordPress trackbacks
-        // Real ones do not contain 'Accept:' and have a charset defined
-        // Real WP trackbacks may contain 'Accept:' and have a charset defined
+        // Real WordPress trackbacks may contain 'Accept:' and have a charset defined
         if (strpos($visitor->getUserAgent()->getUserAgentString(), 'WordPress/') !== false) {
             if (strpos($headers->get('Accept'), 'charset=') === false) {
                 return 'e3990b47';
