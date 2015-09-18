@@ -102,6 +102,28 @@ class Screener implements ScreenerInterface
     }
 
     /**
+     * Returns whether the given check is registered.
+     *
+     * @param string $class The class name of the check
+     * @return bool
+     */
+    public function hasCheck($class)
+    {
+        return isset($this->checks[$class]);
+    }
+
+    /**
+     * Returns a list of registered checks.
+     *
+     * @param string $class The class name of the check
+     * @return \FlameCore\Gatekeeper\Check\CheckInterface
+     */
+    public function getCheck($class)
+    {
+        return isset($this->checks[$class]) ? $this->checks[$class] : null;
+    }
+
+    /**
      * Registers the given check.
      *
      * @param \FlameCore\Gatekeeper\Check\CheckInterface $check The check to register
