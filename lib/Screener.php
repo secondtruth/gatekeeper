@@ -108,7 +108,13 @@ class Screener implements ScreenerInterface
      */
     public function addCheck(CheckInterface $check)
     {
-        $this->checks[] = $check;
+        $class = get_class($check);
+
+        if (isset($this->checks[$class])) {
+            throw new \LogicException(sprintf('The check %s is already added to the screener.', $class));
+        }
+
+        $this->checks[$class] = $check;
     }
 
     /**
