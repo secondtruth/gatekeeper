@@ -15,6 +15,7 @@
 
 namespace FlameCore\Gatekeeper\Screener;
 
+use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Visitor;
 
@@ -43,6 +44,20 @@ abstract class CustomScreener extends Screener
         }
 
         return parent::screenVisitor($visitor);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException when adding a check after the screener was set up, which is not allowed.
+     */
+    public function addCheck(CheckInterface $check)
+    {
+        if ($this->isSetUp) {
+            throw new \LogicException('Adding checks is not allowed after the screener was set up.');
+        }
+        
+        parent::addCheck($check);
     }
 
     /**
