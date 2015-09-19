@@ -16,6 +16,7 @@
 namespace FlameCore\Gatekeeper\Tests;
 
 use FlameCore\Gatekeeper\Check\BlacklistCheck;
+use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,10 +34,17 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->screener = new Screener();
-        $this->screener->setWhitelist(['127.0.0.1/32', '127.0.0.2']);
+
+        $list = new IPList();
+        $list->add(['127.0.0.1/32', '127.0.0.2']);
+        $this->screener->setWhitelist($list);
 
         $check = new BlacklistCheck();
-        $check->setBlacklist(['127.0.0.3/32']);
+
+        $list = new IPList();
+        $list->add(['127.0.0.3/32']);
+        $check->setBlacklist($list);
+
         $this->screener->addCheck($check);
     }
 

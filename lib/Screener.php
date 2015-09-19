@@ -16,6 +16,7 @@
 namespace FlameCore\Gatekeeper;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
+use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Result\NegativeResult;
 use FlameCore\Gatekeeper\Result\PositiveResult;
 use FlameCore\Gatekeeper\Listing\StringList;
@@ -37,9 +38,9 @@ class Screener implements ScreenerInterface
     /**
      * The IP whitelist
      *
-     * @var string[]
+     * @var \FlameCore\Gatekeeper\Listing\IPList
      */
-    protected $whitelist = array();
+    protected $whitelist;
 
     /**
      * The list of trusted user agents
@@ -65,12 +66,12 @@ class Screener implements ScreenerInterface
     /**
      * Creates a Screener object.
      *
-     * @param array $whitelist The IP whitelist
+     * @param \FlameCore\Gatekeeper\Listing\IPList $whitelist The IP whitelist
      * @param \FlameCore\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
      */
-    public function __construct(array $whitelist = [], StringList $trustedUserAgents = null)
+    public function __construct(IPList $whitelist = null, StringList $trustedUserAgents = null)
     {
-        $this->setWhitelist($whitelist);
+        $this->setWhitelist($whitelist ?: new IPList());
         $this->setTrustedUserAgents($trustedUserAgents ?: new StringList());
     }
 
@@ -143,7 +144,7 @@ class Screener implements ScreenerInterface
     /**
      * Returns the IP whitelist.
      *
-     * @return string[]
+     * @return \FlameCore\Gatekeeper\Listing\IPList
      */
     public function getWhitelist()
     {
@@ -153,23 +154,11 @@ class Screener implements ScreenerInterface
     /**
      * Sets the IP whitelist.
      *
-     * @param string[] $whitelist The IP whitelist
+     * @param \FlameCore\Gatekeeper\Listing\IPList $whitelist The IP whitelist
      */
-    public function setWhitelist(array $whitelist)
+    public function setWhitelist(IPList $whitelist)
     {
-        $this->whitelist = array_filter($whitelist);
-    }
-
-    /**
-     * Loads the IP whitelist from the given file.
-     *
-     * @param string $file The name of the whitelist file
-     */
-    public function loadWhitelist($file)
-    {
-        $whitelist = file($file, FILE_SKIP_EMPTY_LINES);
-
-        $this->setWhitelist($whitelist);
+        $this->whitelist = $whitelist;
     }
 
     /**
@@ -255,7 +244,7 @@ class Screener implements ScreenerInterface
      */
     protected function isWhitelisted(Visitor $visitor)
     {
-        if (Utils::matchCIDR($visitor->getIP(), $this->whitelist)) {
+        if ($this->whitelist->match($visitor->getIP())) {
             return true;
         }
 

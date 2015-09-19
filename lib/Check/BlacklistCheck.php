@@ -15,8 +15,8 @@
 
 namespace FlameCore\Gatekeeper\Check;
 
-use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
+use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Listing\StringList;
 
 /**
@@ -29,9 +29,9 @@ class BlacklistCheck implements CheckInterface
     /**
      * The IP blacklist
      *
-     * @var string[]
+     * @var \FlameCore\Gatekeeper\Listing\IPList
      */
-    protected $blacklist = array();
+    protected $blacklist;
 
     /**
      * List of untrusted User Agents
@@ -43,12 +43,12 @@ class BlacklistCheck implements CheckInterface
     /**
      * Creates a BlacklistCheck object.
      *
-     * @param array $blacklist The IP blacklist
+     * @param \FlameCore\Gatekeeper\Listing\IPList $blacklist The IP blacklist
      * @param \FlameCore\Gatekeeper\Listing\StringList $untrustedUserAgents List of untrusted User Agents
      */
-    public function __construct(array $blacklist = [], StringList $untrustedUserAgents = null)
+    public function __construct(IPList $blacklist = null, StringList $untrustedUserAgents = null)
     {
-        $this->setBlacklist($blacklist);
+        $this->setBlacklist($blacklist ?: new IPList());
         $this->setUntrustedUserAgents($untrustedUserAgents ?: new StringList());
     }
 
@@ -57,7 +57,7 @@ class BlacklistCheck implements CheckInterface
      */
     public function checkVisitor(Visitor $visitor)
     {
-        if (Utils::matchCIDR($visitor->getIP(), $this->blacklist)) {
+        if ($this->blacklist->match($visitor->getIP())) {
             return CheckInterface::RESULT_BLOCK;
         }
 
@@ -72,7 +72,7 @@ class BlacklistCheck implements CheckInterface
     /**
      * Gets the IP blacklist.
      *
-     * @return string[]
+     * @return \FlameCore\Gatekeeper\Listing\IPList
      */
     public function getBlacklist()
     {
@@ -82,23 +82,11 @@ class BlacklistCheck implements CheckInterface
     /**
      * Sets the IP blacklist.
      *
-     * @param array $blacklist The IP blacklist
+     * @param \FlameCore\Gatekeeper\Listing\IPList $blacklist The IP blacklist
      */
-    public function setBlacklist(array $blacklist)
+    public function setBlacklist(IPList $blacklist)
     {
-        $this->blacklist = array_filter($blacklist);
-    }
-
-    /**
-     * Loads the IP blacklist from the given file.
-     *
-     * @param string $file The blacklist file
-     */
-    public function loadBlacklist($file)
-    {
-        $whitelist = file($file, FILE_SKIP_EMPTY_LINES);
-
-        $this->setBlacklist($whitelist);
+        $this->blacklist = $blacklist;
     }
 
     /**

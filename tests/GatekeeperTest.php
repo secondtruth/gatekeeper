@@ -15,6 +15,7 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
+use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Gatekeeper;
 use FlameCore\Gatekeeper\AccessDeniedException;
@@ -41,7 +42,11 @@ class GatekeeperTest extends \PHPUnit_Framework_TestCase
         $this->screener = new Screener();
 
         $check = new BlacklistCheck();
-        $check->setBlacklist(['127.0.0.2/32']);
+
+        $list = new IPList();
+        $list->add(['127.0.0.2/32']);
+        $check->setBlacklist($list);
+
         $this->screener->addCheck($check);
 
         $this->gatekeeper = new Gatekeeper();

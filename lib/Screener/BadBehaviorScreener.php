@@ -39,7 +39,7 @@ class BadBehaviorScreener extends CustomScreener
         $list->contains($this->getSpambotNamesAnywhere());
         $list->matches($this->getSpambotNamesRegex());
 
-        $this->addCheck(new BlacklistCheck([], $list));
+        $this->addCheck(new BlacklistCheck(null, $list));
         $this->addCheck(new AbsurditiesCheck());
         $this->addCheck(new UserAgentCheck());
     }
