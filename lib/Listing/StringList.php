@@ -167,4 +167,22 @@ class StringList extends AbstractList
             $this->regexes[] = (string) $regex;
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addFileEntry($value)
+    {
+        if ($value[0] == '*' && substr($value, -1) == '*') {
+            $this->contains(trim(substr($value, 1, -1), '*'));
+        } elseif ($value[0] == '*') {
+            $this->endsWith(trim(substr($value, 1), '*'));
+        } elseif (substr($value, -1) == '*') {
+            $this->beginsWith(trim(substr($value, 0, -1), '*'));
+        } elseif (substr($value, 0, 2) == 'r:') {
+            $this->matches(substr($value, 2));
+        } else {
+            $this->is($value);
+        }
+    }
 }

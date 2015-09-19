@@ -62,29 +62,7 @@ class IPList extends AbstractList
     }
 
     /**
-     * Loads the IP list from the given file.
-     *
-     * @param string $file The list file
-     */
-    public function loadFile($file)
-    {
-        $lines = file($file, FILE_SKIP_EMPTY_LINES);
-
-        foreach ($lines as $line) {
-            $line = trim($line);
-
-            if ($line[0] == '#') {
-                continue;
-            }
-
-            $this->addFileEntry($line);
-        }
-    }
-
-    /**
-     * Adds the given entry from the file.
-     *
-     * @param string $value The entry value
+     * {@inheritdoc}
      */
     protected function addFileEntry($value)
     {

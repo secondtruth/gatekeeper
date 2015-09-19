@@ -29,4 +29,31 @@ abstract class AbstractList
      * @return bool Returns TRUE if the value matches the list, FALSE otherwise.
      */
     abstract public function match($value);
+
+    /**
+     * Loads the list from the given file.
+     *
+     * @param string $file The list file
+     */
+    public function loadFile($file)
+    {
+        $lines = file($file, FILE_SKIP_EMPTY_LINES);
+
+        foreach ($lines as $line) {
+            $line = trim($line);
+
+            if ($line[0] == '#') {
+                continue;
+            }
+
+            $this->addFileEntry($line);
+        }
+    }
+
+    /**
+     * Adds the given entry from the file.
+     *
+     * @param string $value The entry value
+     */
+    abstract protected function addFileEntry($value);
 }
