@@ -20,16 +20,8 @@ namespace FlameCore\Gatekeeper\Listing;
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-abstract class AbstractList
+abstract class AbstractList implements ListInterface
 {
-    /**
-     * Checks if the given value matches the list.
-     *
-     * @param string $value The value to test
-     * @return bool Returns TRUE if the value matches the list, FALSE otherwise.
-     */
-    abstract public function match($value);
-
     /**
      * Loads the list from the given file.
      *
