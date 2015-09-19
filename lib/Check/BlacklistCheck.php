@@ -15,9 +15,9 @@
 
 namespace FlameCore\Gatekeeper\Check;
 
-use FlameCore\Gatekeeper\Listing;
 use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
+use FlameCore\Gatekeeper\Listing\StringList;
 
 /**
  * Blacklist visitor IPs and User Agents which should get blocked.
@@ -36,7 +36,7 @@ class BlacklistCheck implements CheckInterface
     /**
      * List of untrusted User Agents
      *
-     * @var \FlameCore\Gatekeeper\Listing
+     * @var \FlameCore\Gatekeeper\Listing\StringList
      */
     protected $untrustedUserAgents;
 
@@ -44,12 +44,12 @@ class BlacklistCheck implements CheckInterface
      * Creates a BlacklistCheck object.
      *
      * @param array $blacklist The IP blacklist
-     * @param \FlameCore\Gatekeeper\Listing $untrustedUserAgents List of untrusted User Agents
+     * @param \FlameCore\Gatekeeper\Listing\StringList $untrustedUserAgents List of untrusted User Agents
      */
-    public function __construct(array $blacklist = [], Listing $untrustedUserAgents = null)
+    public function __construct(array $blacklist = [], StringList $untrustedUserAgents = null)
     {
         $this->setBlacklist($blacklist);
-        $this->setUntrustedUserAgents($untrustedUserAgents ?: new Listing());
+        $this->setUntrustedUserAgents($untrustedUserAgents ?: new StringList());
     }
 
     /**
@@ -104,7 +104,7 @@ class BlacklistCheck implements CheckInterface
     /**
      * Sets the list of untrusted User Agents.
      *
-     * @return \FlameCore\Gatekeeper\Listing
+     * @return \FlameCore\Gatekeeper\Listing\StringList
      */
     public function getUntrustedUserAgents()
     {
@@ -114,9 +114,9 @@ class BlacklistCheck implements CheckInterface
     /**
      * Gets the list of untrusted User Agents.
      *
-     * @param \FlameCore\Gatekeeper\Listing $untrustedUserAgents List of untrusted User Agents
+     * @param \FlameCore\Gatekeeper\Listing\StringList $untrustedUserAgents List of untrusted User Agents
      */
-    public function setUntrustedUserAgents(Listing $untrustedUserAgents)
+    public function setUntrustedUserAgents(StringList $untrustedUserAgents)
     {
         $this->untrustedUserAgents = $untrustedUserAgents;
     }

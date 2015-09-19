@@ -13,14 +13,14 @@
  * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper;
+namespace FlameCore\Gatekeeper\Listing;
 
 /**
- * Generic string matching list
+ * String matching list
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class Listing
+class StringList extends AbstractList
 {
     /**
      * List of strings to match equally
@@ -58,37 +58,34 @@ class Listing
     protected $regexes = array();
 
     /**
-     * Checks if the given string matches the list.
-     *
-     * @param string $string The string to test
-     * @return bool Returns TRUE if the string matches the list, FALSE otherwise.
+     * {@inheritdoc}
      */
-    public function match($string)
+    public function match($value)
     {
-        if (in_array($string, $this->equal)) {
+        if (in_array($value, $this->equal)) {
             return true;
         }
 
         foreach ($this->beginsWith as $substring) {
-            if (strpos($string, $substring) === 0) {
+            if (strpos($value, $substring) === 0) {
                 return true;
             }
         }
 
         foreach ($this->endsWith as $substring) {
-            if (substr($string, strlen($substring) * -1) === $substring) {
+            if (substr($value, strlen($substring) * -1) === $substring) {
                 return true;
             }
         }
 
         foreach ($this->contains as $substring) {
-            if (strpos($string, $substring) !== false) {
+            if (strpos($value, $substring) !== false) {
                 return true;
             }
         }
 
         foreach ($this->regexes as $regex) {
-            if (preg_match($regex, $string)) {
+            if (preg_match($regex, $value)) {
                 return true;
             }
         }

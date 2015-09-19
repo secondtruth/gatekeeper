@@ -17,7 +17,7 @@ namespace FlameCore\Gatekeeper\Tests\Check;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Check\BlacklistCheck;
-use FlameCore\Gatekeeper\Listing;
+use FlameCore\Gatekeeper\Listing\StringList;
 
 /**
  * Test class for BlacklistCheck
@@ -29,7 +29,7 @@ class BlacklistCheckTest extends CheckTestCase
         $this->check = new BlacklistCheck();
         $this->check->setBlacklist(['127.0.0.2/32']);
 
-        $list = new Listing();
+        $list = new StringList();
         $list->is(['Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
         $this->check->setUntrustedUserAgents($list);
     }

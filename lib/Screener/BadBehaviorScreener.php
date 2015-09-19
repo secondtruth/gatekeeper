@@ -15,11 +15,11 @@
 
 namespace FlameCore\Gatekeeper\Screener;
 
-use FlameCore\Gatekeeper\Listing;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Check\AbsurditiesCheck;
 use FlameCore\Gatekeeper\Check\BlacklistCheck;
 use FlameCore\Gatekeeper\Check\UserAgentCheck;
+use FlameCore\Gatekeeper\Listing\StringList;
 
 /**
  * Check for known spam bots and block them.
@@ -34,7 +34,7 @@ class BadBehaviorScreener extends CustomScreener
      */
     protected function setup()
     {
-        $list = new Listing();
+        $list = new StringList();
         $list->beginsWith($this->getSpambotNamesBeginning());
         $list->contains($this->getSpambotNamesAnywhere());
         $list->matches($this->getSpambotNamesRegex());

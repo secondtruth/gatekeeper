@@ -18,6 +18,7 @@ namespace FlameCore\Gatekeeper;
 use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Result\NegativeResult;
 use FlameCore\Gatekeeper\Result\PositiveResult;
+use FlameCore\Gatekeeper\Listing\StringList;
 
 /**
  * Class Screener
@@ -43,7 +44,7 @@ class Screener implements ScreenerInterface
     /**
      * The list of trusted user agents
      *
-     * @var \FlameCore\Gatekeeper\Listing
+     * @var \FlameCore\Gatekeeper\Listing\StringList
      */
     protected $trustedUserAgents;
 
@@ -65,12 +66,12 @@ class Screener implements ScreenerInterface
      * Creates a Screener object.
      *
      * @param array $whitelist The IP whitelist
-     * @param \FlameCore\Gatekeeper\Listing $trustedUserAgents The list of trusted user agents
+     * @param \FlameCore\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
      */
-    public function __construct(array $whitelist = [], Listing $trustedUserAgents = null)
+    public function __construct(array $whitelist = [], StringList $trustedUserAgents = null)
     {
         $this->setWhitelist($whitelist);
-        $this->setTrustedUserAgents($trustedUserAgents ?: new Listing());
+        $this->setTrustedUserAgents($trustedUserAgents ?: new StringList());
     }
 
     /**
@@ -174,7 +175,7 @@ class Screener implements ScreenerInterface
     /**
      * Returns the list of trusted user agents.
      *
-     * @return \FlameCore\Gatekeeper\Listing
+     * @return \FlameCore\Gatekeeper\Listing\StringList
      */
     public function getTrustedUserAgents()
     {
@@ -184,9 +185,9 @@ class Screener implements ScreenerInterface
     /**
      * Sets the list of trusted user agents.
      *
-     * @param \FlameCore\Gatekeeper\Listing $trustedUserAgents The list of trusted user agents
+     * @param \FlameCore\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
      */
-    public function setTrustedUserAgents(Listing $trustedUserAgents)
+    public function setTrustedUserAgents(StringList $trustedUserAgents)
     {
         $this->trustedUserAgents = $trustedUserAgents;
     }
