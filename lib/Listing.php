@@ -69,20 +69,20 @@ class Listing
             return true;
         }
 
-        foreach ($this->beginsWith as $value) {
-            if (strpos($string, $value) === 0) {
+        foreach ($this->beginsWith as $substring) {
+            if (strpos($string, $substring) === 0) {
                 return true;
             }
         }
 
-        foreach ($this->endsWith as $value) {
-            if (substr($string, -1) === $value) {
+        foreach ($this->endsWith as $substring) {
+            if (substr($string, strlen($substring) * -1) === $substring) {
                 return true;
             }
         }
 
-        foreach ($this->contains as $value) {
-            if (strpos($string, $value) !== false) {
+        foreach ($this->contains as $substring) {
+            if (strpos($string, $substring) !== false) {
                 return true;
             }
         }
