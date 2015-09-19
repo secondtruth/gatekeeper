@@ -58,7 +58,7 @@ class IPList extends AbstractList
     {
         $ips = array_map('strval', (array) $ips);
 
-        $this->list = array_unique(array_merge($this->list, $ips));
+        $this->list = $this->merge($this->list, $ips);
     }
 
     /**

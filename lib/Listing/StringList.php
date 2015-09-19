@@ -100,12 +100,9 @@ class StringList extends AbstractList
      */
     public function is($string)
     {
-        if (is_array($string)) {
-            $strings = array_map('strval', $string);
-            $this->equal = array_merge($this->equal, $strings);
-        } else {
-            $this->equal[] = (string) $string;
-        }
+        $strings = array_map('strval', (array) $string);
+
+        $this->equal = $this->merge($this->equal, $strings);
     }
 
     /**
@@ -115,12 +112,9 @@ class StringList extends AbstractList
      */
     public function beginsWith($string)
     {
-        if (is_array($string)) {
-            $strings = array_map('strval', $string);
-            $this->beginsWith = array_merge($this->beginsWith, $strings);
-        } else {
-            $this->beginsWith[] = (string) $string;
-        }
+        $strings = array_map('strval', (array) $string);
+
+        $this->beginsWith = $this->merge($this->beginsWith, $strings);
     }
 
     /**
@@ -130,12 +124,9 @@ class StringList extends AbstractList
      */
     public function endsWith($string)
     {
-        if (is_array($string)) {
-            $strings = array_map('strval', $string);
-            $this->endsWith = array_merge($this->endsWith, $strings);
-        } else {
-            $this->endsWith[] = (string) $string;
-        }
+        $strings = array_map('strval', (array) $string);
+
+        $this->endsWith = $this->merge($this->endsWith, $strings);
     }
 
     /**
@@ -145,12 +136,9 @@ class StringList extends AbstractList
      */
     public function contains($string)
     {
-        if (is_array($string)) {
-            $strings = array_map('strval', $string);
-            $this->contains = array_merge($this->contains, $strings);
-        } else {
-            $this->contains[] = (string) $string;
-        }
+        $strings = array_map('strval', (array) $string);
+
+        $this->contains = $this->merge($this->contains, $strings);
     }
 
     /**
@@ -160,12 +148,9 @@ class StringList extends AbstractList
      */
     public function matches($regex)
     {
-        if (is_array($regex)) {
-            $regexes = array_map('strval', $regex);
-            $this->regexes = array_merge($this->regexes, $regexes);
-        } else {
-            $this->regexes[] = (string) $regex;
-        }
+        $regexes = array_map('strval', (array) $regex);
+
+        $this->regexes = $this->merge($this->regexes, $regexes);
     }
 
     /**

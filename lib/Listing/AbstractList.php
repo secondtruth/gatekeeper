@@ -48,4 +48,16 @@ abstract class AbstractList implements ListInterface
      * @param string $value The entry value
      */
     abstract protected function addFileEntry($value);
+
+    /**
+     * Merges the given new entries into the list.
+     *
+     * @param array $list The existing list
+     * @param array $newEntries The new entries
+     * @return array Returns the updated list.
+     */
+    protected function merge(array $list, array $newEntries)
+    {
+        return array_unique(array_merge($list, $newEntries));
+    }
 }
