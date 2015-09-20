@@ -16,6 +16,7 @@
 namespace FlameCore\Gatekeeper\Screener;
 
 use FlameCore\Gatekeeper\Screener;
+use FlameCore\Gatekeeper\Check\UrlCheck;
 use FlameCore\Gatekeeper\Check\AbsurditiesCheck;
 use FlameCore\Gatekeeper\Check\BlacklistCheck;
 use FlameCore\Gatekeeper\Check\UserAgentCheck;
@@ -60,6 +61,8 @@ class BadBehaviorScreener extends CustomScreener
         $list->matches($this->getSpambotNamesRegex());
 
         $this->addCheck(new BlacklistCheck(null, $list));
+        $this->addCheck(new UrlCheck());
+
         $this->addCheck(new AbsurditiesCheck($this->settings));
         $this->addCheck(new UserAgentCheck());
     }

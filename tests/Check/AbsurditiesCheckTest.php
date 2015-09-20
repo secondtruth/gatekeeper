@@ -30,17 +30,6 @@ class AbsurditiesCheckTest extends CheckTestCase
         ]);
     }
 
-    public function testCheckPositiveURI()
-    {
-        // Check #1
-        $result = $this->runTestCheck('/?;DECLARE%20@');
-        $this->assertEquals('dfd9b1ad', $result);
-
-        // Check #2
-        $result = $this->runTestCheck('/?0x31303235343830303536');
-        $this->assertEquals('96c0bd29', $result);
-    }
-
     public function testCheckConnectionHeader()
     {
         // Check #1
