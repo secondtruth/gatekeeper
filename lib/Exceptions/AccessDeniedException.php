@@ -13,7 +13,7 @@
  * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper;
+namespace FlameCore\Gatekeeper\Exceptions;
 
 /**
  * Class AccessDeniedException

@@ -18,7 +18,7 @@ namespace FlameCore\Gatekeeper\Tests;
 use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Gatekeeper;
-use FlameCore\Gatekeeper\AccessDeniedException;
+use FlameCore\Gatekeeper\Exceptions\AccessDeniedException;
 use FlameCore\Gatekeeper\Check\BlacklistCheck;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -53,7 +53,7 @@ class GatekeeperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \FlameCore\Gatekeeper\AccessDeniedException
+     * @expectedException \FlameCore\Gatekeeper\Exceptions\AccessDeniedException
      */
     public function testPositive()
     {

@@ -18,6 +18,7 @@ namespace FlameCore\Gatekeeper;
 use FlameCore\Gatekeeper\Result\Explainer;
 use FlameCore\Gatekeeper\Result\PositiveResult;
 use FlameCore\Gatekeeper\Storage\StorageInterface;
+use FlameCore\Gatekeeper\Exceptions\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -165,7 +166,7 @@ class Gatekeeper
      * Perform actions for bad requests.
      *
      * @param \FlameCore\Gatekeeper\Result\PositiveResult $result The result
-     * @throws \FlameCore\Gatekeeper\AccessDeniedException
+     * @throws \FlameCore\Gatekeeper\Exceptions\AccessDeniedException
      */
     protected function blockRequest(PositiveResult $result)
     {
