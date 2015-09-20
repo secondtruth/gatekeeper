@@ -19,6 +19,7 @@ use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Check\AbsurditiesCheck;
 use FlameCore\Gatekeeper\Check\BlacklistCheck;
 use FlameCore\Gatekeeper\Check\UserAgentCheck;
+use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Listing\StringList;
 
 /**
@@ -30,6 +31,25 @@ use FlameCore\Gatekeeper\Listing\StringList;
 class BadBehaviorScreener extends CustomScreener
 {
     /**
+     * The settings
+     *
+     * @var array
+     */
+    protected $settings = array();
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param array $settings The settings
+     */
+    public function __construct(array $settings = [], IPList $whitelist = null, StringList $trustedUserAgents = null)
+    {
+        parent::__construct($whitelist, $trustedUserAgents);
+
+        $this->settings = $settings;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setup()
@@ -40,7 +60,7 @@ class BadBehaviorScreener extends CustomScreener
         $list->matches($this->getSpambotNamesRegex());
 
         $this->addCheck(new BlacklistCheck(null, $list));
-        $this->addCheck(new AbsurditiesCheck());
+        $this->addCheck(new AbsurditiesCheck($this->settings));
         $this->addCheck(new UserAgentCheck());
     }
 
