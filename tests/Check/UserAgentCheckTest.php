@@ -24,6 +24,17 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserAgentCheckTest extends CheckTestCase
 {
+    const UA_MSIE = 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko';
+    const UA_KONQUEROR = 'Mozilla/5.0 (compatible; Konqueror/4.4; Linux) KHTML/4.4.1 (like Gecko) Fedora/4.4.1-1.fc12';
+    const UA_LYNX = 'Lynx/2.8.6rel.5 libwww-FM/2.14 SSL-MM/1.4.1 OpenSSL/1.0.0a';
+    const UA_MOZILLA = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
+    const UA_OPERA = 'Opera/9.80 (Windows NT 6.1; U; es-ES) Presto/2.9.181 Version/12.00';
+    const UA_SAFARI = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_2; fr-fr) AppleWebKit/531.21.8 (KHTML, like Gecko) Version/4.0.4 Safari/531.21.10';
+    const UA_GOOGLEBOT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+    const UA_MSNBOT = 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)';
+    const UA_YAHOOBOT = 'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)';
+    const UA_BAIDUBOT = 'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)';
+
     protected function setUp()
     {
         $this->check = new UserAgentCheck();
@@ -31,92 +42,84 @@ class UserAgentCheckTest extends CheckTestCase
 
     public function testCheckPositiveMsie()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
-        );
-
-        $this->doTestCheckPositiveBrowser($browser);
+        $this->doTestCheckPositiveBrowser(['HTTP_USER_AGENT' => self::UA_MSIE]);
     }
 
     public function testCheckPositiveKonqueror()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (compatible; Konqueror/4.4; Linux) KHTML/4.4.1 (like Gecko) Fedora/4.4.1-1.fc12'
-        );
-
-        $this->doTestCheckPositiveBrowser($browser);
+        $this->doTestCheckPositiveBrowser(['HTTP_USER_AGENT' => self::UA_KONQUEROR]);
     }
 
     public function testCheckPositiveLynx()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Lynx/2.8.6rel.5 libwww-FM/2.14 SSL-MM/1.4.1 OpenSSL/1.0.0a'
-        );
-
-        $this->doTestCheckPositiveBrowser($browser);
+        $this->doTestCheckPositiveBrowser(['HTTP_USER_AGENT' => self::UA_LYNX]);
     }
 
     public function testCheckPositiveMozilla()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36'
-        );
-
-        $this->doTestCheckPositiveBrowser($browser);
+        $this->doTestCheckPositiveBrowser(['HTTP_USER_AGENT' => self::UA_MOZILLA]);
     }
 
     public function testCheckPositiveOpera()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Opera/9.80 (Windows NT 6.1; U; es-ES) Presto/2.9.181 Version/12.00'
-        );
-
-        $this->doTestCheckPositiveBrowser($browser);
+        $this->doTestCheckPositiveBrowser(['HTTP_USER_AGENT' => self::UA_OPERA]);
     }
 
     public function testCheckPositiveSafari()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_2; fr-fr) AppleWebKit/531.21.8 (KHTML, like Gecko) Version/4.0.4 Safari/531.21.10'
-        );
-
-        $this->doTestCheckPositiveBrowser($browser);
+        $this->doTestCheckPositiveBrowser(['HTTP_USER_AGENT' => self::UA_SAFARI]);
     }
 
     public function testCheckPositiveGoogleBot()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
-        );
-
-        $this->doTestCheckPositiveBot($browser);
+        $this->doTestCheckPositiveBot(['HTTP_USER_AGENT' => self::UA_GOOGLEBOT]);
     }
 
     public function testCheckPositiveMsnBot()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'msnbot/2.0b (+http://search.msn.com/msnbot.htm)'
-        );
-
-        $this->doTestCheckPositiveBot($browser);
+        $this->doTestCheckPositiveBot(['HTTP_USER_AGENT' => self::UA_MSNBOT]);
     }
 
     public function testCheckPositiveYahooBot()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)'
-        );
-
-        $this->doTestCheckPositiveBot($browser);
+        $this->doTestCheckPositiveBot(['HTTP_USER_AGENT' => self::UA_YAHOOBOT]);
     }
 
     public function testCheckPositiveBaiduBot()
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)'
-        );
+        $this->doTestCheckPositiveBot(['HTTP_USER_AGENT' => self::UA_BAIDUBOT]);
+    }
 
-        $this->doTestCheckPositiveBot($browser);
+    /**
+     * @expectedException \FlameCore\Gatekeeper\Exceptions\StopScreeningException
+     */
+    public function testCheckStopGoogleBot()
+    {
+        $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_GOOGLEBOT, 'REMOTE_ADDR' => '66.249.64.0']);
+    }
+
+    /**
+     * @expectedException \FlameCore\Gatekeeper\Exceptions\StopScreeningException
+     */
+    public function testCheckStopMsnBot()
+    {
+        $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_MSNBOT, 'REMOTE_ADDR' => '207.46.0.0']);
+    }
+
+    /**
+     * @expectedException \FlameCore\Gatekeeper\Exceptions\StopScreeningException
+     */
+    public function testCheckStopYahooBot()
+    {
+        $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_YAHOOBOT, 'REMOTE_ADDR' => '202.160.176.0']);
+    }
+
+    /**
+     * @expectedException \FlameCore\Gatekeeper\Exceptions\StopScreeningException
+     */
+    public function testCheckStopBaiduBot()
+    {
+        $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_BAIDUBOT, 'REMOTE_ADDR' => '119.63.192.0']);
     }
 
     public function testCheckNegative()
