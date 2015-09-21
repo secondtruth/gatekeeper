@@ -20,6 +20,7 @@ use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Result\NegativeResult;
 use FlameCore\Gatekeeper\Result\PositiveResult;
 use FlameCore\Gatekeeper\Listing\StringList;
+use FlameCore\Gatekeeper\Exceptions\StopScreeningException;
 
 /**
  * Class Screener
@@ -89,7 +90,7 @@ class Screener implements ScreenerInterface
         if ($result !== false) {
             return new PositiveResult($this->reporting, is_string($result) ? $result : null);
         } else {
-            return new NegativeResult();
+            return new NegativeResult($this->reporting);
         }
     }
 
@@ -218,7 +219,11 @@ class Screener implements ScreenerInterface
         $rating = 0;
 
         foreach ($this->checks as $check) {
-            $result = $check->checkVisitor($visitor);
+            try {
+                $result = $check->checkVisitor($visitor);
+            } catch (StopScreeningException $e) {
+                return false;
+            }
 
             if ($result !== CheckInterface::RESULT_OKAY) {
                 $this->reporting[] = get_class($check);
