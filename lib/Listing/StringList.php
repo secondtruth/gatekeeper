@@ -94,6 +94,18 @@ class StringList extends AbstractList
     }
 
     /**
+     * Adds the given value(s) to the list.
+     *
+     * @param string|string[] $values The value(s) to add
+     */
+    public function add($values)
+    {
+        foreach ((array) $values as $value) {
+            $this->addPattern($value);
+        }
+    }
+
+    /**
      * Adds a string or an array of strings to match equally.
      *
      * @param string|string[] $string The string(s) to add
@@ -153,10 +165,7 @@ class StringList extends AbstractList
         $this->regexes = $this->merge($this->regexes, $regexes);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function addFileEntry($value)
+    protected function addPattern($value)
     {
         if ($value[0] == '*' && substr($value, -1) == '*') {
             $this->contains(trim(substr($value, 1, -1), '*'));
@@ -169,5 +178,13 @@ class StringList extends AbstractList
         } else {
             $this->is($value);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addFileEntry($value)
+    {
+        $this->addPattern($value);
     }
 }
