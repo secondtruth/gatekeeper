@@ -20,6 +20,7 @@ use FlameCore\Gatekeeper\Check\UrlCheck;
 use FlameCore\Gatekeeper\Check\AbsurditiesCheck;
 use FlameCore\Gatekeeper\Check\BlacklistCheck;
 use FlameCore\Gatekeeper\Check\UserAgentCheck;
+use FlameCore\Gatekeeper\Check\PostRequestCheck;
 use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Listing\StringList;
 
@@ -65,6 +66,9 @@ class BadBehaviorScreener extends CustomScreener
 
         $this->addCheck(new AbsurditiesCheck($this->settings));
         $this->addCheck(new UserAgentCheck());
+
+        // More intensive screening applies to POST requests
+        $this->addCheck(new PostRequestCheck($this->settings));
     }
 
     /**
