@@ -37,7 +37,9 @@ namespace Acme\MyApplication;
 
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Gatekeeper;
-// ...
+use FlameCore\Gatekeeper\Listing\IPList;
+use FlameCore\Gatekeeper\Check\BlacklistCheck;
+use Symfony\Component\HttpFoundation\Request;
 
 require 'vendor/autoload.php';
 ```
@@ -45,15 +47,15 @@ require 'vendor/autoload.php';
 Create the `Check` object(s) you want to use:
 
 ```php
-$check = new BlacklistCheck();
-$check->setBlacklist(['127.0.0.3/32']);
+$blacklist = new IPList(['127.0.0.2', '127.0.0.3/32']);
+$check = new BlacklistCheck($blacklist);
 ```
 
 Create a `Screener` object and add the checks to it:
 
 ```php
 $screener = new Screener();
-$screener->setWhitelist(['127.0.0.1/32', '127.0.0.2']);
+$screener->setWhitelist(new IPList('127.0.0.1'));
 $screener->addCheck($check);
 ```
 
