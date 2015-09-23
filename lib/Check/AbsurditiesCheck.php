@@ -265,7 +265,7 @@ class AbsurditiesCheck implements CheckInterface
 
         // Catch a few completely broken spambots
         foreach ($data->all() as $key => $value) {
-            if (strpos($key, '	document.write') !== false) {
+            if (strpos($key, "\tdocument.write") !== false) {
                 return 'dfd9b1ad';
             }
         }

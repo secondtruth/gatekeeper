@@ -29,8 +29,11 @@ interface CheckInterface
     const RESULT_BLOCK = 2;
 
     /**
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return int|string
+     * Checks the visitor.
+     *
+     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
+     *
+     * @return int|string Returns the check result.
      */
     public function checkVisitor(Visitor $visitor);
 }

@@ -25,8 +25,9 @@ interface ScreenerInterface
     /**
      * Screens the visitor.
      *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
-     * @return \FlameCore\Gatekeeper\Result\ResultInterface Returns the result.
+     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
+     *
+     * @return \FlameCore\Gatekeeper\Result\ResultInterface Returns the screening result.
      */
     public function screenVisitor(Visitor $visitor);
 }
