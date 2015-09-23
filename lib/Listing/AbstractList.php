@@ -23,6 +23,25 @@ namespace FlameCore\Gatekeeper\Listing;
 abstract class AbstractList implements ListInterface
 {
     /**
+     * Creates the list.
+     *
+     * @param string|string[] $values The value(s) to add
+     */
+    public function __construct($values = [])
+    {
+        if (!empty($values)) {
+            $this->add($values);
+        }
+    }
+
+    /**
+     * Adds the given value(s) to the list.
+     *
+     * @param string|string[] $values The value(s) to add
+     */
+    abstract public function add($values);
+
+    /**
      * Loads the list from the given file.
      *
      * @param string $file The list file

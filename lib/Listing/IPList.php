@@ -50,13 +50,11 @@ class IPList extends AbstractList
     }
 
     /**
-     * Sets the IP list.
-     *
-     * @param string|string[] $ips The IP(s) to add
+     * {@inheritdoc}
      */
-    public function add($ips)
+    public function add($values)
     {
-        $ips = array_map('strval', (array) $ips);
+        $ips = array_map('strval', (array) $values);
 
         $this->list = $this->merge($this->list, $ips);
     }

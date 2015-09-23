@@ -94,9 +94,7 @@ class StringList extends AbstractList
     }
 
     /**
-     * Adds the given value(s) to the list.
-     *
-     * @param string|string[] $values The value(s) to add
+     * {@inheritdoc}
      */
     public function add($values)
     {
