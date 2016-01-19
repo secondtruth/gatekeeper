@@ -84,7 +84,7 @@ class PostRequestCheck implements CheckInterface
         // Catch a few completely broken spambots
         foreach ($data->all() as $key => $value) {
             if (strpos($key, "\tdocument.write") !== false) {
-                return 'dfd9b1ad';
+                return 'dfd9b1ae';
             }
         }
 

@@ -36,7 +36,7 @@ class PostRequestCheckTest extends CheckTestCase
 
         // Check #3
         $result = $this->runTestCheck('/', 'POST', ["foo\tdocument.write" => 'bar']);
-        $this->assertEquals('dfd9b1ad', $result);
+        $this->assertEquals('dfd9b1ae', $result);
 
         // Check #4
         $result = $this->runTestCheck('/', 'POST', [], [], [], ['HTTP_HOST' => 'example.org', 'HTTP_REFERER' => 'http://www.example.net/form.html']);

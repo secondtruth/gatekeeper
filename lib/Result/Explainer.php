@@ -38,11 +38,6 @@ class Explainer
             'explanation' => 'An invalid request was received from your browser. This may be caused by a malfunctioning proxy server or browser privacy software.',
             'logtext' => 'Required header "Accept" missing'
         ],
-        '21f11d3f' => [
-            'response' => 403,
-            'explanation' => 'An invalid request was received. You claimed to be a mobile Web device, but you do not actually appear to be a mobile Web device.',
-            'logtext' => 'User-Agent claimed to be AvantGo, claim appears false'
-        ],
         '2b021b1f' => [
             'response' => 403,
             'explanation' => 'You do not have permission to access this server. Before trying again, run anti-virus and anti-spyware software and remove any viruses and spyware from your computer.',
@@ -72,11 +67,6 @@ class Explainer
             'response' => 400,
             'explanation' => 'An invalid request was received from your browser. This may be caused by a malfunctioning proxy server or browser privacy software.',
             'logtext' => 'Header "Referer" is corrupt'
-        ],
-        '57796684' => [
-            'response' => 403,
-            'explanation' => 'You do not have permission to access this server. Before trying again, run anti-virus and anti-spyware software and remove any viruses and spyware from your computer.',
-            'logtext' => 'Prohibited header "X-Aaaaaaaaaa" or "X-Aaaaaaaaaaaa" present'
         ],
         '582ec5e4' => [
             'response' => 400,
@@ -191,7 +181,12 @@ class Explainer
         'dfd9b1ad' => [
             'response' => 403,
             'explanation' => 'You do not have permission to access this server.',
-            'logtext' => 'Request contained a malicious JavaScript or SQL injection attack'
+            'logtext' => 'Request contained a malicious SQL injection attack'
+        ],
+        'dfd9b1ae' => [
+            'response' => 403,
+            'explanation' => 'You do not have permission to access this server.',
+            'logtext' => 'Request contained a malicious JavaScript injection attack'
         ],
         'e3990b47' => [
             'response' => 403,
