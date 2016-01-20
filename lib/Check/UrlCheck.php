@@ -25,22 +25,25 @@ use FlameCore\Gatekeeper\Visitor;
  */
 class UrlCheck implements CheckInterface
 {
+    const REASON_MISC = '96c0bd29';
+    const REASON_SQL_INJECTION = 'dfd9b1ad';
+
     /**
      * {@inheritdoc}
      */
     public function checkVisitor(Visitor $visitor)
     {
         // Case-sensitive checks
-        foreach ($this->getBadPatterns() as $badPattern) {
-            if (strpos($visitor->getRequestURI(), $badPattern[0]) !== false) {
-                return $badPattern[1] ?: CheckInterface::RESULT_BLOCK;
+        foreach ($this->getBadPatterns() as $pattern) {
+            if (strpos($visitor->getRequestURI(), $pattern[0]) !== false) {
+                return $pattern[1] ?: CheckInterface::RESULT_BLOCK;
             }
         }
 
         // Case-insensitive checks
-        foreach ($this->getBadPatternsCaseInsensitive() as $badPattern) {
-            if (stripos($visitor->getRequestURI(), $badPattern[0]) !== false) {
-                return $badPattern[1] ?: CheckInterface::RESULT_BLOCK;
+        foreach ($this->getBadPatternsCaseInsensitive() as $pattern) {
+            if (stripos($visitor->getRequestURI(), $pattern[0]) !== false) {
+                return $pattern[1] ?: CheckInterface::RESULT_BLOCK;
             }
         }
 
@@ -55,13 +58,13 @@ class UrlCheck implements CheckInterface
     protected function getBadPatterns()
     {
         return array(
-            ['../', '96c0bd29'], // path traversal
-            ['..\\', '96c0bd29'], // path traversal
-            [';DECLARE%20@', 'dfd9b1ad'], // SQL injection
-            ['%27--', 'dfd9b1ad'], // SQL injection
-            ['%27 --', 'dfd9b1ad'], // SQL injection
-            ['%27%23', 'dfd9b1ad'], // SQL injection
-            ['%27 %23', 'dfd9b1ad'], // SQL injection
+            ['../', self::REASON_MISC], // path traversal
+            ['..\\', self::REASON_MISC], // path traversal
+            [';DECLARE%20@', self::REASON_SQL_INJECTION], // SQL injection
+            ['%27--', self::REASON_SQL_INJECTION], // SQL injection
+            ['%27 --', self::REASON_SQL_INJECTION], // SQL injection
+            ['%27%23', self::REASON_SQL_INJECTION], // SQL injection
+            ['%27 %23', self::REASON_SQL_INJECTION], // SQL injection
         );
     }
 
@@ -73,17 +76,17 @@ class UrlCheck implements CheckInterface
     protected function getBadPatternsCaseInsensitive()
     {
         return array(
-            ['0x31303235343830303536', '96c0bd29'], // Havij
-            ['%60information_schema%60', 'dfd9b1ad'], // SQL injection probe
-            ['+%2F*%21', 'dfd9b1ad'], // SQL injection probe
-            ['benchmark%28', 'dfd9b1ad'], // SQL injection probe
-            ['insert+into+', 'dfd9b1ad'], // SQL injection
-            ['r3dm0v3', 'dfd9b1ad'], // SQL injection probe
-            ['select+1+from', 'dfd9b1ad'], // SQL injection probe
-            ['union+all+select', 'dfd9b1ad'], // SQL injection probe
-            ['union+select', 'dfd9b1ad'], // SQL injection probe
-            ['waitfor+delay+', 'dfd9b1ad'], // SQL injection probe
-            ['w00tw00t', '96c0bd29'] // vulnerability scanner
+            ['0x31303235343830303536', self::REASON_MISC], // Havij
+            ['%60information_schema%60', self::REASON_SQL_INJECTION], // SQL injection probe
+            ['+%2F*%21', self::REASON_SQL_INJECTION], // SQL injection probe
+            ['benchmark%28', self::REASON_SQL_INJECTION], // SQL injection probe
+            ['insert+into+', self::REASON_SQL_INJECTION], // SQL injection
+            ['r3dm0v3', self::REASON_SQL_INJECTION], // SQL injection probe
+            ['select+1+from', self::REASON_SQL_INJECTION], // SQL injection probe
+            ['union+all+select', self::REASON_SQL_INJECTION], // SQL injection probe
+            ['union+select', self::REASON_SQL_INJECTION], // SQL injection probe
+            ['waitfor+delay+', self::REASON_SQL_INJECTION], // SQL injection probe
+            ['w00tw00t', self::REASON_MISC] // vulnerability scanner
         );
     }
 }
