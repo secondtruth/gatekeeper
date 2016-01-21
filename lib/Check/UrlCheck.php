@@ -33,17 +33,11 @@ class UrlCheck implements CheckInterface
      */
     public function checkVisitor(Visitor $visitor)
     {
-        // Case-sensitive checks
-        foreach ($this->getBadPatterns() as $pattern) {
-            if (strpos($visitor->getRequestURI(), $pattern[0]) !== false) {
-                return $pattern[1] ?: CheckInterface::RESULT_BLOCK;
-            }
-        }
-
-        // Case-insensitive checks
-        foreach ($this->getBadPatternsCaseInsensitive() as $pattern) {
-            if (stripos($visitor->getRequestURI(), $pattern[0]) !== false) {
-                return $pattern[1] ?: CheckInterface::RESULT_BLOCK;
+        foreach ($this->getBadPatterns() as $reason => $items) {
+            foreach ($items as $item) {
+                if ($this->match($visitor->getRequestURI(), $item['pattern'], $item['ignore_case'])) {
+                    return $reason ?: CheckInterface::RESULT_BLOCK;
+                }
             }
         }
 
@@ -51,42 +45,50 @@ class UrlCheck implements CheckInterface
     }
 
     /**
-     * Gets list of request URI parts (case sensitive) which determine a bad bot.
+     * Tries to find the pattern in the request URI.
+     *
+     * @param $uri The request URI
+     * @param $pattern The bad pattern to match
+     * @param bool $ignoreCase Whether to ignore the case
+     * @return bool Returns TRUE if the pattern is matched, FALSE otherwise.
+     */
+    protected function match($uri, $pattern, $ignoreCase = false)
+    {
+        $func = $ignoreCase ? 'stripos' : 'strpos';
+
+        return $func($uri, $pattern) !== false;
+    }
+
+    /**
+     * Gets list of request URI parts which determine a bad bot.
      *
      * @return string[]
      */
     protected function getBadPatterns()
     {
-        return array(
-            ['../', self::REASON_MISC], // path traversal
-            ['..\\', self::REASON_MISC], // path traversal
-            [';DECLARE%20@', self::REASON_SQL_INJECTION], // SQL injection
-            ['%27--', self::REASON_SQL_INJECTION], // SQL injection
-            ['%27 --', self::REASON_SQL_INJECTION], // SQL injection
-            ['%27%23', self::REASON_SQL_INJECTION], // SQL injection
-            ['%27 %23', self::REASON_SQL_INJECTION], // SQL injection
-        );
-    }
-
-    /**
-     * Gets list of request URI parts (case insensitive) which determine a bad bot.
-     *
-     * @return string[]
-     */
-    protected function getBadPatternsCaseInsensitive()
-    {
-        return array(
-            ['0x31303235343830303536', self::REASON_MISC], // Havij
-            ['%60information_schema%60', self::REASON_SQL_INJECTION], // SQL injection probe
-            ['+%2F*%21', self::REASON_SQL_INJECTION], // SQL injection probe
-            ['benchmark%28', self::REASON_SQL_INJECTION], // SQL injection probe
-            ['insert+into+', self::REASON_SQL_INJECTION], // SQL injection
-            ['r3dm0v3', self::REASON_SQL_INJECTION], // SQL injection probe
-            ['select+1+from', self::REASON_SQL_INJECTION], // SQL injection probe
-            ['union+all+select', self::REASON_SQL_INJECTION], // SQL injection probe
-            ['union+select', self::REASON_SQL_INJECTION], // SQL injection probe
-            ['waitfor+delay+', self::REASON_SQL_INJECTION], // SQL injection probe
-            ['w00tw00t', self::REASON_MISC] // vulnerability scanner
-        );
+        return [
+            self::REASON_MISC => [
+                ['pattern' => '../', 'ignore_case' => false], // path traversal
+                ['pattern' => '..\\', 'ignore_case' => false], // path traversal
+                ['pattern' => '0x31303235343830303536', 'ignore_case' => true], // Havij
+                ['pattern' => 'w00tw00t', 'ignore_case' => true] // vulnerability scanner
+            ],
+            self::REASON_SQL_INJECTION => [
+                ['pattern' => ';DECLARE%20@', 'ignore_case' => false], // SQL injection
+                ['pattern' => '%27--', 'ignore_case' => false], // SQL injection
+                ['pattern' => '%27 --', 'ignore_case' => false], // SQL injection
+                ['pattern' => '%27%23', 'ignore_case' => false], // SQL injection
+                ['pattern' => '%27 %23', 'ignore_case' => false], // SQL injection
+                ['pattern' => '%60information_schema%60', 'ignore_case' => true], // SQL injection probe
+                ['pattern' => '+%2F*%21', 'ignore_case' => true], // SQL injection probe
+                ['pattern' => 'benchmark%28', 'ignore_case' => true], // SQL injection probe
+                ['pattern' => 'insert+into+', 'ignore_case' => true], // SQL injection
+                ['pattern' => 'r3dm0v3', 'ignore_case' => true], // SQL injection probe
+                ['pattern' => 'select+1+from', 'ignore_case' => true], // SQL injection probe
+                ['pattern' => 'union+all+select', 'ignore_case' => true], // SQL injection probe
+                ['pattern' => 'union+select', 'ignore_case' => true], // SQL injection probe
+                ['pattern' => 'waitfor+delay+', 'ignore_case' => true], // SQL injection probe
+            ]
+        ];
     }
 }
