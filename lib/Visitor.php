@@ -15,7 +15,6 @@
 
 namespace FlameCore\Gatekeeper;
 
-use FlameCore\Webtools\UserAgent;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -77,7 +76,7 @@ class Visitor
     /**
      * The user agent information
      *
-     * @var \FlameCore\Webtools\UserAgent
+     * @var \FlameCore\Gatekeeper\UserAgent
      */
     protected $userAgent;
 

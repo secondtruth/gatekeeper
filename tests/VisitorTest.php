@@ -77,7 +77,7 @@ class VisitorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUserAgent()
     {
-        $this->assertInstanceOf('FlameCore\Webtools\UserAgent', $this->visitor->getUserAgent());
+        $this->assertInstanceOf('FlameCore\Gatekeeper\UserAgent', $this->visitor->getUserAgent());
     }
 
     public function testIsBrowser()
