@@ -1,9 +1,9 @@
 FlameCore Gatekeeper
 ====================
 
-[![Build Status](https://img.shields.io/travis/FlameCore/Gatekeeper.svg)](https://travis-ci.org/FlameCore/Gatekeeper)
-[![Scrutinizer](http://img.shields.io/scrutinizer/g/FlameCore/Gatekeeper.svg)](https://scrutinizer-ci.com/g/FlameCore/Gatekeeper)
-[![Coverage](http://img.shields.io/scrutinizer/coverage/g/FlameCore/Gatekeeper.svg)](https://scrutinizer-ci.com/g/FlameCore/Gatekeeper)
+[![Build Status](https://img.shields.io/travis/flamecore/gatekeeper.svg)](https://travis-ci.org/flamecore/gatekeeper)
+[![Scrutinizer](http://img.shields.io/scrutinizer/g/flamecore/gatekeeper.svg)](https://scrutinizer-ci.com/g/flamecore/gatekeeper)
+[![Coverage](http://img.shields.io/scrutinizer/coverage/g/flamecore/gatekeeper.svg)](https://scrutinizer-ci.com/g/flamecore/gatekeeper)
 [![License](http://img.shields.io/packagist/l/flamecore/gatekeeper.svg)](https://packagist.org/packages/flamecore/gatekeeper)
 
 This library protects websites from spam and other attacks. It prevents bad bots from delivering their junk, and in many cases,
