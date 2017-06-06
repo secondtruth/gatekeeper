@@ -52,7 +52,7 @@ class UserAgent
      * Creates a UserAgent object.
      *
      * @param string $string The user agent string
-     * @param \FlameCore\Webtools\UserAgentStringParser $parser The parser used to parse the string
+     * @param \FlameCore\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
      */
     public function __construct($string = null, UserAgentStringParser $parser = null)
     {
@@ -203,7 +203,7 @@ class UserAgent
      * Configures the user agent information from a user agent string.
      *
      * @param string $string The user agent string
-     * @param \FlameCore\Webtools\UserAgentStringParser $parser The parser used to parse the string
+     * @param \FlameCore\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
      */
     public function configureFromUserAgentString($string, UserAgentStringParser $parser = null)
     {

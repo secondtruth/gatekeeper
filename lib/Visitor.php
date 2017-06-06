@@ -182,7 +182,7 @@ class Visitor
     /**
      * Gets the user agent information.
      *
-     * @return \FlameCore\Webtools\UserAgent
+     * @return \FlameCore\Gatekeeper\UserAgent
      */
     public function getUserAgent()
     {

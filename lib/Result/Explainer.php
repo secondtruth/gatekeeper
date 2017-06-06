@@ -32,7 +32,7 @@ class Explainer
     protected static $responses = [
         '136673cd' => [
             'response' => Response::HTTP_FORBIDDEN,
-            'explanation' => 'Your IP address is listed on a blacklist of addresses involved in malicious or illegal activity. See the listing below for more details on specific blacklists and removal procedures.',
+            'explanation' => 'Your IP address is listed on a blacklist of addresses involved in malicious or illegal activity.',
             'logtext' => 'IP address found on external blacklist'
         ],
         '17566707' => [
