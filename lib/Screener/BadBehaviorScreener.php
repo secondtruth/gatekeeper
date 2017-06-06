@@ -33,6 +33,11 @@ use FlameCore\Gatekeeper\Listing\StringList;
 class BadBehaviorScreener extends CustomScreener
 {
     /**
+     * @var \FlameCore\Gatekeeper\Listing\StringList
+     */
+    protected $uaBlacklist;
+
+    /**
      * The settings
      *
      * @var array
@@ -48,6 +53,9 @@ class BadBehaviorScreener extends CustomScreener
     {
         parent::__construct($whitelist, $trustedUserAgents);
 
+        $this->uaBlacklist = new StringList();
+        $this->setupUserAgentBlacklist();
+
         $this->settings = $settings;
     }
 
@@ -56,12 +64,7 @@ class BadBehaviorScreener extends CustomScreener
      */
     protected function setup()
     {
-        $list = new StringList();
-        $list->beginsWith($this->getSpambotNamesBeginning());
-        $list->contains($this->getSpambotNamesAnywhere());
-        $list->matches($this->getSpambotNamesRegex());
-
-        $this->addCheck(new BlacklistCheck(null, $list));
+        $this->addCheck(new BlacklistCheck(null, $this->uaBlacklist));
         $this->addCheck(new UrlCheck());
 
         $this->addCheck(new AbsurditiesCheck($this->settings));
@@ -76,9 +79,9 @@ class BadBehaviorScreener extends CustomScreener
      *
      * @return string[]
      */
-    protected function getSpambotNamesBeginning()
+    protected function setupUserAgentBlacklist()
     {
-        return array(
+        $this->uaBlacklist->beginsWith([
             '8484 Boston Project', // video poker/porn spam
             'adwords', // referrer spam
             'autoemailspider', // spam harvester
@@ -140,17 +143,9 @@ class BadBehaviorScreener extends CustomScreener
             'Winnie Poh', // Automated Coppermine hacks
             'Wordpress', // malicious software
             '"', // malicious software
-        );
-    }
+        ]);
 
-    /**
-     * Gets list of User Agent string parts at an arbitrary position which determine a bad bot.
-     *
-     * @return string[]
-     */
-    protected function getSpambotNamesAnywhere()
-    {
-        return array(
+        $this->uaBlacklist->contains([
             "\r", // A really dumb bot
             '<sc', // XSS exploit attempts
             '; Widows ', // misc comment/email spam
@@ -198,20 +193,12 @@ class BadBehaviorScreener extends CustomScreener
             'Xedant Human Emulator',// spammer script engine
             'ZmEu', // exploit scanner
             '\\\\)', // spam harvester
-        );
-    }
+        ]);
 
-    /**
-     * Gets list of User Agent string regexes which determine a bad bot.
-     *
-     * @return string[]
-     */
-    protected function getSpambotNamesRegex()
-    {
-        return array(
+        $this->uaBlacklist->matches([
             '/^[A-Z]{10}$/', // misc email spam
             '/[bcdfghjklmnpqrstvwxz ]{8,}/',
             '/MSIE [2345]/', // too old; assumed robot
-        );
+        ]);
     }
 }
