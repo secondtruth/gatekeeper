@@ -16,6 +16,16 @@
 namespace FlameCore\Gatekeeper\Tests\Check;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
+use FlameCore\Gatekeeper\Check\UserAgent\Bot\BaiduBot;
+use FlameCore\Gatekeeper\Check\UserAgent\Bot\GoogleBot;
+use FlameCore\Gatekeeper\Check\UserAgent\Bot\MsnBot;
+use FlameCore\Gatekeeper\Check\UserAgent\Bot\YahooBot;
+use FlameCore\Gatekeeper\Check\UserAgent\Browser\KonquerorBrowser;
+use FlameCore\Gatekeeper\Check\UserAgent\Browser\LynxBrowser;
+use FlameCore\Gatekeeper\Check\UserAgent\Browser\MozillaBrowser;
+use FlameCore\Gatekeeper\Check\UserAgent\Browser\MsieBrowser;
+use FlameCore\Gatekeeper\Check\UserAgent\Browser\OperaBrowser;
+use FlameCore\Gatekeeper\Check\UserAgent\Browser\SafariBrowser;
 use FlameCore\Gatekeeper\Check\UserAgentCheck;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -37,7 +47,20 @@ class UserAgentCheckTest extends CheckTestCase
 
     protected function setUp()
     {
-        $this->check = new UserAgentCheck();
+        $check = new UserAgentCheck();
+
+        $check->addBrowser(new MsieBrowser());
+        $check->addBrowser(new OperaBrowser());
+        $check->addBrowser(new KonquerorBrowser());
+        $check->addBrowser(new SafariBrowser());
+        $check->addBrowser(new LynxBrowser());
+        $check->addBrowser(new MozillaBrowser());
+        $check->addBot(new MsnBot());
+        $check->addBot(new GoogleBot());
+        $check->addBot(new YahooBot());
+        $check->addBot(new BaiduBot());
+
+        $this->check = $check;
     }
 
     public function testCheckPositiveMsie()
