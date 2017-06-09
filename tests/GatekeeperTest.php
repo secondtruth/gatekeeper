@@ -19,7 +19,7 @@ use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Gatekeeper;
 use FlameCore\Gatekeeper\Exceptions\AccessDeniedException;
-use FlameCore\Gatekeeper\Check\BlacklistCheck;
+use FlameCore\Gatekeeper\Check\IPBlacklistCheck;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -41,7 +41,7 @@ class GatekeeperTest extends \PHPUnit_Framework_TestCase
     {
         $this->screener = new Screener();
 
-        $check = new BlacklistCheck();
+        $check = new IPBlacklistCheck();
 
         $list = new IPList();
         $list->add(['127.0.0.2/32']);

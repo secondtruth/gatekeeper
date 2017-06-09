@@ -18,7 +18,7 @@ namespace FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Check\UrlCheck;
 use FlameCore\Gatekeeper\Check\AbsurditiesCheck;
-use FlameCore\Gatekeeper\Check\BlacklistCheck;
+use FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck;
 use FlameCore\Gatekeeper\Check\UserAgentCheck;
 use FlameCore\Gatekeeper\Check\PostRequestCheck;
 use FlameCore\Gatekeeper\Listing\IPList;
@@ -64,7 +64,7 @@ class BadBehaviorScreener extends CustomScreener
      */
     protected function setup()
     {
-        $this->addCheck(new BlacklistCheck(null, $this->uaBlacklist));
+        $this->addCheck(new UserAgentBlacklistCheck($this->uaBlacklist));
         $this->addCheck(new UrlCheck());
 
         $this->addCheck(new AbsurditiesCheck($this->settings));

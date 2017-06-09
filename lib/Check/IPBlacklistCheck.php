@@ -17,14 +17,13 @@ namespace FlameCore\Gatekeeper\Check;
 
 use FlameCore\Gatekeeper\Visitor;
 use FlameCore\Gatekeeper\Listing\IPList;
-use FlameCore\Gatekeeper\Listing\StringList;
 
 /**
- * Blacklist visitor IPs and User Agents which should get blocked.
+ * Blacklist visitor IPs which should get blocked.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class BlacklistCheck implements CheckInterface
+class IPBlacklistCheck implements CheckInterface
 {
     /**
      * The IP blacklist
@@ -34,22 +33,13 @@ class BlacklistCheck implements CheckInterface
     protected $blacklist;
 
     /**
-     * List of untrusted User Agents
-     *
-     * @var \FlameCore\Gatekeeper\Listing\StringList
-     */
-    protected $untrustedUserAgents;
-
-    /**
-     * Creates a BlacklistCheck object.
+     * Creates an IPBlacklistCheck object.
      *
      * @param \FlameCore\Gatekeeper\Listing\IPList $blacklist The IP blacklist
-     * @param \FlameCore\Gatekeeper\Listing\StringList $untrustedUserAgents List of untrusted User Agents
      */
-    public function __construct(IPList $blacklist = null, StringList $untrustedUserAgents = null)
+    public function __construct(IPList $blacklist = null)
     {
         $this->setBlacklist($blacklist ?: new IPList());
-        $this->setUntrustedUserAgents($untrustedUserAgents ?: new StringList());
     }
 
     /**
@@ -58,11 +48,6 @@ class BlacklistCheck implements CheckInterface
     public function checkVisitor(Visitor $visitor)
     {
         if ($this->blacklist->match($visitor->getIP())) {
-            return CheckInterface::RESULT_BLOCK;
-        }
-
-        $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if ($this->untrustedUserAgents->match($uastring)) {
             return CheckInterface::RESULT_BLOCK;
         }
 
@@ -87,25 +72,5 @@ class BlacklistCheck implements CheckInterface
     public function setBlacklist(IPList $blacklist)
     {
         $this->blacklist = $blacklist;
-    }
-
-    /**
-     * Sets the list of untrusted User Agents.
-     *
-     * @return \FlameCore\Gatekeeper\Listing\StringList
-     */
-    public function getUntrustedUserAgents()
-    {
-        return $this->untrustedUserAgents;
-    }
-
-    /**
-     * Gets the list of untrusted User Agents.
-     *
-     * @param \FlameCore\Gatekeeper\Listing\StringList $untrustedUserAgents List of untrusted User Agents
-     */
-    public function setUntrustedUserAgents(StringList $untrustedUserAgents)
-    {
-        $this->untrustedUserAgents = $untrustedUserAgents;
     }
 }

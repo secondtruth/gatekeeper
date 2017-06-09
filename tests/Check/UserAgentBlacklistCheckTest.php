@@ -16,36 +16,24 @@
 namespace FlameCore\Gatekeeper\Tests\Check;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
-use FlameCore\Gatekeeper\Check\BlacklistCheck;
-use FlameCore\Gatekeeper\Listing\IPList;
+use FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck;
 use FlameCore\Gatekeeper\Listing\StringList;
 
 /**
- * Test class for BlacklistCheck
+ * Test class for UserAgentBlacklistCheck
  */
-class BlacklistCheckTest extends CheckTestCase
+class UserAgentBlacklistCheckTest extends CheckTestCase
 {
     protected function setUp()
     {
-        $this->check = new BlacklistCheck();
-
-        $list = new IPList();
-        $list->add(['127.0.0.2/32']);
-        $this->check->setBlacklist($list);
+        $this->check = new UserAgentBlacklistCheck();
 
         $list = new StringList();
         $list->is(['Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
-        $this->check->setUntrustedUserAgents($list);
+        $this->check->setBlacklist($list);
     }
 
-    public function testCheckPositiveIP()
-    {
-        $result = $this->runTestCheck(null, null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
-
-        $this->assertEquals(CheckInterface::RESULT_BLOCK, $result);
-    }
-
-    public function testCheckPositiveUserAgent()
+    public function testCheckPositive()
     {
         $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
 

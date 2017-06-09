@@ -15,7 +15,7 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
-use FlameCore\Gatekeeper\Check\BlacklistCheck;
+use FlameCore\Gatekeeper\Check\IPBlacklistCheck;
 use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Visitor;
@@ -39,7 +39,7 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
         $list->add(['127.0.0.1/32', '127.0.0.2']);
         $this->screener->setWhitelist($list);
 
-        $check = new BlacklistCheck();
+        $check = new IPBlacklistCheck();
 
         $list = new IPList();
         $list->add(['127.0.0.3/32']);

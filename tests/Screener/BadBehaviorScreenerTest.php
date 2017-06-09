@@ -41,7 +41,7 @@ class BadBehaviorScreenerTest extends \PHPUnit_Framework_TestCase
         $result = $this->runTestScreening(['HTTP_USER_AGENT' => '8484 Boston Project']);
 
         $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
-        $this->assertEquals(['FlameCore\Gatekeeper\Check\BlacklistCheck'], $result->getReportingClasses());
+        $this->assertEquals(['FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
     }
 
     public function testCheckPositiveSpambotNamesAnywhere()
@@ -50,7 +50,7 @@ class BadBehaviorScreenerTest extends \PHPUnit_Framework_TestCase
         $result = $this->runTestScreening(['HTTP_USER_AGENT' => 'foo bar <script></script>']);
 
         $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
-        $this->assertEquals(['FlameCore\Gatekeeper\Check\BlacklistCheck'], $result->getReportingClasses());
+        $this->assertEquals(['FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
     }
 
     public function testCheckPositiveSpambotNamesRegex()
@@ -59,7 +59,7 @@ class BadBehaviorScreenerTest extends \PHPUnit_Framework_TestCase
         $result = $this->runTestScreening(['HTTP_USER_AGENT' => 'MSIE 2']);
 
         $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
-        $this->assertEquals(['FlameCore\Gatekeeper\Check\BlacklistCheck'], $result->getReportingClasses());
+        $this->assertEquals(['FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
     }
 
     public function testCheckNegative()
