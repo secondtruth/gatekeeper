@@ -15,9 +15,7 @@
 
 namespace FlameCore\Gatekeeper\Check;
 
-use FlameCore\Gatekeeper\Utils;
 use FlameCore\Gatekeeper\Visitor;
-use FlameCore\Gatekeeper\Check\Traits\BlackholeTrait;
 
 /**
  * Query the http:BL API and block visitors with matching IPs.
@@ -26,8 +24,6 @@ use FlameCore\Gatekeeper\Check\Traits\BlackholeTrait;
  */
 class HttpBlCheck implements CheckInterface
 {
-    use BlackholeTrait;
-
     /**
      * The API key
      *
@@ -147,11 +143,11 @@ class HttpBlCheck implements CheckInterface
         $ip = $visitor->getIP();
 
         // Can't use IPv6 addresses yet
-        if (Utils::isIPv6($ip)) {
+        if ($ip->isIPv6()) {
             return CheckInterface::RESULT_OKAY;
         }
 
-        $revip = $this->getIPv4Arpa($ip);
+        $revip = $ip->toArpa();
         $result = gethostbynamel("$this->apiKey.$revip.dnsbl.httpbl.org.");
 
         if (!empty($result)) {

@@ -18,8 +18,8 @@ namespace FlameCore\Gatekeeper\Check\UserAgent\Bot;
 use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Check\UserAgent\BotInterface;
 use FlameCore\Gatekeeper\Exceptions\StopScreeningException;
+use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Visitor;
-use FlameCore\Gatekeeper\Utils;
 
 /**
  * Class AbstractBot
@@ -41,11 +41,14 @@ abstract class AbstractBot implements BotInterface
      */
     public function scan(Visitor $visitor)
     {
-        if (Utils::isIPv6($visitor->getIP())) {
+        $ip = $visitor->getIP();
+
+        if ($ip->isIPv6()) {
             return CheckInterface::RESULT_OKAY;
         }
 
-        if (Utils::matchCIDR($visitor->getIP(), $this->knownIps)) {
+        $knownIps = new IPList($this->knownIps);
+        if ($knownIps->match($ip)) {
             throw new StopScreeningException();
         }
 

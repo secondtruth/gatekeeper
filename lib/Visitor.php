@@ -27,7 +27,7 @@ class Visitor
     /**
      * The client IP address
      *
-     * @var string
+     * @var IP
      */
     protected $ip;
 
@@ -94,7 +94,7 @@ class Visitor
      */
     public function __construct(Request $request)
     {
-        $this->ip = $request->getClientIp();
+        $this->ip = new IP($request->getClientIp());
         $this->headers = $request->headers;
         $this->method = $request->getRealMethod();
         $this->uri = $request->getRequestUri();
@@ -112,7 +112,7 @@ class Visitor
     /**
      * Gets the client IP address.
      *
-     * @return string
+     * @return \FlameCore\Gatekeeper\IP
      */
     public function getIP()
     {
@@ -207,7 +207,7 @@ class Visitor
     public function toArray()
     {
         return array(
-            'ip'         => $this->ip,
+            'ip'         => (string) $this->ip,
             'headers'    => $this->headers->all(),
             'method'     => $this->method,
             'uri'        => $this->uri,

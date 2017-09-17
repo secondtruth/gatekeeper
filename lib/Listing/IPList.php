@@ -15,8 +15,6 @@
 
 namespace FlameCore\Gatekeeper\Listing;
 
-use FlameCore\Gatekeeper\Utils;
-
 /**
  * IP matching list
  *
@@ -36,7 +34,22 @@ class IPList extends AbstractList
      */
     public function match($value)
     {
-        return Utils::matchCIDR($value, $this->list);
+        foreach ($this->list as $checkValue) {
+            if (strpos($checkValue, '/')) {
+                list($checkIP, $checkMask) = explode('/', $checkValue);
+                $checkMask = pow(2, 32) - pow(2, (32 - $checkMask));
+
+                if ((ip2long($value) & $checkMask) == (ip2long($checkIP) & $checkMask)) {
+                    return true;
+                }
+            } else {
+                if ((string) $value === $checkValue) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -140,6 +140,12 @@ class AbsurditiesCheck implements CheckInterface
             return '7d12528e';
         }
 
+        // Lowercase via is used by open proxies/referrer spammers
+        // Exceptions: Clearswift uses lowercase via (refuses to fix; may be blocked again in the future)
+//        if ($this->settings['strict'] && $headers->has('via') && strpos($headers->get('via'), 'Clearswift') === FALSE && strpos($ua, 'CoralWebPrx') === FALSE) {
+//            return "9c9e4979";
+//        }
+
         // pinappleproxy is used by referrer spammers
         if ($headers->has('Via')) {
             if (stripos($headers->get('Via'), 'pinappleproxy') !== false || stripos($headers->get('Via'), 'PCNETSERVER') !== false || stripos($headers->get('Via'), 'Invisiware') !== false) {

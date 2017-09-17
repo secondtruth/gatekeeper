@@ -32,7 +32,7 @@ class StopForumSpamCheck implements CheckInterface
     public function checkVisitor(Visitor $visitor)
     {
         $params = http_build_query([
-            'ip' => $visitor->getIP()
+            'ip' => (string) $visitor->getIP()
         ]);
 
         $response = @simplexml_load_file(self::CHECK_URL.'?'.$params);
