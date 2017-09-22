@@ -1,7 +1,7 @@
 {
-    "name": "flamecore/gatekeeper",
+    "name": "secondtruth/gatekeeper",
     "description": "Prevent spammers from ever reading your site",
-    "homepage": "http://www.flamecore.org",
+    "homepage": "http://www.secondtruth.de/gatekeeper",
     "keywords": ["security", "antispam"],
     "license": "ISC",
     "authors": [
@@ -13,8 +13,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/FlameCore/Gatekeeper/issues",
-        "wiki": "https://github.com/FlameCore/Gatekeeper/wiki"
+        "issues": "https://github.com/secondtruth/gatekeeper/issues",
+        "wiki": "https://github.com/secondtruth/gatekeeper/wiki"
     },
     "require": {
         "php": ">=5.4",

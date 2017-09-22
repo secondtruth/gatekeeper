@@ -1,10 +1,10 @@
 FlameCore Gatekeeper
 ====================
 
-[![Build Status](https://img.shields.io/travis/flamecore/gatekeeper.svg)](https://travis-ci.org/flamecore/gatekeeper)
-[![Scrutinizer](http://img.shields.io/scrutinizer/g/flamecore/gatekeeper.svg)](https://scrutinizer-ci.com/g/flamecore/gatekeeper)
-[![Coverage](http://img.shields.io/scrutinizer/coverage/g/flamecore/gatekeeper.svg)](https://scrutinizer-ci.com/g/flamecore/gatekeeper)
-[![License](http://img.shields.io/packagist/l/flamecore/gatekeeper.svg)](https://packagist.org/packages/flamecore/gatekeeper)
+[![Build Status](https://img.shields.io/travis/secondtruth/gatekeeper.svg)](https://travis-ci.org/secondtruth/gatekeeper)
+[![Scrutinizer](http://img.shields.io/scrutinizer/g/secondtruth/gatekeeper.svg)](https://scrutinizer-ci.com/g/secondtruth/gatekeeper)
+[![Coverage](http://img.shields.io/scrutinizer/coverage/g/secondtruth/gatekeeper.svg)](https://scrutinizer-ci.com/g/secondtruth/gatekeeper)
+[![License](http://img.shields.io/packagist/l/secondtruth/gatekeeper.svg)](https://packagist.org/packages/secondtruth/gatekeeper)
 
 This library protects websites from spam and other attacks. It prevents bad bots from delivering their junk, and in many cases,
 from ever reading your site in the first place.
@@ -79,7 +79,7 @@ Create a file called `composer.json` in your project directory and put the follo
 ```
 {
     "require": {
-        "flamecore/gatekeeper": "dev-master"
+        "secondtruth/gatekeeper": "dev-master"
     }
 }
 ```
