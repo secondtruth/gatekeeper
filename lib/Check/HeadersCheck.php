@@ -1,7 +1,7 @@
 <?php
 /**
  * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+ * Copyright (C) 2017 IceFlame.net
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -18,12 +18,12 @@ namespace FlameCore\Gatekeeper\Check;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Class AbsurditiesCheck
+ * This check analyzes the request headers.
  *
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class AbsurditiesCheck implements CheckInterface
+class HeadersCheck implements CheckInterface
 {
     /**
      * The settings
@@ -49,77 +49,6 @@ class AbsurditiesCheck implements CheckInterface
      */
     public function checkVisitor(Visitor $visitor)
     {
-        // Check for common stuff
-        if ($result = $this->checkProtocol($visitor)) {
-            return $result;
-        }
-
-        if ($result = $this->checkCookies($visitor)) {
-            return $result;
-        }
-
-        if ($result = $this->checkHeaders($visitor)) {
-            return $result;
-        }
-
-        return CheckInterface::RESULT_OKAY;
-    }
-
-    /**
-     * Enforces adherence to protocol version claimed by user-agent.
-     *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return bool|string
-     */
-    protected function checkProtocol(Visitor $visitor)
-    {
-        $headers = $visitor->getRequestHeaders();
-
-        // We should never see 'Expect:' for HTTP/1.0 requests
-        if ($headers->has('Expect') && stripos($headers->get('Expect'), '100-continue') !== false && !strcmp($visitor->getServerProtocol(), 'HTTP/1.0')) {
-            return 'a0105122';
-        }
-
-        // Is it claiming to be HTTP/1.1? Then it shouldn't do HTTP/1.0 things.
-        // Blocks some common corporate proxy servers in strict mode.
-        if ($this->settings['strict'] && !strcmp($visitor->getServerProtocol(), 'HTTP/1.1')) {
-            if ($headers->has('Pragma') && strpos($headers->get('Pragma'), 'no-cache') !== false && !$headers->has('Cache-Control')) {
-                return '41feed15';
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Enforces RFC 2965 sec 3.3.5 and 9.1.
-     *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return bool|string
-     */
-    protected function checkCookies(Visitor $visitor)
-    {
-        $headers = $visitor->getRequestHeaders();
-        $uastring = $visitor->getUserAgent()->getUserAgentString();
-
-        // The only valid value for $Version is 1 and when present, the user agent MUST send a Cookie2 header.
-        // NOTE: RFC 2965 is obsoleted by RFC 6265. Current software MUST NOT use Cookie2 or $Version in Cookie.
-        // First-gen Amazon Kindle is broken.
-        if (strpos($headers->get('Cookie'), '$Version=0') !== false && !$headers->has('Cookie2') && strpos($uastring, 'Kindle/') === false) {
-            return '6c502ff1';
-        }
-
-        return false;
-    }
-
-    /**
-     * Analyzes the request headers.
-     *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return bool|string
-     */
-    protected function checkHeaders(Visitor $visitor)
-    {
         $headers = $visitor->getRequestHeaders();
         $uastring = $visitor->getUserAgent()->getUserAgentString();
 
@@ -142,6 +71,7 @@ class AbsurditiesCheck implements CheckInterface
 
         // Lowercase via is used by open proxies/referrer spammers
         // Exceptions: Clearswift uses lowercase via (refuses to fix; may be blocked again in the future)
+        // TODO: Support this feature with HttpFoundation / HttpMessage?
 //        if ($this->settings['strict'] && $headers->has('via') && strpos($headers->get('via'), 'Clearswift') === FALSE && strpos($ua, 'CoralWebPrx') === FALSE) {
 //            return "9c9e4979";
 //        }
@@ -183,7 +113,7 @@ class AbsurditiesCheck implements CheckInterface
             return $result;
         }
 
-        return false;
+        return CheckInterface::RESULT_OKAY;
     }
 
     /**

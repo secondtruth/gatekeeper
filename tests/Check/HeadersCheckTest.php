@@ -16,16 +16,16 @@
 namespace FlameCore\Gatekeeper\Tests\Check;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
-use FlameCore\Gatekeeper\Check\AbsurditiesCheck;
+use FlameCore\Gatekeeper\Check\HeadersCheck;
 
 /**
- * Test class for AbsurditiesCheck
+ * Test class for HeadersCheck
  */
-class AbsurditiesCheckTest extends CheckTestCase
+class HeadersCheckTest extends CheckTestCase
 {
     protected function setUp()
     {
-        $this->check = new AbsurditiesCheck([
+        $this->check = new HeadersCheck([
             'strict' => true
         ]);
     }

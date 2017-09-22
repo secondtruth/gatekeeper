@@ -15,12 +15,13 @@
 
 namespace FlameCore\Gatekeeper\Screener;
 
-use FlameCore\Gatekeeper\Screener;
+use FlameCore\Gatekeeper\Check\CookiesCheck;
+use FlameCore\Gatekeeper\Check\HeadersCheck;
+use FlameCore\Gatekeeper\Check\PostRequestCheck;
+use FlameCore\Gatekeeper\Check\ProtocolCheck;
 use FlameCore\Gatekeeper\Check\UrlCheck;
-use FlameCore\Gatekeeper\Check\AbsurditiesCheck;
 use FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck;
 use FlameCore\Gatekeeper\Check\UserAgentCheck;
-use FlameCore\Gatekeeper\Check\PostRequestCheck;
 use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Listing\StringList;
 
@@ -67,7 +68,11 @@ class BadBehaviorScreener extends CustomScreener
         $this->addCheck(new UserAgentBlacklistCheck($this->uaBlacklist));
         $this->addCheck(new UrlCheck());
 
-        $this->addCheck(new AbsurditiesCheck($this->settings));
+        // Check for abnormalities in the request
+        $this->addCheck(new ProtocolCheck($this->settings));
+        $this->addCheck(new CookiesCheck());
+        $this->addCheck(new HeadersCheck($this->settings));
+
         $this->addCheck(new UserAgentCheck());
 
         // More intensive screening applies to POST requests
