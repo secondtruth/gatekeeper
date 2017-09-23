@@ -163,6 +163,11 @@ class StringList extends AbstractList
         $this->regexes = $this->merge($this->regexes, $regexes);
     }
 
+    /**
+     * Adds an entry using a wildcard pattern or regular expression ("r:")
+     *
+     * @param string $value The pattern to add
+     */
     protected function addPattern($value)
     {
         if ($value[0] == '*' && substr($value, -1) == '*') {
