@@ -15,23 +15,21 @@
 
 namespace FlameCore\Gatekeeper\Tests\Listing;
 
+use FlameCore\Gatekeeper\Listing\ListInterface;
+
 /**
  * Test case for Listing classes
  */
 class ListingTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \FlameCore\Gatekeeper\Listing\ListInterface
-     */
-    protected $list;
-
-    /**
+     * @param ListInterface $list
      * @param string|string[] $values
      */
-    public function assertMatchesList($values)
+    public function assertMatchesList($list, $values)
     {
         foreach ((array) $values as $value) {
-            $this->assertTrue($this->list->match($value));
+            $this->assertTrue($list->match($value));
         }
     }
 }

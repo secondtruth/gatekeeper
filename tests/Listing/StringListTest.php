@@ -22,69 +22,66 @@ use FlameCore\Gatekeeper\Listing\StringList;
  */
 class StringListTest extends ListingTestCase
 {
-    /**
-     * @var \FlameCore\Gatekeeper\Listing\StringList
-     */
-    protected $list;
-
-    public function setUp()
-    {
-        $this->list = new StringList();
-    }
-
     public function testMatch()
     {
-        $this->list->add('foo');
-        $this->list->add(['b*', '*z', '*u*']);
-        $this->list->add('r:/cat/');
+        $list = new StringList();
+        $list->add('foo');
+        $list->add(['b*', '*z', '*u*']);
+        $list->add('r:/cat/');
 
-        $this->assertMatchesList(['foo', 'bar', 'daz', 'uuu', 'cat']);
+        $this->assertMatchesList($list, ['foo', 'bar', 'daz', 'uuu', 'cat']);
     }
 
     public function testMatchLoadFile()
     {
-        $this->list->loadFile(__DIR__.'/fixtures/strings.txt');
+        $list = new StringList();
+        $list->loadFile(__DIR__.'/fixtures/strings.txt');
 
-        $this->assertMatchesList(['foo', 'bar', 'daz', 'uuu', 'cat']);
+        $this->assertMatchesList($list, ['foo', 'bar', 'daz', 'uuu', 'cat']);
     }
 
     public function testMatchIs()
     {
-        $this->list->is('daz');
-        $this->list->is(['bar', 'foo']);
+        $list = new StringList();
+        $list->is('daz');
+        $list->is(['bar', 'foo']);
 
-        $this->assertMatchesList('foo');
+        $this->assertMatchesList($list, 'foo');
     }
 
     public function testMatchBeginsWith()
     {
-        $this->list->beginsWith('d');
-        $this->list->beginsWith(['b', 'f']);
+        $list = new StringList();
+        $list->beginsWith('d');
+        $list->beginsWith(['b', 'f']);
 
-        $this->assertMatchesList('foo');
+        $this->assertMatchesList($list, 'foo');
     }
 
     public function testMatchEndsWith()
     {
-        $this->list->endsWith('z');
-        $this->list->endsWith(['r', 'o']);
+        $list = new StringList();
+        $list->endsWith('z');
+        $list->endsWith(['r', 'o']);
 
-        $this->assertMatchesList('foo');
+        $this->assertMatchesList($list, 'foo');
     }
 
     public function testMatchContains()
     {
-        $this->list->contains('u');
-        $this->list->contains(['a', 'o']);
+        $list = new StringList();
+        $list->contains('u');
+        $list->contains(['a', 'o']);
 
-        $this->assertMatchesList('foo');
+        $this->assertMatchesList($list, 'foo');
     }
 
     public function testMatchRegex()
     {
-        $this->list->matches('/daz/');
-        $this->list->matches(['/bar/', '/foo/']);
+        $list = new StringList();
+        $list->matches('/daz/');
+        $list->matches(['/bar/', '/foo/']);
 
-        $this->assertMatchesList('foo');
+        $this->assertMatchesList($list, 'foo');
     }
 }

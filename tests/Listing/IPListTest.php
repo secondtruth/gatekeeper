@@ -22,37 +22,31 @@ use FlameCore\Gatekeeper\Listing\IPList;
  */
 class IPListTest extends ListingTestCase
 {
-    /**
-     * @var \FlameCore\Gatekeeper\Listing\IPList
-     */
-    protected $list;
-
-    public function setUp()
-    {
-        $this->list = new IPList();
-    }
-
     public function testMatch()
     {
-        $this->list->add('127.0.0.1');
-        $this->list->add(['127.0.0.2', '127.0.0.3/32']);
+        $list = new IPList();
+        $list->add('127.0.0.1');
+        $list->add(['127.0.0.2', '127.0.0.3/32']);
 
-        $this->assertMatchesList(['127.0.0.1', '127.0.0.2', '127.0.0.3']);
+        $this->assertMatchesList($list, ['127.0.0.1', '127.0.0.2', '127.0.0.3']);
     }
 
     public function testMatchLoadFile()
     {
-        $this->list->loadFile(__DIR__.'/fixtures/ips.txt');
+        $list = new IPList();
+        $list->loadFile(__DIR__.'/fixtures/ips.txt');
 
-        $this->assertMatchesList(['127.0.0.1', '127.0.0.2', '127.0.0.3']);
+        $this->assertMatchesList($list, ['127.0.0.1', '127.0.0.2', '127.0.0.3']);
     }
 
     public function testGet()
     {
-        $this->assertSame([], $this->list->get());
+        $list = new IPList();
 
-        $this->list->add('127.0.0.1');
+        $this->assertSame([], $list->get());
 
-        $this->assertSame(['127.0.0.1'], $this->list->get());
+        $list->add('127.0.0.1');
+
+        $this->assertSame(['127.0.0.1'], $list->get());
     }
 }
