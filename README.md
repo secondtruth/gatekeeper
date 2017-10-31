@@ -74,23 +74,13 @@ Installation
 
 ### Install via Composer
 
-Create a file called `composer.json` in your project directory and put the following into it:
-
-```
-{
-    "require": {
-        "secondtruth/gatekeeper": "dev-master"
-    }
-}
-```
-
 [Install Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) if you don't already have it present on your system:
 
     $ curl -sS https://getcomposer.org/installer | php
 
-Use Composer to [download the vendor libraries](https://getcomposer.org/doc/00-intro.md#using-composer) and generate the vendor/autoload.php file:
+To install the library, run the following command and you will get the latest development version:
 
-    $ php composer.phar install
+    $ php composer.phar require secondtruth/gatekeeper:dev-master
 
 
 Requirements
