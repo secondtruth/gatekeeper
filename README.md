@@ -96,7 +96,7 @@ Use Composer to [download the vendor libraries](https://getcomposer.org/doc/00-i
 Requirements
 ------------
 
-* You must have at least PHP version 5.4 installed on your system.
+* You must have at least PHP version 5.6 installed on your system.
 
 
 Contributors
