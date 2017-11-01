@@ -23,7 +23,7 @@ use FlameCore\Gatekeeper\Visitor;
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class PostRequestCheck implements CheckInterface
+class PostRequestCheck extends AbstractCheck
 {
     /**
      * The settings
@@ -84,6 +84,14 @@ class PostRequestCheck implements CheckInterface
         }
 
         return CheckInterface::RESULT_OKAY;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isResponsibleFor(Visitor $visitor)
+    {
+        return $visitor->getRequestMethod() == 'POST';
     }
 
     /**

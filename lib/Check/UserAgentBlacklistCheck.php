@@ -23,7 +23,7 @@ use FlameCore\Gatekeeper\Listing\StringList;
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class UserAgentBlacklistCheck implements CheckInterface
+class UserAgentBlacklistCheck extends AbstractCheck
 {
     /**
      * List of untrusted User Agents

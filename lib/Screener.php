@@ -219,6 +219,10 @@ class Screener implements ScreenerInterface
         $rating = 0;
 
         foreach ($this->checks as $check) {
+            if (!$check->isResponsibleFor($visitor)) {
+                continue;
+            }
+
             try {
                 $result = $check->checkVisitor($visitor);
             } catch (StopScreeningException $e) {

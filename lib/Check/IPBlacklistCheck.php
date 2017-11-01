@@ -23,7 +23,7 @@ use FlameCore\Gatekeeper\Listing\IPList;
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class IPBlacklistCheck implements CheckInterface
+class IPBlacklistCheck extends AbstractCheck
 {
     /**
      * The IP blacklist

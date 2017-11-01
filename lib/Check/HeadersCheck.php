@@ -23,7 +23,7 @@ use FlameCore\Gatekeeper\Visitor;
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class HeadersCheck implements CheckInterface
+class HeadersCheck extends AbstractCheck
 {
     /**
      * The settings

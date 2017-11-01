@@ -23,7 +23,7 @@ use FlameCore\Gatekeeper\Visitor;
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class UrlCheck implements CheckInterface
+class UrlCheck extends AbstractCheck
 {
     const REASON_MISC = '96c0bd29';
     const REASON_SQL_INJECTION = 'dfd9b1ad';

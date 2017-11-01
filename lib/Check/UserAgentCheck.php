@@ -25,7 +25,7 @@ use FlameCore\Gatekeeper\Visitor;
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class UserAgentCheck implements CheckInterface
+class UserAgentCheck extends AbstractCheck
 {
     /**
      * @var BrowserInterface[]
