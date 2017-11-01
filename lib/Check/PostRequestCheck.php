@@ -18,7 +18,7 @@ namespace FlameCore\Gatekeeper\Check;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
- * Class PostRequestCheck
+ * Analyzes POST requests.
  *
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
@@ -50,55 +50,40 @@ class PostRequestCheck implements CheckInterface
     public function checkVisitor(Visitor $visitor)
     {
         if ($visitor->getRequestMethod() == 'POST') {
-            if ($result = $this->checkPostRequest($visitor)) {
-                return $result;
+            $headers = $visitor->getRequestHeaders();
+            $data = $visitor->getRequestData();
+
+            // MovableType needs specialized screening
+            if (stripos($visitor->getUserAgent()->getUserAgentString(), 'MovableType') !== false) {
+                if (strcmp($headers->get('Range'), 'bytes=0-99999')) {
+                    return '7d12528e';
+                }
+            }
+
+            // Trackbacks need special screening
+            if ($data->has('title') && $data->has('url') && $data->has('blog_name')) {
+                return $this->checkTrackback($visitor);
+            }
+
+            // Catch a few completely broken spambots
+            foreach ($data->all() as $key => $value) {
+                if (strpos($key, "\tdocument.write") !== false) {
+                    return 'dfd9b1ae';
+                }
+            }
+
+            // If 'Referer' exists, it should refer to a page on our site
+            if (!$this->settings['offsite_forms'] && $headers->has('Referer')) {
+                $url = parse_url($headers->get('Referer'));
+                $url['host'] = preg_replace('|^www\.|', '', $url['host']);
+                $host = preg_replace('|^www\.|', '', $headers->get('Host'));
+                if (strcasecmp($host, $url['host'])) {
+                    return 'cd361abb';
+                }
             }
         }
 
         return CheckInterface::RESULT_OKAY;
-    }
-
-    /**
-     * Analyzes POST requests.
-     *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor
-     * @return bool|string
-     */
-    protected function checkPostRequest(Visitor $visitor)
-    {
-        $headers = $visitor->getRequestHeaders();
-        $data = $visitor->getRequestData();
-
-        // MovableType needs specialized screening
-        if (stripos($visitor->getUserAgent()->getUserAgentString(), 'MovableType') !== false) {
-            if (strcmp($headers->get('Range'), 'bytes=0-99999')) {
-                return '7d12528e';
-            }
-        }
-
-        // Trackbacks need special screening
-        if ($data->has('title') && $data->has('url') && $data->has('blog_name')) {
-            return $this->checkTrackback($visitor);
-        }
-
-        // Catch a few completely broken spambots
-        foreach ($data->all() as $key => $value) {
-            if (strpos($key, "\tdocument.write") !== false) {
-                return 'dfd9b1ae';
-            }
-        }
-
-        // If 'Referer' exists, it should refer to a page on our site
-        if (!$this->settings['offsite_forms'] && $headers->has('Referer')) {
-            $url = parse_url($headers->get('Referer'));
-            $url['host'] = preg_replace('|^www\.|', '', $url['host']);
-            $host = preg_replace('|^www\.|', '', $headers->get('Host'));
-            if (strcasecmp($host, $url['host'])) {
-                return 'cd361abb';
-            }
-        }
-
-        return false;
     }
 
     /**
