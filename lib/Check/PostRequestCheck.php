@@ -42,7 +42,9 @@ class PostRequestCheck extends AbstractConfigurableCheck
 
         // Trackbacks need special screening
         if ($data->has('title') && $data->has('url') && $data->has('blog_name')) {
-            return $this->checkTrackback($visitor);
+            if ($result = $this->checkTrackback($visitor)) {
+                return $result;
+            }
         }
 
         // Catch a few completely broken spambots
