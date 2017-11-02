@@ -23,63 +23,42 @@ use FlameCore\Gatekeeper\Visitor;
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class PostRequestCheck extends AbstractCheck
+class PostRequestCheck extends AbstractConfigurableCheck
 {
-    /**
-     * The settings
-     *
-     * @var array
-     */
-    protected $settings = array();
-
-    /**
-     * @param array $settings The settings
-     */
-    public function __construct(array $settings = [])
-    {
-        $defaults = array(
-            'offsite_forms' => false
-        );
-
-        $this->settings = array_replace($defaults, $settings);
-    }
-
     /**
      * {@inheritdoc}
      */
     public function checkVisitor(Visitor $visitor)
     {
-        if ($visitor->getRequestMethod() == 'POST') {
-            $headers = $visitor->getRequestHeaders();
-            $data = $visitor->getRequestData();
+        $headers = $visitor->getRequestHeaders();
+        $data = $visitor->getRequestData();
 
-            // MovableType needs specialized screening
-            if (stripos($visitor->getUserAgent()->getUserAgentString(), 'MovableType') !== false) {
-                if (strcmp($headers->get('Range'), 'bytes=0-99999')) {
-                    return '7d12528e';
-                }
+        // MovableType needs specialized screening
+        if (stripos($visitor->getUserAgent()->getUserAgentString(), 'MovableType') !== false) {
+            if (strcmp($headers->get('Range'), 'bytes=0-99999')) {
+                return '7d12528e';
             }
+        }
 
-            // Trackbacks need special screening
-            if ($data->has('title') && $data->has('url') && $data->has('blog_name')) {
-                return $this->checkTrackback($visitor);
+        // Trackbacks need special screening
+        if ($data->has('title') && $data->has('url') && $data->has('blog_name')) {
+            return $this->checkTrackback($visitor);
+        }
+
+        // Catch a few completely broken spambots
+        foreach ($data->all() as $key => $value) {
+            if (strpos($key, "\tdocument.write") !== false) {
+                return 'dfd9b1ae';
             }
+        }
 
-            // Catch a few completely broken spambots
-            foreach ($data->all() as $key => $value) {
-                if (strpos($key, "\tdocument.write") !== false) {
-                    return 'dfd9b1ae';
-                }
-            }
-
-            // If 'Referer' exists, it should refer to a page on our site
-            if (!$this->settings['offsite_forms'] && $headers->has('Referer')) {
-                $url = parse_url($headers->get('Referer'));
-                $url['host'] = preg_replace('|^www\.|', '', $url['host']);
-                $host = preg_replace('|^www\.|', '', $headers->get('Host'));
-                if (strcasecmp($host, $url['host'])) {
-                    return 'cd361abb';
-                }
+        // If 'Referer' exists, it should refer to a page on our site
+        if (!$this->settings['offsite_forms'] && $headers->has('Referer')) {
+            $url = parse_url($headers->get('Referer'));
+            $url['host'] = preg_replace('|^www\.|', '', $url['host']);
+            $host = preg_replace('|^www\.|', '', $headers->get('Host'));
+            if (strcasecmp($host, $url['host'])) {
+                return 'cd361abb';
             }
         }
 
@@ -122,5 +101,15 @@ class PostRequestCheck extends AbstractCheck
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSettingsDefaults()
+    {
+        return array(
+            'offsite_forms' => false
+        );
     }
 }

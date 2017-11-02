@@ -23,27 +23,8 @@ use FlameCore\Gatekeeper\Visitor;
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class HeadersCheck extends AbstractCheck
+class HeadersCheck extends AbstractConfigurableCheck
 {
-    /**
-     * The settings
-     *
-     * @var array
-     */
-    protected $settings = array();
-
-    /**
-     * @param array $settings
-     */
-    public function __construct(array $settings = [])
-    {
-        $defaults = array(
-            'strict' => false
-        );
-
-        $this->settings = array_replace($defaults, $settings);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -166,5 +147,15 @@ class HeadersCheck extends AbstractCheck
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSettingsDefaults()
+    {
+        return array(
+            'strict' => false
+        );
     }
 }

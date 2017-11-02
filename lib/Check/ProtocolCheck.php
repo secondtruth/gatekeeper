@@ -23,27 +23,8 @@ use FlameCore\Gatekeeper\Visitor;
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-class ProtocolCheck extends AbstractCheck
+class ProtocolCheck extends AbstractConfigurableCheck
 {
-    /**
-     * The settings
-     *
-     * @var array
-     */
-    protected $settings = array();
-
-    /**
-     * @param array $settings
-     */
-    public function __construct(array $settings = [])
-    {
-        $defaults = array(
-            'strict' => false
-        );
-
-        $this->settings = array_replace($defaults, $settings);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -65,5 +46,15 @@ class ProtocolCheck extends AbstractCheck
         }
 
         return CheckInterface::RESULT_OKAY;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSettingsDefaults()
+    {
+        return array(
+            'strict' => false
+        );
     }
 }
