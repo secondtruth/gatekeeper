@@ -190,6 +190,16 @@ class UserAgent
     }
 
     /**
+     * Tells whether this user agent is a known browser.
+     *
+     * @return bool
+     */
+    public function isBrowser()
+    {
+        return in_array($this->getBrowserName(), $this->getKnownBrowsers());
+    }
+
+    /**
      * Tells whether this user agent is a known bot/crawler.
      *
      * @return bool Returns TRUE if this user agent is a bot, FALSE otherwise.
@@ -241,6 +251,20 @@ class UserAgent
         $this->setBrowserVersion($data['browser_version']);
         $this->setBrowserEngine($data['browser_engine']);
         $this->setOperatingSystem($data['operating_system']);
+    }
+
+    protected function getKnownBrowsers()
+    {
+        return [
+            'msie',
+            'firefox',
+            'chrome',
+            'safari',
+            'opera',
+            'konqueror',
+            'edge',
+            'lynx'
+        ];
     }
 
     /**

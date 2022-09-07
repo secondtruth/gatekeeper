@@ -80,18 +80,13 @@ class VisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('FlameCore\Gatekeeper\UserAgent', $this->visitor->getUserAgent());
     }
 
-    public function testIsBrowser()
-    {
-        $this->assertEquals(true, $this->visitor->isBrowser());
-    }
-
     public function testToArray()
     {
         $array = $this->visitor->toArray();
 
         $this->assertInternalType('array', $array);
 
-        $keys = ['ip', 'headers', 'method', 'uri', 'data', 'protocol', 'scheme', 'user_agent', 'is_browser'];
+        $keys = ['ip', 'headers', 'method', 'uri', 'data', 'protocol', 'scheme', 'user_agent'];
         foreach ($keys as $key) {
             $this->assertArrayHasKey($key, $array);
         }

@@ -81,13 +81,6 @@ class Visitor
     protected $userAgent;
 
     /**
-     * Request comes from a browser?
-     *
-     * @var bool
-     */
-    protected $isBrowser;
-
-    /**
      * Creates a Visitor object.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request The request of the visitor
@@ -104,9 +97,6 @@ class Visitor
 
         $userAgent = $request->headers->get('user-agent');
         $this->userAgent = new UserAgent($userAgent);
-
-        $knownBrowsers = ['msie', 'firefox', 'chrome', 'safari', 'opera', 'konqueror', 'edge', 'lynx'];
-        $this->isBrowser = in_array($this->userAgent->getBrowserName(), $knownBrowsers);
     }
 
     /**
@@ -190,16 +180,6 @@ class Visitor
     }
 
     /**
-     * Request comes from a browser?
-     *
-     * @return bool
-     */
-    public function isBrowser()
-    {
-        return $this->isBrowser;
-    }
-
-    /**
      * Export data to array.
      *
      * @return array
@@ -214,8 +194,7 @@ class Visitor
             'data'       => $this->data->all(),
             'protocol'   => $this->protocol,
             'scheme'     => $this->scheme,
-            'user_agent' => $this->userAgent->getUserAgentString(),
-            'is_browser' => $this->isBrowser()
+            'user_agent' => $this->userAgent->getUserAgentString()
         );
     }
 }

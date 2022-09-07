@@ -86,7 +86,7 @@ class PostRequestCheck extends AbstractConfigurableCheck
         $headers = $visitor->getRequestHeaders();
 
         // Web browsers don't send trackbacks
-        if ($visitor->isBrowser()) {
+        if ($visitor->getUserAgent()->isBrowser()) {
             return 'f0dcb3fd';
         }
 
