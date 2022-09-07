@@ -1,13 +1,11 @@
-Contributing Guidelines
-=======================
+# Contributing Guidelines
 
 Contributions are **welcome** and will be fully **credited**.
 
 We accept contributions via Pull Requests on [Github][1].
 
 
-The Rules
----------
+## The Rules
 
 * We try to follow Semantic Versioning ([SemVer 2.0.0][2]). Randomly breaking public APIs is not an option.
 
@@ -25,14 +23,12 @@ The Rules
 * If you introduce a significant code change, always run the tests.
 
 
-Coding Standard
----------------
+## Coding Standard
 
-We use the [PSR-1 coding standard][4] and the [PSR-2 coding style][5].
+We follow the [PSR-1 coding standard][4] and the [PSR-2 coding style][5].
 
 
-Running tests
--------------
+## Running tests
 
 You can run the unit tests with the following commands:
 

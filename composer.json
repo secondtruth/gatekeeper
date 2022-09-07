@@ -1,14 +1,14 @@
 {
     "name": "secondtruth/gatekeeper",
     "description": "Prevent spammers from ever reading your site",
-    "homepage": "http://www.secondtruth.de/gatekeeper",
+    "homepage": "https://www.secondtruth.de",
     "keywords": ["security", "antispam"],
-    "license": "ISC",
+    "license": "MIT",
     "authors": [
         {
             "name": "Christian Neff",
             "email": "christian.neff@gmail.com",
-            "homepage": "http://www.secondtruth.de",
+            "homepage": "https://www.secondtruth.de",
             "role": "Developer"
         }
     ],

@@ -1,17 +1,15 @@
-FlameCore Gatekeeper
-====================
+# Gatekeeper
 
 [![Build Status](https://img.shields.io/travis/secondtruth/gatekeeper.svg)](https://travis-ci.org/secondtruth/gatekeeper)
 [![Scrutinizer](http://img.shields.io/scrutinizer/g/secondtruth/gatekeeper.svg)](https://scrutinizer-ci.com/g/secondtruth/gatekeeper)
 [![Coverage](http://img.shields.io/scrutinizer/coverage/g/secondtruth/gatekeeper.svg)](https://scrutinizer-ci.com/g/secondtruth/gatekeeper)
 [![License](http://img.shields.io/packagist/l/secondtruth/gatekeeper.svg)](https://packagist.org/packages/secondtruth/gatekeeper)
 
-This library protects websites from spam and other attacks. It prevents bad bots from delivering their junk, and in many cases,
+The Gatekeeper library protects websites from spam and other attacks. It prevents bad bots from delivering their junk, and in many cases,
 from ever reading your site in the first place.
 
 
-Description
------------
+## Description
 
 Welcome to a whole new way of keeping your service, forum, wiki or content management system free of spam and other attacks.
 Gatekeeper is a PHP-based solution for blocking spam and the robots which deliver it. This keeps your site's load down,
@@ -24,11 +22,10 @@ is using. In this way, Gatekeeper can stop spam attacks even when nobody has eve
 Gatekeeper is designed to work alongside existing spam prevention services to increase their effectiveness and efficiency.
 Whenever possible, you should run it in combination with a more traditional spam prevention service.
 
-The library is inspired by the [Bad Behavior](http://bad-behavior.ioerror.us) anti-spam system by [Michael Hampton](http://ioerror.us).
+The library is inspired by the **Bad Behavior** anti-spam system by **Michael Hampton**.
 
 
-Usage
------
+## Usage
 
 Include the vendor autoloader and use the classes:
 
@@ -69,32 +66,29 @@ $gatekeeper->run($request, $screener);
 ```
 
 
-Installation
-------------
+## Installation
 
 ### Install via Composer
 
-[Install Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) if you don't already have it present on your system:
-
-    $ curl -sS https://getcomposer.org/installer | php
+[Install Composer](https://getcomposer.org/doc/00-intro.md#installation-linux-unix-osx) if you don't already have it present on your system.
 
 To install the library, run the following command and you will get the latest development version:
 
     $ php composer.phar require secondtruth/gatekeeper:dev-master
 
 
-Requirements
-------------
+## Requirements
 
 * You must have at least PHP version 5.6 installed on your system.
 
 
-Contributors
-------------
+## Author, Credits and License
 
-If you want to contribute, please see the [CONTRIBUTING](CONTRIBUTING.md) file first.
+This project was created by [Christian Neff](https://www.secondtruth.de) ([@secondtruth](https://github.com/secondtruth))
+and is licensed under the [MIT License](LICENSE.md).
 
-Thanks to the contributors:
+Based on the work of:
 
-* Christian Neff (secondtruth)
 * Michael Hampton
+
+Thanks to [all other Contributors](https://github.com/secondtruth/wumbo/graphs/contributors)!
