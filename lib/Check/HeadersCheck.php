@@ -40,7 +40,7 @@ class HeadersCheck extends AbstractConfigurableCheck
         // 'Range:' field exists and begins with 0. Real user-agents do not start ranges at 0. (Also blocks whois.sc bot. No big loss.)
         // Exceptions: MT (not fixable); LJ (refuses to fix; may be blocked again in the future); Facebook
         if ($this->settings['strict'] && $headers->has('Range') && strpos($headers->get('Range'), '=0-') !== false) {
-            if (strncmp($uastring, 'MovableType', 11) && strncmp($uastring, 'URI::Fetch', 10) && strncmp($uastring, 'php-openid/', 11) && strncmp($uastring, 'facebookexternalhit', 19)) {
+            if (!$uastring->startsWithAny(['MovableType', 'URI::Fetch', 'php-openid/', 'facebookexternalhit'], true)) {
                 return '7ad04a8a';
             }
         }

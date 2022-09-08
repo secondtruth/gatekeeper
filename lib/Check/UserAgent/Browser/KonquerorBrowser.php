@@ -30,6 +30,6 @@ class KonquerorBrowser extends AbstractBrowser
      */
     public function is(UserAgent $ua)
     {
-        return $ua->getBrowserName() == 'konqueror';
+        return $ua->getUserAgentString()->contains('Konqueror');
     }
 }

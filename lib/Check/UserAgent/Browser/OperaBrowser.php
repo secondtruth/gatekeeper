@@ -30,6 +30,6 @@ class OperaBrowser extends AbstractBrowser
      */
     public function is(UserAgent $ua)
     {
-        return $ua->getBrowserName() == 'opera' || ($ua->getBrowserName() == 'msie' && stripos($ua->getUserAgentString(), 'Opera') !== false);
+        return $ua->getUserAgentString()->contains('Opera');
     }
 }

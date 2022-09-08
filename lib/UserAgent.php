@@ -24,7 +24,7 @@ namespace FlameCore\Gatekeeper;
 class UserAgent
 {
     /**
-     * @var string
+     * @var \FlameCore\Gatekeeper\UserAgentString
      */
     protected $string;
 
@@ -72,7 +72,7 @@ class UserAgent
     /**
      * Gets the user agent string.
      *
-     * @return string
+     * @return \FlameCore\Gatekeeper\UserAgentString
      */
     public function getUserAgentString()
     {
@@ -86,7 +86,7 @@ class UserAgent
      */
     public function setUserAgentString($string)
     {
-        $this->string = $string;
+        $this->string = new UserAgentString($string);
     }
 
     /**

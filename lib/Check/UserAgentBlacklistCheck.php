@@ -48,7 +48,7 @@ class UserAgentBlacklistCheck extends AbstractCheck
     public function checkVisitor(Visitor $visitor)
     {
         $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if ($this->blacklist->match($uastring)) {
+        if ($this->blacklist->match((string) $uastring)) {
             return CheckInterface::RESULT_BLOCK;
         }
 

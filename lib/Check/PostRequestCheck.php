@@ -34,7 +34,7 @@ class PostRequestCheck extends AbstractConfigurableCheck
         $data = $visitor->getRequestData();
 
         // MovableType needs specialized screening
-        if (stripos($visitor->getUserAgent()->getUserAgentString(), 'MovableType') !== false) {
+        if ($visitor->getUserAgent()->getUserAgentString()->contains('MovableType')) {
             if (strcmp($headers->get('Range'), 'bytes=0-99999')) {
                 return '7d12528e';
             }
@@ -96,7 +96,7 @@ class PostRequestCheck extends AbstractConfigurableCheck
         }
 
         // Real WordPress trackbacks may contain 'Accept:' and have a charset defined
-        if (strpos($visitor->getUserAgent()->getUserAgentString(), 'WordPress/') !== false) {
+        if ($visitor->getUserAgent()->getUserAgentString()->contains('WordPress/', true)) {
             if (strpos($headers->get('Accept'), 'charset=') === false) {
                 return 'e3990b47';
             }

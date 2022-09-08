@@ -40,13 +40,13 @@ class MsieBrowser extends AbstractBrowser
         $headers = $visitor->getRequestHeaders();
 
         // MSIE does NOT send "Windows ME" or "Windows XP" in the user agent
-        if (strpos($uastring, 'Windows ME') !== false || strpos($uastring, 'Windows XP') !== false || strpos($uastring, 'Windows 2000') !== false || strpos($uastring, 'Win32') !== false) {
+        if ($uastring->containsAny(['Windows ME', 'Windows XP', 'Windows 2000', 'Win32'], true)) {
             return 'a1084bad';
         }
 
         // MSIE does NOT send 'Connection: TE' but Akamai does. Bypass this test when Akamai detected.
         // The latest version of IE for Windows CE also uses 'Connection: TE'
-        if (!$headers->has('Akamai-Origin-Hop') && strpos($uastring, 'IEMobile') === false && preg_match('/\bTE\b/i', $headers->get('Connection'))) {
+        if (!$headers->has('Akamai-Origin-Hop') && !$uastring->contains('IEMobile', true) && preg_match('/\bTE\b/i', $headers->get('Connection'))) {
             return '2b90f772';
         }
 
@@ -58,6 +58,6 @@ class MsieBrowser extends AbstractBrowser
      */
     public function is(UserAgent $ua)
     {
-        return $ua->getBrowserName() == 'msie' && stripos($ua->getUserAgentString(), 'Opera') === false;
+        return $ua->getUserAgentString()->containsAny(['; MSIE', 'Opera']);
     }
 }

@@ -34,7 +34,7 @@ class MozillaBrowser extends AbstractBrowser
     {
         $uastring = $visitor->getUserAgent()->getUserAgentString();
 
-        if (strpos($uastring, 'Google Desktop') || strpos($uastring, 'PLAYSTATION 3')) {
+        if ($uastring->contains('Google Desktop', true) || $uastring->contains('PLAYSTATION 3', true)) {
             return CheckInterface::RESULT_OKAY;
         }
 
@@ -46,6 +46,6 @@ class MozillaBrowser extends AbstractBrowser
      */
     public function is(UserAgent $ua)
     {
-        return stripos($ua->getUserAgentString(), 'Mozilla') === 0;
+        return $ua->getUserAgentString()->startsWith('Mozilla');
     }
 }
