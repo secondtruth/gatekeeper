@@ -79,7 +79,7 @@ To install the library, run the following command and you will get the latest de
 
 ## Requirements
 
-* You must have at least PHP version 5.6 installed on your system.
+* You must have at least PHP version 8.1 installed on your system.
 
 
 ## Author, Credits and License
