@@ -43,6 +43,7 @@ abstract class AbstractBot implements BotInterface
     {
         $ip = $visitor->getIP();
 
+        // Skip IPv6 addresses
         if ($ip->isIPv6()) {
             return CheckInterface::RESULT_OKAY;
         }

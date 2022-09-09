@@ -47,8 +47,8 @@ class UrlCheck extends AbstractCheck
     /**
      * Tries to find the pattern in the request URI.
      *
-     * @param $uri The request URI
-     * @param $pattern The bad pattern to match
+     * @param string $uri The request URI
+     * @param string $pattern The bad pattern to match
      * @param bool $ignoreCase Whether to ignore the case
      * @return bool Returns TRUE if the pattern is matched, FALSE otherwise.
      */

@@ -62,6 +62,9 @@ class GatekeeperTest extends TestCase
         $this->gatekeeper->run($request, $this->screener);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNegative()
     {
         try {
