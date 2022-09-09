@@ -51,6 +51,19 @@ class GatekeeperTest extends TestCase
         $this->screener->addCheck($check);
 
         $this->gatekeeper = new Gatekeeper();
+
+        $list = new IPList();
+        $list->add(['127.0.0.1/32']);
+        $this->gatekeeper->setWhitelist($list);
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testWhitelist()
+    {
+        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.1']);
+        $this->gatekeeper->run($request, $this->screener);
     }
 
     public function testPositive()

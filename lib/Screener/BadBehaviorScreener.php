@@ -50,10 +50,8 @@ class BadBehaviorScreener extends CustomScreener
      *
      * @param array $settings The settings
      */
-    public function __construct(array $settings = [], IPList $whitelist = null, StringList $trustedUserAgents = null)
+    public function __construct(array $settings = [])
     {
-        parent::__construct($whitelist, $trustedUserAgents);
-
         $this->uaBlacklist = new StringList();
         $this->setupUserAgentBlacklist();
 

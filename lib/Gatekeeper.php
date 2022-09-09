@@ -15,7 +15,10 @@
 
 namespace FlameCore\Gatekeeper;
 
+use FlameCore\Gatekeeper\Listing\IPList;
+use FlameCore\Gatekeeper\Listing\StringList;
 use FlameCore\Gatekeeper\Result\Explainer;
+use FlameCore\Gatekeeper\Result\NegativeResult;
 use FlameCore\Gatekeeper\Result\PositiveResult;
 use FlameCore\Gatekeeper\Storage\StorageInterface;
 use FlameCore\Gatekeeper\Exceptions\AccessDeniedException;
@@ -41,6 +44,20 @@ class Gatekeeper
      * @var \FlameCore\Gatekeeper\Result\Explainer
      */
     protected $explainer;
+
+    /**
+     * The IP whitelist
+     *
+     * @var \FlameCore\Gatekeeper\Listing\IPList
+     */
+    protected $whitelist;
+
+    /**
+     * The list of trusted user agents
+     *
+     * @var \FlameCore\Gatekeeper\Listing\StringList
+     */
+    protected $trustedUserAgents;
 
     /**
      * The current visitor
@@ -135,6 +152,46 @@ class Gatekeeper
     }
 
     /**
+     * Returns the IP whitelist.
+     *
+     * @return \FlameCore\Gatekeeper\Listing\IPList
+     */
+    public function getWhitelist()
+    {
+        return $this->whitelist;
+    }
+
+    /**
+     * Sets the IP whitelist.
+     *
+     * @param \FlameCore\Gatekeeper\Listing\IPList $whitelist The IP whitelist
+     */
+    public function setWhitelist(IPList $whitelist)
+    {
+        $this->whitelist = $whitelist;
+    }
+
+    /**
+     * Returns the list of trusted user agents.
+     *
+     * @return \FlameCore\Gatekeeper\Listing\StringList
+     */
+    public function getTrustedUserAgents()
+    {
+        return $this->trustedUserAgents;
+    }
+
+    /**
+     * Sets the list of trusted user agents.
+     *
+     * @param \FlameCore\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
+     */
+    public function setTrustedUserAgents(StringList $trustedUserAgents)
+    {
+        $this->trustedUserAgents = $trustedUserAgents;
+    }
+
+    /**
      * Runs the system.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request The request of the visitor
@@ -142,15 +199,20 @@ class Gatekeeper
      */
     public function run(Request $request, ScreenerInterface $screener)
     {
-        $this->visitor = new Visitor($request);
+        $visitor = new Visitor($request);
+        $this->visitor = $visitor;
 
-        $result = $screener->screenVisitor($this->visitor);
+        if (!$this->isWhitelisted($visitor)) {
+            $result = $screener->screenVisitor($visitor);
 
-        $explainer = $this->explainer ?: new Explainer();
-        $result->setExplanation($explainer->explain($result));
+            $explainer = $this->explainer ?: new Explainer();
+            $result->setExplanation($explainer->explain($result));
+        } else {
+            $result = new NegativeResult(__CLASS__);
+        }
 
         if ($this->storage) {
-            $this->storage->insert($this->visitor, $result);
+            $this->storage->insert($visitor, $result);
         }
 
         if ($result instanceof PositiveResult) {
@@ -191,6 +253,26 @@ class Gatekeeper
     protected function penalize(PositiveResult $result)
     {
         // reserved for future use, maybe for reporting to stopforumspam.com or so
+    }
+
+    /**
+     * Checks if the visitor is whitelisted.
+     *
+     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
+     * @return bool
+     */
+    protected function isWhitelisted(Visitor $visitor)
+    {
+        if ($this->whitelist && $this->whitelist->match($visitor->getIP())) {
+            return true;
+        }
+
+        $uastring = $visitor->getUserAgent()->getUserAgentString();
+        if ($this->trustedUserAgents && $this->trustedUserAgents->match((string) $uastring)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

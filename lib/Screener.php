@@ -37,20 +37,6 @@ class Screener implements ScreenerInterface
     protected $checks = array();
 
     /**
-     * The IP whitelist
-     *
-     * @var \FlameCore\Gatekeeper\Listing\IPList
-     */
-    protected $whitelist;
-
-    /**
-     * The list of trusted user agents
-     *
-     * @var \FlameCore\Gatekeeper\Listing\StringList
-     */
-    protected $trustedUserAgents;
-
-    /**
      * The rating threshold
      *
      * @var int
@@ -65,26 +51,10 @@ class Screener implements ScreenerInterface
     private $reporting = array();
 
     /**
-     * Creates a Screener object.
-     *
-     * @param \FlameCore\Gatekeeper\Listing\IPList $whitelist The IP whitelist
-     * @param \FlameCore\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
-     */
-    public function __construct(IPList $whitelist = null, StringList $trustedUserAgents = null)
-    {
-        $this->setWhitelist($whitelist ?: new IPList());
-        $this->setTrustedUserAgents($trustedUserAgents ?: new StringList());
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function screenVisitor(Visitor $visitor)
     {
-        if ($this->isWhitelisted($visitor)) {
-            return new NegativeResult(__CLASS__);
-        }
-
         $result = $this->doScreening($visitor);
 
         if ($result !== false) {
@@ -140,46 +110,6 @@ class Screener implements ScreenerInterface
         }
 
         $this->checks[$class] = $check;
-    }
-
-    /**
-     * Returns the IP whitelist.
-     *
-     * @return \FlameCore\Gatekeeper\Listing\IPList
-     */
-    public function getWhitelist()
-    {
-        return $this->whitelist;
-    }
-
-    /**
-     * Sets the IP whitelist.
-     *
-     * @param \FlameCore\Gatekeeper\Listing\IPList $whitelist The IP whitelist
-     */
-    public function setWhitelist(IPList $whitelist)
-    {
-        $this->whitelist = $whitelist;
-    }
-
-    /**
-     * Returns the list of trusted user agents.
-     *
-     * @return \FlameCore\Gatekeeper\Listing\StringList
-     */
-    public function getTrustedUserAgents()
-    {
-        return $this->trustedUserAgents;
-    }
-
-    /**
-     * Sets the list of trusted user agents.
-     *
-     * @param \FlameCore\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
-     */
-    public function setTrustedUserAgents(StringList $trustedUserAgents)
-    {
-        $this->trustedUserAgents = $trustedUserAgents;
     }
 
     /**
@@ -240,26 +170,6 @@ class Screener implements ScreenerInterface
                     return $result;
                 }
             }
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks if the visitor is whitelisted.
-     *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
-     * @return bool
-     */
-    protected function isWhitelisted(Visitor $visitor)
-    {
-        if ($this->whitelist->match($visitor->getIP())) {
-            return true;
-        }
-
-        $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if ($this->trustedUserAgents->match((string) $uastring)) {
-            return true;
         }
 
         return false;

@@ -39,10 +39,6 @@ class ScreenerTest extends TestCase
     {
         $this->screener = new Screener();
 
-        $list = new IPList();
-        $list->add(['127.0.0.1/32', '127.0.0.2']);
-        $this->screener->setWhitelist($list);
-
         $check = new IPBlacklistCheck();
 
         $list = new IPList();
@@ -50,17 +46,6 @@ class ScreenerTest extends TestCase
         $check->setBlacklist($list);
 
         $this->screener->addCheck($check);
-    }
-
-    public function testWhitelist()
-    {
-        /** @var NegativeResult $result */
-        $result = $this->runTestScreening('127.0.0.2');
-
-        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\NegativeResult', $result);
-
-        $expected = [get_class($this->screener)];
-        $this->assertEquals($expected, $result->getReportingClasses());
     }
 
     public function testPositive()
