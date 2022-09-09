@@ -15,6 +15,7 @@
 
 namespace FlameCore\Gatekeeper\Tests\Result;
 
+use PHPUnit\Framework\TestCase;
 use FlameCore\Gatekeeper\Result\Explainer;
 use FlameCore\Gatekeeper\Result\NegativeResult;
 use FlameCore\Gatekeeper\Result\PositiveResult;
@@ -22,14 +23,14 @@ use FlameCore\Gatekeeper\Result\PositiveResult;
 /**
  * Test class for Explainer
  */
-class ExplainerTest extends \PHPUnit_Framework_TestCase
+class ExplainerTest extends TestCase
 {
     /**
-     * @var \FlameCore\Gatekeeper\Result\Explainer
+     * @var Explainer
      */
     private $explainer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->explainer = new Explainer();
     }

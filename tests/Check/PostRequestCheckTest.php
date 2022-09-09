@@ -23,7 +23,7 @@ use FlameCore\Gatekeeper\Check\PostRequestCheck;
  */
 class PostRequestCheckTest extends CheckTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->check = new PostRequestCheck();
     }

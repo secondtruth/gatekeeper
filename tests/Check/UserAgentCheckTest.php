@@ -15,6 +15,7 @@
 
 namespace FlameCore\Gatekeeper\Tests\Check;
 
+use FlameCore\Gatekeeper\Exceptions\StopScreeningException;
 use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Check\UserAgent\Bot\BaiduBot;
 use FlameCore\Gatekeeper\Check\UserAgent\Bot\GoogleBot;
@@ -45,7 +46,7 @@ class UserAgentCheckTest extends CheckTestCase
     const UA_YAHOOBOT = 'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)';
     const UA_BAIDUBOT = 'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $check = new UserAgentCheck();
 
@@ -113,35 +114,31 @@ class UserAgentCheckTest extends CheckTestCase
         $this->doTestCheckPositiveBot(['HTTP_USER_AGENT' => self::UA_BAIDUBOT]);
     }
 
-    /**
-     * @expectedException \FlameCore\Gatekeeper\Exceptions\StopScreeningException
-     */
     public function testCheckStopGoogleBot()
     {
+        $this->expectException(StopScreeningException::class);
+
         $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_GOOGLEBOT, 'REMOTE_ADDR' => '66.249.64.0']);
     }
 
-    /**
-     * @expectedException \FlameCore\Gatekeeper\Exceptions\StopScreeningException
-     */
     public function testCheckStopMsnBot()
     {
+        $this->expectException(StopScreeningException::class);
+
         $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_MSNBOT, 'REMOTE_ADDR' => '207.46.0.0']);
     }
 
-    /**
-     * @expectedException \FlameCore\Gatekeeper\Exceptions\StopScreeningException
-     */
     public function testCheckStopYahooBot()
     {
+        $this->expectException(StopScreeningException::class);
+
         $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_YAHOOBOT, 'REMOTE_ADDR' => '202.160.176.0']);
     }
 
-    /**
-     * @expectedException \FlameCore\Gatekeeper\Exceptions\StopScreeningException
-     */
     public function testCheckStopBaiduBot()
     {
+        $this->expectException(StopScreeningException::class);
+
         $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_BAIDUBOT, 'REMOTE_ADDR' => '119.63.192.0']);
     }
 

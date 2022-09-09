@@ -15,6 +15,9 @@
 
 namespace FlameCore\Gatekeeper\Tests\Screener;
 
+use PHPUnit\Framework\TestCase;
+use FlameCore\Gatekeeper\Screener;
+use FlameCore\Gatekeeper\Result\ResultInterface;
 use FlameCore\Gatekeeper\Visitor;
 use FlameCore\Gatekeeper\Screener\BadBehaviorScreener;
 use FlameCore\Gatekeeper\Result\PositiveResult;
@@ -23,14 +26,14 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Test class for BadBehaviorScreener
  */
-class BadBehaviorScreenerTest extends \PHPUnit_Framework_TestCase
+class BadBehaviorScreenerTest extends TestCase
 {
     /**
-     * @var \FlameCore\Gatekeeper\Screener
+     * @var Screener
      */
     private $screener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->screener = new BadBehaviorScreener();
     }
@@ -71,7 +74,7 @@ class BadBehaviorScreenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $server
-     * @return \FlameCore\Gatekeeper\Result\ResultInterface
+     * @return ResultInterface
      */
     protected function runTestScreening(array $server = [])
     {

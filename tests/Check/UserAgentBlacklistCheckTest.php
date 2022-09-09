@@ -24,7 +24,7 @@ use FlameCore\Gatekeeper\Listing\StringList;
  */
 class UserAgentBlacklistCheckTest extends CheckTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->check = new UserAgentBlacklistCheck();
 

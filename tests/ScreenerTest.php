@@ -15,6 +15,10 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
+use PHPUnit\Framework\TestCase;
+use FlameCore\Gatekeeper\Result\NegativeResult;
+use FlameCore\Gatekeeper\Result\PositiveResult;
+use FlameCore\Gatekeeper\Result\ResultInterface;
 use FlameCore\Gatekeeper\Check\IPBlacklistCheck;
 use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Screener;
@@ -24,14 +28,14 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Test class for Screener
  */
-class ScreenerTest extends \PHPUnit_Framework_TestCase
+class ScreenerTest extends TestCase
 {
     /**
-     * @var \FlameCore\Gatekeeper\Screener
+     * @var Screener
      */
     private $screener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->screener = new Screener();
 
@@ -50,7 +54,7 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
     public function testWhitelist()
     {
-        /** @var \FlameCore\Gatekeeper\Result\NegativeResult $result */
+        /** @var NegativeResult $result */
         $result = $this->runTestScreening('127.0.0.2');
 
         $this->assertInstanceOf('FlameCore\Gatekeeper\Result\NegativeResult', $result);
@@ -61,7 +65,7 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
     public function testPositive()
     {
-        /** @var \FlameCore\Gatekeeper\Result\PositiveResult $result */
+        /** @var PositiveResult $result */
         $result = $this->runTestScreening('127.0.0.3');
 
         $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
@@ -72,7 +76,7 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
     public function testNegative()
     {
-        /** @var \FlameCore\Gatekeeper\Result\NegativeResult $result */
+        /** @var NegativeResult $result */
         $result = $this->runTestScreening('127.0.0.4');
 
         $this->assertInstanceOf('FlameCore\Gatekeeper\Result\NegativeResult', $result);
@@ -81,7 +85,7 @@ class ScreenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $ip
-     * @return \FlameCore\Gatekeeper\Result\ResultInterface
+     * @return ResultInterface
      */
     protected function runTestScreening($ip)
     {

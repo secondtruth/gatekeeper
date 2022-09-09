@@ -15,16 +15,18 @@
 
 namespace FlameCore\Gatekeeper\Tests\Check;
 
+use PHPUnit\Framework\TestCase;
+use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Test case for Check classes
  */
-abstract class CheckTestCase extends \PHPUnit_Framework_TestCase
+abstract class CheckTestCase extends TestCase
 {
     /**
-     * @var \FlameCore\Gatekeeper\Check\CheckInterface
+     * @var CheckInterface
      */
     protected $check;
 
@@ -45,7 +47,7 @@ abstract class CheckTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @return int|string
      */
     protected function runCustomTestCheck(Request $request)

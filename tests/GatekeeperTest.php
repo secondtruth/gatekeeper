@@ -16,6 +16,7 @@
 namespace FlameCore\Gatekeeper\Tests;
 
 use FlameCore\Gatekeeper\Listing\IPList;
+use PHPUnit\Framework\TestCase;
 use FlameCore\Gatekeeper\Screener;
 use FlameCore\Gatekeeper\Gatekeeper;
 use FlameCore\Gatekeeper\Exceptions\AccessDeniedException;
@@ -25,19 +26,19 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Test class for Gatekeeper
  */
-class GatekeeperTest extends \PHPUnit_Framework_TestCase
+class GatekeeperTest extends TestCase
 {
     /**
-     * @var \FlameCore\Gatekeeper\Gatekeeper
+     * @var Gatekeeper
      */
     private $gatekeeper;
 
     /**
-     * @var \FlameCore\Gatekeeper\Screener
+     * @var Screener
      */
     private $screener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->screener = new Screener();
 
@@ -52,11 +53,11 @@ class GatekeeperTest extends \PHPUnit_Framework_TestCase
         $this->gatekeeper = new Gatekeeper();
     }
 
-    /**
-     * @expectedException \FlameCore\Gatekeeper\Exceptions\AccessDeniedException
-     */
     public function testPositive()
     {
+        $this->expectException(AccessDeniedException::class);
+        $this->expectExceptionMessageMatches('#<p>Your request has been blocked\.</p>#');
+
         $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2'], null);
         $this->gatekeeper->run($request, $this->screener);
     }

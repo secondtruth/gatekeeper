@@ -23,7 +23,7 @@ use FlameCore\Gatekeeper\Check\UrlCheck;
  */
 class UrlCheckTest extends CheckTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->check = new UrlCheck();
     }

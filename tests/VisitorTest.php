@@ -15,22 +15,23 @@
 
 namespace FlameCore\Gatekeeper\Tests;
 
+use PHPUnit\Framework\TestCase;
 use FlameCore\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Test class for Visitor
  */
-class VisitorTest extends \PHPUnit_Framework_TestCase
+class VisitorTest extends TestCase
 {
     const USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
 
     /**
-     * @var \FlameCore\Gatekeeper\Visitor
+     * @var Visitor
      */
     private $visitor;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $browser = array(
             'HTTP_USER_AGENT' => self::USER_AGENT
@@ -84,7 +85,7 @@ class VisitorTest extends \PHPUnit_Framework_TestCase
     {
         $array = $this->visitor->toArray();
 
-        $this->assertInternalType('array', $array);
+        $this->assertIsArray($array);
 
         $keys = ['ip', 'headers', 'method', 'uri', 'data', 'protocol', 'scheme', 'user_agent'];
         foreach ($keys as $key) {
@@ -97,9 +98,8 @@ class VisitorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('HTTP/1.1', $array['protocol']);
         $this->assertEquals('http', $array['scheme']);
         $this->assertEquals(self::USER_AGENT, $array['user_agent']);
-        $this->assertEquals(true, $array['is_browser']);
 
-        $this->assertInternalType('array', $array['headers']);
-        $this->assertInternalType('array', $array['data']);
+        $this->assertIsArray($array['headers']);
+        $this->assertIsArray($array['data']);
     }
 }

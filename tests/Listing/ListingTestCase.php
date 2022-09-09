@@ -15,12 +15,13 @@
 
 namespace FlameCore\Gatekeeper\Tests\Listing;
 
+use PHPUnit\Framework\TestCase;
 use FlameCore\Gatekeeper\Listing\ListInterface;
 
 /**
  * Test case for Listing classes
  */
-class ListingTestCase extends \PHPUnit_Framework_TestCase
+class ListingTestCase extends TestCase
 {
     /**
      * @param ListInterface $list

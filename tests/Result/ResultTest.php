@@ -15,13 +15,14 @@
 
 namespace FlameCore\Gatekeeper\Tests\Result;
 
+use PHPUnit\Framework\TestCase;
 use FlameCore\Gatekeeper\Result\NegativeResult;
 use FlameCore\Gatekeeper\Result\PositiveResult;
 
 /**
  * Test class for Result
  */
-class ResultTest extends \PHPUnit_Framework_TestCase
+class ResultTest extends TestCase
 {
     public function testPositiveResult()
     {

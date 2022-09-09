@@ -24,7 +24,7 @@ use FlameCore\Gatekeeper\Listing\IPList;
  */
 class IPBlacklistCheckTest extends CheckTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->check = new IPBlacklistCheck();
 

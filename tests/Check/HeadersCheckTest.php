@@ -23,7 +23,7 @@ use FlameCore\Gatekeeper\Check\HeadersCheck;
  */
 class HeadersCheckTest extends CheckTestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->check = new HeadersCheck([
             'strict' => true
