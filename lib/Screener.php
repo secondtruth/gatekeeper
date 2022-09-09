@@ -258,7 +258,7 @@ class Screener implements ScreenerInterface
         }
 
         $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if ($this->trustedUserAgents->match($uastring)) {
+        if ($this->trustedUserAgents->match((string) $uastring)) {
             return true;
         }
 

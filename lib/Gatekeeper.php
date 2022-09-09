@@ -147,9 +147,7 @@ class Gatekeeper
         $result = $screener->screenVisitor($this->visitor);
 
         $explainer = $this->explainer ?: new Explainer();
-
-        $explanation = $explainer->explain($result);
-        $result->setExplanation($explanation);
+        $result->setExplanation($explainer->explain($result));
 
         if ($this->storage) {
             $this->storage->insert($this->visitor, $result);

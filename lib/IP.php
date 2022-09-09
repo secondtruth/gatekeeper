@@ -65,11 +65,13 @@ class IP
     public function toArpa()
     {
         if ($this->isIPv6) {
-            $unpack = unpack('H*hex', inet_pton($this->ip));
-            return implode('.', array_reverse(str_split($unpack['hex'])));
+            $unpacked = unpack('H*hex', inet_pton($this->ip));
+            $parts = str_split($unpacked['hex']);
         } else {
-            return implode('.', array_reverse(explode('.', $this->ip)));
+            $parts = explode('.', $this->ip);
         }
+
+        return implode('.', array_reverse($parts));
     }
 
     /**
