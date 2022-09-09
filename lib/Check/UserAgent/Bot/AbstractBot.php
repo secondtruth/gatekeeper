@@ -17,6 +17,7 @@ namespace FlameCore\Gatekeeper\Check\UserAgent\Bot;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Check\UserAgent\BotInterface;
+use FlameCore\Gatekeeper\Check\UserAgent\ScannableUserAgentInterface;
 use FlameCore\Gatekeeper\Exceptions\StopScreeningException;
 use FlameCore\Gatekeeper\Listing\IPList;
 use FlameCore\Gatekeeper\Visitor;
@@ -27,7 +28,7 @@ use FlameCore\Gatekeeper\Visitor;
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-abstract class AbstractBot implements BotInterface
+abstract class AbstractBot implements BotInterface, ScannableUserAgentInterface
 {
     /**
      * List of known IPs

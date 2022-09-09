@@ -17,6 +17,7 @@ namespace FlameCore\Gatekeeper\Check\UserAgent\Browser;
 
 use FlameCore\Gatekeeper\Check\CheckInterface;
 use FlameCore\Gatekeeper\Check\UserAgent\BrowserInterface;
+use FlameCore\Gatekeeper\Check\UserAgent\ScannableUserAgentInterface;
 use FlameCore\Gatekeeper\Visitor;
 
 /**
@@ -25,7 +26,7 @@ use FlameCore\Gatekeeper\Visitor;
  * @author   Michael Hampton <bad.bots@ioerror.us>
  * @author   Christian Neff <christian.neff@gmail.com>
  */
-abstract class AbstractBrowser implements BrowserInterface
+abstract class AbstractBrowser implements BrowserInterface, ScannableUserAgentInterface
 {
     /**
      * {@inheritdoc}
