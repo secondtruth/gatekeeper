@@ -11,13 +11,11 @@
 namespace FlameCore\Gatekeeper\Tests;
 
 use FlameCore\Gatekeeper\UserAgent;
-use FlameCore\Gatekeeper\Visitor;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 class UserAgentTest extends TestCase
 {
-    const USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
+    protected const USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
 
     /**
      * @var UserAgent

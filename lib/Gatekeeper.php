@@ -86,7 +86,6 @@ class Gatekeeper
         );
 
         $this->settings = array_replace($defaults, $settings);
-
         $this->storage = $storage;
     }
 

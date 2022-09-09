@@ -75,7 +75,7 @@ abstract class AbstractList implements ListInterface
      * @param array $newEntries The new entries
      * @return array Returns the updated list.
      */
-    protected function merge(array $list, array $newEntries)
+    protected static function merge(array $list, array $newEntries)
     {
         return array_unique(array_merge($list, $newEntries));
     }

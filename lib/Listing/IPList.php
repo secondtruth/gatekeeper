@@ -69,7 +69,7 @@ class IPList extends AbstractList
     {
         $ips = array_map('strval', (array) $values);
 
-        $this->list = $this->merge($this->list, $ips);
+        $this->list = self::merge($this->list, $ips);
     }
 
     /**

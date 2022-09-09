@@ -71,7 +71,7 @@ class GatekeeperTest extends TestCase
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessageMatches('#<p>Your request has been blocked\.</p>#');
 
-        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2'], null);
+        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
         $this->gatekeeper->run($request, $this->screener);
     }
 
@@ -81,7 +81,7 @@ class GatekeeperTest extends TestCase
     public function testNegative()
     {
         try {
-            $request = Request::create('/', null, [], [], [], [], null);
+            $request = Request::create('/', null, [], [], [], []);
             $this->gatekeeper->run($request, $this->screener);
         } catch (AccessDeniedException $e) {
             $this->fail('AccessDeniedException was thrown.');

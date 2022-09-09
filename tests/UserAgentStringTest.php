@@ -15,9 +15,9 @@ use PHPUnit\Framework\TestCase;
 
 class UserAgentStringTest extends TestCase
 {
-    const USER_AGENT_STRING = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
+    protected const USER_AGENT_STRING = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.0 Safari/537.36';
 
-    private $userAgentString;
+    protected $userAgentString;
 
     public function setUp(): void
     {

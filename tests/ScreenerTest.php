@@ -53,7 +53,7 @@ class ScreenerTest extends TestCase
         /** @var PositiveResult $result */
         $result = $this->runTestScreening('127.0.0.3');
 
-        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
+        $this->assertInstanceOf(PositiveResult::class, $result);
 
         $expected = array_keys($this->screener->getChecks());
         $this->assertEquals($expected, $result->getReportingClasses());
@@ -64,7 +64,7 @@ class ScreenerTest extends TestCase
         /** @var NegativeResult $result */
         $result = $this->runTestScreening('127.0.0.4');
 
-        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\NegativeResult', $result);
+        $this->assertInstanceOf(NegativeResult::class, $result);
         $this->assertEmpty($result->getReportingClasses());
     }
 
@@ -74,7 +74,7 @@ class ScreenerTest extends TestCase
      */
     protected function runTestScreening($ip)
     {
-        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => $ip], null);
+        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => $ip]);
         $visitor = new Visitor($request);
 
         return $this->screener->screenVisitor($visitor);
