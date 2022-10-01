@@ -30,7 +30,7 @@ class UserAgentBlacklistCheckTest extends CheckTestCase
 
     public function testCheckPositive()
     {
-        $result = $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
+        $result = $this->runTestCheck('/', 'GET', [], [], [], ['HTTP_USER_AGENT' => 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
 
         $this->assertEquals(CheckInterface::RESULT_BLOCK, $result);
     }

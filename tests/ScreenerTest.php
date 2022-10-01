@@ -69,7 +69,7 @@ class ScreenerTest extends TestCase
      */
     protected function runTestScreening($ip)
     {
-        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => $ip]);
+        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => $ip]);
         $visitor = new Visitor($request);
 
         return $this->screener->screenVisitor($visitor);

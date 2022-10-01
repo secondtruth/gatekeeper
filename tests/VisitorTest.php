@@ -28,11 +28,12 @@ class VisitorTest extends TestCase
 
     protected function setUp(): void
     {
-        $browser = array(
-            'HTTP_USER_AGENT' => self::USER_AGENT
+        $serverParams = array(
+            'HTTP_USER_AGENT' => self::USER_AGENT,
+            'REMOTE_ADDR' => '127.0.0.1',
         );
 
-        $request = Request::create('/', 'POST', [], [], [], $browser, null);
+        $request = Request::create('/', 'POST', [], [], [], $serverParams);
         $this->visitor = new Visitor($request);
     }
 

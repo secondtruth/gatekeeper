@@ -73,7 +73,7 @@ class BadBehaviorScreenerTest extends TestCase
      */
     protected function runTestScreening(array $server = [])
     {
-        $request = Request::create('/', null, [], [], [], $server);
+        $request = Request::create('/', 'POST', [], [], [], $server);
         $visitor = new Visitor($request);
 
         return $this->screener->screenVisitor($visitor);

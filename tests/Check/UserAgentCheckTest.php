@@ -113,28 +113,28 @@ class UserAgentCheckTest extends CheckTestCase
     {
         $this->expectException(StopScreeningException::class);
 
-        $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_GOOGLEBOT, 'REMOTE_ADDR' => '66.249.64.0']);
+        $this->runTestCheck('/', 'GET', [], [], [], ['HTTP_USER_AGENT' => self::UA_GOOGLEBOT, 'REMOTE_ADDR' => '66.249.64.0']);
     }
 
     public function testCheckStopMsnBot()
     {
         $this->expectException(StopScreeningException::class);
 
-        $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_MSNBOT, 'REMOTE_ADDR' => '207.46.0.0']);
+        $this->runTestCheck('/', 'GET', [], [], [], ['HTTP_USER_AGENT' => self::UA_MSNBOT, 'REMOTE_ADDR' => '207.46.0.0']);
     }
 
     public function testCheckStopYahooBot()
     {
         $this->expectException(StopScreeningException::class);
 
-        $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_YAHOOBOT, 'REMOTE_ADDR' => '202.160.176.0']);
+        $this->runTestCheck('/', 'GET', [], [], [], ['HTTP_USER_AGENT' => self::UA_YAHOOBOT, 'REMOTE_ADDR' => '202.160.176.0']);
     }
 
     public function testCheckStopBaiduBot()
     {
         $this->expectException(StopScreeningException::class);
 
-        $this->runTestCheck(null, null, [], [], [], ['HTTP_USER_AGENT' => self::UA_BAIDUBOT, 'REMOTE_ADDR' => '119.63.192.0']);
+        $this->runTestCheck('/', 'GET', [], [], [], ['HTTP_USER_AGENT' => self::UA_BAIDUBOT, 'REMOTE_ADDR' => '119.63.192.0']);
     }
 
     public function testCheckNegative()
@@ -146,7 +146,7 @@ class UserAgentCheckTest extends CheckTestCase
 
     protected function doTestCheckPositiveBrowser(array $browser)
     {
-        $request = Request::create('/', null, [], [], [], $browser);
+        $request = Request::create('/', 'GET', [], [], [], $browser);
         $request->headers->remove('Accept');
 
         $result = $this->runCustomTestCheck($request);
@@ -156,7 +156,7 @@ class UserAgentCheckTest extends CheckTestCase
 
     protected function doTestCheckPositiveBot(array $browser)
     {
-        $result = $this->runTestCheck(null, null, [], [], [], $browser);
+        $result = $this->runTestCheck('/', 'GET', [], [], [], $browser);
 
         $this->assertEquals(CheckInterface::RESULT_UNSURE, $result);
     }

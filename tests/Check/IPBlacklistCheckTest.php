@@ -30,7 +30,7 @@ class IPBlacklistCheckTest extends CheckTestCase
 
     public function testCheckPositive()
     {
-        $result = $this->runTestCheck(null, null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
+        $result = $this->runTestCheck('/', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
 
         $this->assertEquals(CheckInterface::RESULT_BLOCK, $result);
     }

@@ -40,7 +40,7 @@ class GatekeeperTest extends TestCase
         $check = new IPBlacklistCheck();
 
         $list = new IPList();
-        $list->add(['127.0.0.2/32']);
+        $list->add(['127.0.0.3/32']);
         $check->setBlacklist($list);
 
         $this->screener->addCheck($check);
@@ -48,7 +48,7 @@ class GatekeeperTest extends TestCase
         $this->gatekeeper = new Gatekeeper();
 
         $list = new IPList();
-        $list->add(['127.0.0.1/32']);
+        $list->add(['127.0.0.2/32']);
         $this->gatekeeper->setWhitelist($list);
     }
 
@@ -57,7 +57,7 @@ class GatekeeperTest extends TestCase
      */
     public function testWhitelist()
     {
-        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.1']);
+        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
         $this->gatekeeper->run($request, $this->screener);
     }
 
@@ -66,7 +66,7 @@ class GatekeeperTest extends TestCase
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessageMatches('#<p>Your request has been blocked\.</p>#');
 
-        $request = Request::create('/', null, [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
+        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.3']);
         $this->gatekeeper->run($request, $this->screener);
     }
 
@@ -76,9 +76,9 @@ class GatekeeperTest extends TestCase
     public function testNegative()
     {
         try {
-            $request = Request::create('/', null, [], [], [], []);
+            $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.1']);
             $this->gatekeeper->run($request, $this->screener);
-        } catch (AccessDeniedException $e) {
+        } catch (AccessDeniedException) {
             $this->fail('AccessDeniedException was thrown.');
         }
     }
