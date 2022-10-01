@@ -36,32 +36,28 @@ use Secondtruth\Gatekeeper\Screener;
 use Secondtruth\Gatekeeper\Gatekeeper;
 use Secondtruth\Gatekeeper\Listing\IPList;
 use Secondtruth\Gatekeeper\Check\IPBlacklistCheck;
-use Symfony\Component\HttpFoundation\Request;
+use Laminas\Diactoros\ServerRequestFactory; // or any other PSR-7 ServerRequest factory
 
 require 'vendor/autoload.php';
 ```
 
-Create the `Check` object(s) you want to use:
-
-```php
-$blacklist = new IPList(['127.0.0.2', '127.0.0.3/32']);
-$check = new IPBlacklistCheck($blacklist);
-```
-
-Create a `Screener` object and add the checks to it:
+Create a `Screener` object and add the `Check` object(s) you want to use:
 
 ```php
 $screener = new Screener();
-$screener->setWhitelist(new IPList('127.0.0.1'));
+
+$check = new IPBlacklistCheck(new IPList(['127.0.0.2', '127.0.0.3/32']));
 $screener->addCheck($check);
 ```
 
 Create a `Gatekeeper` object and run it using the screener:
 
 ```php
-$request = Request::createFromGlobals();
+$request = ServerRequestFactory::fromGlobals(); // or a PSR-7 ServerRequest object you already have
 
 $gatekeeper = new Gatekeeper();
+$gatekeeper->setWhitelist(new IPList('127.0.0.1'));
+
 $gatekeeper->run($request, $screener);
 ```
 
