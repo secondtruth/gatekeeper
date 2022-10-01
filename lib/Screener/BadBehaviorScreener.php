@@ -1,29 +1,24 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper\Screener;
+namespace Secondtruth\Gatekeeper\Screener;
 
-use FlameCore\Gatekeeper\Check\CookiesCheck;
-use FlameCore\Gatekeeper\Check\HeadersCheck;
-use FlameCore\Gatekeeper\Check\PostRequestCheck;
-use FlameCore\Gatekeeper\Check\ProtocolCheck;
-use FlameCore\Gatekeeper\Check\UrlCheck;
-use FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck;
-use FlameCore\Gatekeeper\Check\UserAgentCheck;
-use FlameCore\Gatekeeper\Listing\IPList;
-use FlameCore\Gatekeeper\Listing\StringList;
+use Secondtruth\Gatekeeper\Check\CookiesCheck;
+use Secondtruth\Gatekeeper\Check\HeadersCheck;
+use Secondtruth\Gatekeeper\Check\PostRequestCheck;
+use Secondtruth\Gatekeeper\Check\ProtocolCheck;
+use Secondtruth\Gatekeeper\Check\UrlCheck;
+use Secondtruth\Gatekeeper\Check\UserAgentBlacklistCheck;
+use Secondtruth\Gatekeeper\Check\UserAgentCheck;
+use Secondtruth\Gatekeeper\Listing\IPList;
+use Secondtruth\Gatekeeper\Listing\StringList;
 
 /**
  * Check for known spam bots and block them.
@@ -34,7 +29,7 @@ use FlameCore\Gatekeeper\Listing\StringList;
 class BadBehaviorScreener extends CustomScreener
 {
     /**
-     * @var \FlameCore\Gatekeeper\Listing\StringList
+     * @var \Secondtruth\Gatekeeper\Listing\StringList
      */
     protected $uaBlacklist;
 

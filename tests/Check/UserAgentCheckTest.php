@@ -1,33 +1,28 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper\Tests\Check;
+namespace Secondtruth\Gatekeeper\Tests\Check;
 
-use FlameCore\Gatekeeper\Exceptions\StopScreeningException;
-use FlameCore\Gatekeeper\Check\CheckInterface;
-use FlameCore\Gatekeeper\Check\UserAgent\Bot\BaiduBot;
-use FlameCore\Gatekeeper\Check\UserAgent\Bot\GoogleBot;
-use FlameCore\Gatekeeper\Check\UserAgent\Bot\MsnBot;
-use FlameCore\Gatekeeper\Check\UserAgent\Bot\YahooBot;
-use FlameCore\Gatekeeper\Check\UserAgent\Browser\KonquerorBrowser;
-use FlameCore\Gatekeeper\Check\UserAgent\Browser\LynxBrowser;
-use FlameCore\Gatekeeper\Check\UserAgent\Browser\MozillaBrowser;
-use FlameCore\Gatekeeper\Check\UserAgent\Browser\MsieBrowser;
-use FlameCore\Gatekeeper\Check\UserAgent\Browser\OperaBrowser;
-use FlameCore\Gatekeeper\Check\UserAgent\Browser\SafariBrowser;
-use FlameCore\Gatekeeper\Check\UserAgentCheck;
+use Secondtruth\Gatekeeper\Exceptions\StopScreeningException;
+use Secondtruth\Gatekeeper\Check\CheckInterface;
+use Secondtruth\Gatekeeper\Check\UserAgent\Bot\BaiduBot;
+use Secondtruth\Gatekeeper\Check\UserAgent\Bot\GoogleBot;
+use Secondtruth\Gatekeeper\Check\UserAgent\Bot\MsnBot;
+use Secondtruth\Gatekeeper\Check\UserAgent\Bot\YahooBot;
+use Secondtruth\Gatekeeper\Check\UserAgent\Browser\KonquerorBrowser;
+use Secondtruth\Gatekeeper\Check\UserAgent\Browser\LynxBrowser;
+use Secondtruth\Gatekeeper\Check\UserAgent\Browser\MozillaBrowser;
+use Secondtruth\Gatekeeper\Check\UserAgent\Browser\MsieBrowser;
+use Secondtruth\Gatekeeper\Check\UserAgent\Browser\OperaBrowser;
+use Secondtruth\Gatekeeper\Check\UserAgent\Browser\SafariBrowser;
+use Secondtruth\Gatekeeper\Check\UserAgentCheck;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

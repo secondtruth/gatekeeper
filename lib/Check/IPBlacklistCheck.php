@@ -1,22 +1,17 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper\Check;
+namespace Secondtruth\Gatekeeper\Check;
 
-use FlameCore\Gatekeeper\Visitor;
-use FlameCore\Gatekeeper\Listing\IPList;
+use Secondtruth\Gatekeeper\Visitor;
+use Secondtruth\Gatekeeper\Listing\IPList;
 
 /**
  * Blacklist visitor IPs which should get blocked.
@@ -28,14 +23,14 @@ class IPBlacklistCheck extends AbstractCheck
     /**
      * The IP blacklist
      *
-     * @var \FlameCore\Gatekeeper\Listing\IPList
+     * @var \Secondtruth\Gatekeeper\Listing\IPList
      */
     protected $blacklist;
 
     /**
      * Creates an IPBlacklistCheck object.
      *
-     * @param \FlameCore\Gatekeeper\Listing\IPList $blacklist The IP blacklist
+     * @param \Secondtruth\Gatekeeper\Listing\IPList $blacklist The IP blacklist
      */
     public function __construct(IPList $blacklist = null)
     {
@@ -57,7 +52,7 @@ class IPBlacklistCheck extends AbstractCheck
     /**
      * Gets the IP blacklist.
      *
-     * @return \FlameCore\Gatekeeper\Listing\IPList
+     * @return \Secondtruth\Gatekeeper\Listing\IPList
      */
     public function getBlacklist()
     {
@@ -67,7 +62,7 @@ class IPBlacklistCheck extends AbstractCheck
     /**
      * Sets the IP blacklist.
      *
-     * @param \FlameCore\Gatekeeper\Listing\IPList $blacklist The IP blacklist
+     * @param \Secondtruth\Gatekeeper\Listing\IPList $blacklist The IP blacklist
      */
     public function setBlacklist(IPList $blacklist)
     {

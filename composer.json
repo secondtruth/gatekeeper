@@ -26,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            "FlameCore\\Gatekeeper\\": "lib/"
+            "Secondtruth\\Gatekeeper\\": "lib/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "FlameCore\\Gatekeeper\\Tests\\": "tests/"
+            "Secondtruth\\Gatekeeper\\Tests\\": "tests/"
         }
     },
     "scripts": {

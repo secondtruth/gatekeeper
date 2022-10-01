@@ -1,26 +1,21 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper;
+namespace Secondtruth\Gatekeeper;
 
-use FlameCore\Gatekeeper\Check\CheckInterface;
-use FlameCore\Gatekeeper\Listing\IPList;
-use FlameCore\Gatekeeper\Result\NegativeResult;
-use FlameCore\Gatekeeper\Result\PositiveResult;
-use FlameCore\Gatekeeper\Listing\StringList;
-use FlameCore\Gatekeeper\Exceptions\StopScreeningException;
+use Secondtruth\Gatekeeper\Check\CheckInterface;
+use Secondtruth\Gatekeeper\Listing\IPList;
+use Secondtruth\Gatekeeper\Result\NegativeResult;
+use Secondtruth\Gatekeeper\Result\PositiveResult;
+use Secondtruth\Gatekeeper\Listing\StringList;
+use Secondtruth\Gatekeeper\Exceptions\StopScreeningException;
 
 /**
  * Class Screener
@@ -32,7 +27,7 @@ class Screener implements ScreenerInterface
     /**
      * The registered checks
      *
-     * @var \FlameCore\Gatekeeper\Check\CheckInterface[]
+     * @var \Secondtruth\Gatekeeper\Check\CheckInterface[]
      */
     protected $checks = array();
 
@@ -67,7 +62,7 @@ class Screener implements ScreenerInterface
     /**
      * Returns a list of registered checks.
      *
-     * @return \FlameCore\Gatekeeper\Check\CheckInterface[]
+     * @return \Secondtruth\Gatekeeper\Check\CheckInterface[]
      */
     public function getChecks()
     {
@@ -89,7 +84,7 @@ class Screener implements ScreenerInterface
      * Returns a list of registered checks.
      *
      * @param string $class The class name of the check
-     * @return \FlameCore\Gatekeeper\Check\CheckInterface
+     * @return \Secondtruth\Gatekeeper\Check\CheckInterface
      */
     public function getCheck($class)
     {
@@ -99,7 +94,7 @@ class Screener implements ScreenerInterface
     /**
      * Registers the given check.
      *
-     * @param \FlameCore\Gatekeeper\Check\CheckInterface $check The check to register
+     * @param \Secondtruth\Gatekeeper\Check\CheckInterface $check The check to register
      */
     public function addCheck(CheckInterface $check)
     {
@@ -141,7 +136,7 @@ class Screener implements ScreenerInterface
     /**
      * Performs the real screening.
      *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
+     * @param \Secondtruth\Gatekeeper\Visitor $visitor The visitor
      * @return string|bool The abstract result
      */
     protected function doScreening(Visitor $visitor)

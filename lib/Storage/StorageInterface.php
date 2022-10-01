@@ -1,22 +1,17 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper\Storage;
+namespace Secondtruth\Gatekeeper\Storage;
 
-use FlameCore\Gatekeeper\Result\ResultInterface;
-use FlameCore\Gatekeeper\Visitor;
+use Secondtruth\Gatekeeper\Result\ResultInterface;
+use Secondtruth\Gatekeeper\Visitor;
 
 /**
  * Interface StorageInterface
@@ -28,8 +23,8 @@ interface StorageInterface extends \Countable
     /**
      * Inserts a result into the storage.
      *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
-     * @param \FlameCore\Gatekeeper\Result\ResultInterface $result The result
+     * @param \Secondtruth\Gatekeeper\Visitor $visitor The visitor
+     * @param \Secondtruth\Gatekeeper\Result\ResultInterface $result The result
      * @return bool Returns TRUE on success, FALSE on failure.
      */
     public function insert(Visitor $visitor, ResultInterface $result);

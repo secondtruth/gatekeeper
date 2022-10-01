@@ -8,7 +8,7 @@
  * above copyright notice and this permission notice appear in all copies.
  */
 
-namespace FlameCore\Gatekeeper;
+namespace Secondtruth\Gatekeeper;
 
 /**
  * The UserAgentString class.

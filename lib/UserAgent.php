@@ -1,19 +1,14 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper;
+namespace Secondtruth\Gatekeeper;
 
 /**
  * The UserAgent class
@@ -24,7 +19,7 @@ namespace FlameCore\Gatekeeper;
 class UserAgent
 {
     /**
-     * @var \FlameCore\Gatekeeper\UserAgentString
+     * @var \Secondtruth\Gatekeeper\UserAgentString
      */
     protected $string;
 
@@ -52,7 +47,7 @@ class UserAgent
      * Creates a UserAgent object.
      *
      * @param string $string The user agent string
-     * @param \FlameCore\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
+     * @param \Secondtruth\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
      */
     public function __construct($string = null, UserAgentStringParser $parser = null)
     {
@@ -72,7 +67,7 @@ class UserAgent
     /**
      * Gets the user agent string.
      *
-     * @return \FlameCore\Gatekeeper\UserAgentString
+     * @return \Secondtruth\Gatekeeper\UserAgentString
      */
     public function getUserAgentString()
     {
@@ -213,7 +208,7 @@ class UserAgent
      * Configures the user agent information from a user agent string.
      *
      * @param string $string The user agent string
-     * @param \FlameCore\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
+     * @param \Secondtruth\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
      */
     public function configureFromUserAgentString($string, UserAgentStringParser $parser = null)
     {

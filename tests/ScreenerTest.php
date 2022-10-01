@@ -1,28 +1,23 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper\Tests;
+namespace Secondtruth\Gatekeeper\Tests;
 
 use PHPUnit\Framework\TestCase;
-use FlameCore\Gatekeeper\Result\NegativeResult;
-use FlameCore\Gatekeeper\Result\PositiveResult;
-use FlameCore\Gatekeeper\Result\ResultInterface;
-use FlameCore\Gatekeeper\Check\IPBlacklistCheck;
-use FlameCore\Gatekeeper\Listing\IPList;
-use FlameCore\Gatekeeper\Screener;
-use FlameCore\Gatekeeper\Visitor;
+use Secondtruth\Gatekeeper\Result\NegativeResult;
+use Secondtruth\Gatekeeper\Result\PositiveResult;
+use Secondtruth\Gatekeeper\Result\ResultInterface;
+use Secondtruth\Gatekeeper\Check\IPBlacklistCheck;
+use Secondtruth\Gatekeeper\Listing\IPList;
+use Secondtruth\Gatekeeper\Screener;
+use Secondtruth\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

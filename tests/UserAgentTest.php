@@ -8,9 +8,9 @@
  * above copyright notice and this permission notice appear in all copies.
  */
 
-namespace FlameCore\Gatekeeper\Tests;
+namespace Secondtruth\Gatekeeper\Tests;
 
-use FlameCore\Gatekeeper\UserAgent;
+use Secondtruth\Gatekeeper\UserAgent;
 use PHPUnit\Framework\TestCase;
 
 class UserAgentTest extends TestCase

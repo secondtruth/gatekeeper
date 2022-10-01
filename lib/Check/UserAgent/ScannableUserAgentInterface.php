@@ -8,9 +8,9 @@
  * above copyright notice and this permission notice appear in all copies.
  */
 
-namespace FlameCore\Gatekeeper\Check\UserAgent;
+namespace Secondtruth\Gatekeeper\Check\UserAgent;
 
-use FlameCore\Gatekeeper\Visitor;
+use Secondtruth\Gatekeeper\Visitor;
 
 /**
  * Interface ScannableUserAgentInterface.
@@ -20,11 +20,11 @@ use FlameCore\Gatekeeper\Visitor;
 interface ScannableUserAgentInterface extends UserAgentInterface
 {
     /**
-     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
+     * @param \Secondtruth\Gatekeeper\Visitor $visitor The visitor information
      *
      * @return int|string
      *
-     * @throws \FlameCore\Gatekeeper\Exceptions\StopScreeningException
+     * @throws \Secondtruth\Gatekeeper\Exceptions\StopScreeningException
      */
     public function scan(Visitor $visitor);
 }

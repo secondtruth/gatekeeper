@@ -1,21 +1,16 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper\Check;
+namespace Secondtruth\Gatekeeper\Check;
 
-use FlameCore\Gatekeeper\Visitor;
+use Secondtruth\Gatekeeper\Visitor;
 
 /**
  * Interface CheckInterface
@@ -31,7 +26,7 @@ interface CheckInterface
     /**
      * Checks the visitor.
      *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
+     * @param \Secondtruth\Gatekeeper\Visitor $visitor The visitor information
      *
      * @return int|string Returns the check result.
      */
@@ -40,7 +35,7 @@ interface CheckInterface
     /**
      * Is this check responsible for the given Visitor?
      *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor information
+     * @param \Secondtruth\Gatekeeper\Visitor $visitor The visitor information
      *
      * @return bool
      */

@@ -1,26 +1,21 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper\Tests\Screener;
+namespace Secondtruth\Gatekeeper\Tests\Screener;
 
 use PHPUnit\Framework\TestCase;
-use FlameCore\Gatekeeper\Screener;
-use FlameCore\Gatekeeper\Result\ResultInterface;
-use FlameCore\Gatekeeper\Visitor;
-use FlameCore\Gatekeeper\Screener\BadBehaviorScreener;
-use FlameCore\Gatekeeper\Result\PositiveResult;
+use Secondtruth\Gatekeeper\Screener;
+use Secondtruth\Gatekeeper\Result\ResultInterface;
+use Secondtruth\Gatekeeper\Visitor;
+use Secondtruth\Gatekeeper\Screener\BadBehaviorScreener;
+use Secondtruth\Gatekeeper\Result\PositiveResult;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -43,8 +38,8 @@ class BadBehaviorScreenerTest extends TestCase
         /** @var $result PositiveResult */
         $result = $this->runTestScreening(['HTTP_USER_AGENT' => '8484 Boston Project']);
 
-        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
-        $this->assertEquals(['FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
+        $this->assertInstanceOf('Secondtruth\Gatekeeper\Result\PositiveResult', $result);
+        $this->assertEquals(['Secondtruth\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
     }
 
     public function testCheckPositiveSpambotNamesAnywhere()
@@ -52,8 +47,8 @@ class BadBehaviorScreenerTest extends TestCase
         /** @var $result PositiveResult */
         $result = $this->runTestScreening(['HTTP_USER_AGENT' => 'foo bar <script></script>']);
 
-        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
-        $this->assertEquals(['FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
+        $this->assertInstanceOf('Secondtruth\Gatekeeper\Result\PositiveResult', $result);
+        $this->assertEquals(['Secondtruth\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
     }
 
     public function testCheckPositiveSpambotNamesRegex()
@@ -61,15 +56,15 @@ class BadBehaviorScreenerTest extends TestCase
         /** @var $result PositiveResult */
         $result = $this->runTestScreening(['HTTP_USER_AGENT' => 'MSIE 2']);
 
-        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\PositiveResult', $result);
-        $this->assertEquals(['FlameCore\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
+        $this->assertInstanceOf('Secondtruth\Gatekeeper\Result\PositiveResult', $result);
+        $this->assertEquals(['Secondtruth\Gatekeeper\Check\UserAgentBlacklistCheck'], $result->getReportingClasses());
     }
 
     public function testCheckNegative()
     {
         $result = $this->runTestScreening();
 
-        $this->assertInstanceOf('FlameCore\Gatekeeper\Result\NegativeResult', $result);
+        $this->assertInstanceOf('Secondtruth\Gatekeeper\Result\NegativeResult', $result);
     }
 
     /**

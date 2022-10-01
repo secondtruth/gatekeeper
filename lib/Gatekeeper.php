@@ -1,27 +1,22 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper;
+namespace Secondtruth\Gatekeeper;
 
-use FlameCore\Gatekeeper\Listing\IPList;
-use FlameCore\Gatekeeper\Listing\StringList;
-use FlameCore\Gatekeeper\Result\Explainer;
-use FlameCore\Gatekeeper\Result\NegativeResult;
-use FlameCore\Gatekeeper\Result\PositiveResult;
-use FlameCore\Gatekeeper\Storage\StorageInterface;
-use FlameCore\Gatekeeper\Exceptions\AccessDeniedException;
+use Secondtruth\Gatekeeper\Listing\IPList;
+use Secondtruth\Gatekeeper\Listing\StringList;
+use Secondtruth\Gatekeeper\Result\Explainer;
+use Secondtruth\Gatekeeper\Result\NegativeResult;
+use Secondtruth\Gatekeeper\Result\PositiveResult;
+use Secondtruth\Gatekeeper\Storage\StorageInterface;
+use Secondtruth\Gatekeeper\Exceptions\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -34,35 +29,35 @@ class Gatekeeper
     /**
      * The storage to use
      *
-     * @var \FlameCore\Gatekeeper\Storage\StorageInterface
+     * @var \Secondtruth\Gatekeeper\Storage\StorageInterface
      */
     protected $storage;
 
     /**
      * The explainer to use
      *
-     * @var \FlameCore\Gatekeeper\Result\Explainer
+     * @var \Secondtruth\Gatekeeper\Result\Explainer
      */
     protected $explainer;
 
     /**
      * The IP whitelist
      *
-     * @var \FlameCore\Gatekeeper\Listing\IPList
+     * @var \Secondtruth\Gatekeeper\Listing\IPList
      */
     protected $whitelist;
 
     /**
      * The list of trusted user agents
      *
-     * @var \FlameCore\Gatekeeper\Listing\StringList
+     * @var \Secondtruth\Gatekeeper\Listing\StringList
      */
     protected $trustedUserAgents;
 
     /**
      * The current visitor
      *
-     * @var \FlameCore\Gatekeeper\Visitor
+     * @var \Secondtruth\Gatekeeper\Visitor
      */
     protected $visitor;
 
@@ -77,7 +72,7 @@ class Gatekeeper
      * Creates a Gatekeeper object.
      *
      * @param array $settings The settings
-     * @param \FlameCore\Gatekeeper\Storage\StorageInterface $storage The storage to use
+     * @param \Secondtruth\Gatekeeper\Storage\StorageInterface $storage The storage to use
      */
     public function __construct(array $settings = [], StorageInterface $storage = null)
     {
@@ -113,7 +108,7 @@ class Gatekeeper
     /**
      * Returns the storage.
      *
-     * @return \FlameCore\Gatekeeper\Storage\StorageInterface
+     * @return \Secondtruth\Gatekeeper\Storage\StorageInterface
      */
     public function getStorage()
     {
@@ -123,7 +118,7 @@ class Gatekeeper
     /**
      * Sets the storage to use.
      *
-     * @param \FlameCore\Gatekeeper\Storage\StorageInterface $storage The storage to use
+     * @param \Secondtruth\Gatekeeper\Storage\StorageInterface $storage The storage to use
      */
     public function setStorage($storage)
     {
@@ -133,7 +128,7 @@ class Gatekeeper
     /**
      * Returns the explainer.
      *
-     * @return \FlameCore\Gatekeeper\Result\Explainer
+     * @return \Secondtruth\Gatekeeper\Result\Explainer
      */
     public function getExplainer()
     {
@@ -143,7 +138,7 @@ class Gatekeeper
     /**
      * Sets the explainer to use.
      *
-     * @param \FlameCore\Gatekeeper\Result\Explainer $explainer The explainer to use
+     * @param \Secondtruth\Gatekeeper\Result\Explainer $explainer The explainer to use
      */
     public function setExplainer($explainer)
     {
@@ -153,7 +148,7 @@ class Gatekeeper
     /**
      * Returns the IP whitelist.
      *
-     * @return \FlameCore\Gatekeeper\Listing\IPList
+     * @return \Secondtruth\Gatekeeper\Listing\IPList
      */
     public function getWhitelist()
     {
@@ -163,7 +158,7 @@ class Gatekeeper
     /**
      * Sets the IP whitelist.
      *
-     * @param \FlameCore\Gatekeeper\Listing\IPList $whitelist The IP whitelist
+     * @param \Secondtruth\Gatekeeper\Listing\IPList $whitelist The IP whitelist
      */
     public function setWhitelist(IPList $whitelist)
     {
@@ -173,7 +168,7 @@ class Gatekeeper
     /**
      * Returns the list of trusted user agents.
      *
-     * @return \FlameCore\Gatekeeper\Listing\StringList
+     * @return \Secondtruth\Gatekeeper\Listing\StringList
      */
     public function getTrustedUserAgents()
     {
@@ -183,7 +178,7 @@ class Gatekeeper
     /**
      * Sets the list of trusted user agents.
      *
-     * @param \FlameCore\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
+     * @param \Secondtruth\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
      */
     public function setTrustedUserAgents(StringList $trustedUserAgents)
     {
@@ -194,7 +189,7 @@ class Gatekeeper
      * Runs the system.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request The request of the visitor
-     * @param \FlameCore\Gatekeeper\ScreenerInterface $screener The screener to use
+     * @param \Secondtruth\Gatekeeper\ScreenerInterface $screener The screener to use
      */
     public function run(Request $request, ScreenerInterface $screener)
     {
@@ -224,8 +219,8 @@ class Gatekeeper
     /**
      * Perform actions for bad requests.
      *
-     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result The result
-     * @throws \FlameCore\Gatekeeper\Exceptions\AccessDeniedException
+     * @param \Secondtruth\Gatekeeper\Result\PositiveResult $result The result
+     * @throws \Secondtruth\Gatekeeper\Exceptions\AccessDeniedException
      */
     protected function blockRequest(PositiveResult $result)
     {
@@ -247,7 +242,7 @@ class Gatekeeper
     /**
      * Penalizes blocked visitors.
      *
-     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result The result
+     * @param \Secondtruth\Gatekeeper\Result\PositiveResult $result The result
      */
     protected function penalize(PositiveResult $result)
     {
@@ -257,7 +252,7 @@ class Gatekeeper
     /**
      * Checks if the visitor is whitelisted.
      *
-     * @param \FlameCore\Gatekeeper\Visitor $visitor The visitor
+     * @param \Secondtruth\Gatekeeper\Visitor $visitor The visitor
      * @return bool
      */
     protected function isWhitelisted(Visitor $visitor)

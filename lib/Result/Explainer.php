@@ -1,19 +1,14 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper\Result;
+namespace Secondtruth\Gatekeeper\Result;
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -225,7 +220,7 @@ class Explainer
     /**
      * Explains the given result.
      *
-     * @param \FlameCore\Gatekeeper\Result\ResultInterface $result The result
+     * @param \Secondtruth\Gatekeeper\Result\ResultInterface $result The result
      * @return array Returns the explanation.
      */
     public function explain(ResultInterface $result)
@@ -242,7 +237,7 @@ class Explainer
     /**
      * Explains a positive result.
      *
-     * @param \FlameCore\Gatekeeper\Result\PositiveResult $result The result
+     * @param \Secondtruth\Gatekeeper\Result\PositiveResult $result The result
      * @return array Returns the explanation.
      */
     protected function explainPositiveResult(PositiveResult $result)
@@ -263,12 +258,12 @@ class Explainer
     /**
      * Explains a negative result.
      *
-     * @param \FlameCore\Gatekeeper\Result\NegativeResult $result The result
+     * @param \Secondtruth\Gatekeeper\Result\NegativeResult $result The result
      * @return array Returns the explanation.
      */
     protected function explainNegativeResult(NegativeResult $result)
     {
-        if (in_array('FlameCore\Gatekeeper\Screener', $result->getReportingClasses())) {
+        if (in_array('Secondtruth\Gatekeeper\Screener', $result->getReportingClasses())) {
             return ['logtext' => 'Visitor is whitelisted'];
         }
 

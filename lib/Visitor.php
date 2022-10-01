@@ -1,19 +1,14 @@
 <?php
-/**
- * FlameCore Gatekeeper
- * Copyright (C) 2015 IceFlame.net
+/*
+ * Gatekeeper
+ * Copyright (C) 2022 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
  * above copyright notice and this permission notice appear in all copies.
- *
- * @package  FlameCore\Gatekeeper
- * @version  0.1-dev
- * @link     http://www.flamecore.org
- * @license  http://opensource.org/licenses/ISC ISC License
  */
 
-namespace FlameCore\Gatekeeper;
+namespace Secondtruth\Gatekeeper;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -76,7 +71,7 @@ class Visitor
     /**
      * The user agent information
      *
-     * @var \FlameCore\Gatekeeper\UserAgent
+     * @var \Secondtruth\Gatekeeper\UserAgent
      */
     protected $userAgent;
 
@@ -102,7 +97,7 @@ class Visitor
     /**
      * Gets the client IP address.
      *
-     * @return \FlameCore\Gatekeeper\IP
+     * @return \Secondtruth\Gatekeeper\IP
      */
     public function getIP()
     {
@@ -172,7 +167,7 @@ class Visitor
     /**
      * Gets the user agent information.
      *
-     * @return \FlameCore\Gatekeeper\UserAgent
+     * @return \Secondtruth\Gatekeeper\UserAgent
      */
     public function getUserAgent()
     {

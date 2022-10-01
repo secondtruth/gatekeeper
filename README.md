@@ -32,10 +32,10 @@ Include the vendor autoloader and use the classes:
 ```php
 namespace Acme\MyApplication;
 
-use FlameCore\Gatekeeper\Screener;
-use FlameCore\Gatekeeper\Gatekeeper;
-use FlameCore\Gatekeeper\Listing\IPList;
-use FlameCore\Gatekeeper\Check\IPBlacklistCheck;
+use Secondtruth\Gatekeeper\Screener;
+use Secondtruth\Gatekeeper\Gatekeeper;
+use Secondtruth\Gatekeeper\Listing\IPList;
+use Secondtruth\Gatekeeper\Check\IPBlacklistCheck;
 use Symfony\Component\HttpFoundation\Request;
 
 require 'vendor/autoload.php';
