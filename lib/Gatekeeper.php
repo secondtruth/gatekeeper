@@ -10,6 +10,7 @@
 
 namespace Secondtruth\Gatekeeper;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Secondtruth\Gatekeeper\Listing\IPList;
 use Secondtruth\Gatekeeper\Listing\StringList;
 use Secondtruth\Gatekeeper\Result\Explainer;
@@ -188,12 +189,12 @@ class Gatekeeper
     /**
      * Runs the system.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request The request of the visitor
+     * @param ServerRequestInterface|Request $request The request of the visitor
      * @param \Secondtruth\Gatekeeper\ScreenerInterface $screener The screener to use
      */
-    public function run(Request $request, ScreenerInterface $screener)
+    public function run(ServerRequestInterface|Request $request, ScreenerInterface $screener)
     {
-        $visitor = new Visitor($request);
+        $visitor = $request instanceof Request ? new Visitor($request) : Visitor::fromPsr7($request);
         $this->visitor = $visitor;
 
         if (!$this->isWhitelisted($visitor)) {

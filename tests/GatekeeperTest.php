@@ -10,13 +10,13 @@
 
 namespace Secondtruth\Gatekeeper\Tests;
 
+use Nyholm\Psr7\ServerRequest;
 use Secondtruth\Gatekeeper\Listing\IPList;
 use PHPUnit\Framework\TestCase;
 use Secondtruth\Gatekeeper\Screener;
 use Secondtruth\Gatekeeper\Gatekeeper;
 use Secondtruth\Gatekeeper\Exceptions\AccessDeniedException;
 use Secondtruth\Gatekeeper\Check\IPBlacklistCheck;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Test class for Gatekeeper
@@ -57,7 +57,7 @@ class GatekeeperTest extends TestCase
      */
     public function testWhitelist()
     {
-        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.2']);
+        $request = new ServerRequest('GET', '/', [], null, '1.1', ['REMOTE_ADDR' => '127.0.0.2']);
         $this->gatekeeper->run($request, $this->screener);
     }
 
@@ -66,7 +66,7 @@ class GatekeeperTest extends TestCase
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessageMatches('#<p>Your request has been blocked\.</p>#');
 
-        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.3']);
+        $request = new ServerRequest('GET', '/', [], null, '1.1', ['REMOTE_ADDR' => '127.0.0.3']);
         $this->gatekeeper->run($request, $this->screener);
     }
 
@@ -76,7 +76,7 @@ class GatekeeperTest extends TestCase
     public function testNegative()
     {
         try {
-            $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '127.0.0.1']);
+            $request = new ServerRequest('GET', '/', [], null, '1.1', ['REMOTE_ADDR' => '127.0.0.1']);
             $this->gatekeeper->run($request, $this->screener);
         } catch (AccessDeniedException) {
             $this->fail('AccessDeniedException was thrown.');

@@ -10,6 +10,8 @@
 
 namespace Secondtruth\Gatekeeper;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -92,6 +94,22 @@ class Visitor
 
         $userAgent = $request->headers->get('user-agent');
         $this->userAgent = new UserAgent($userAgent);
+    }
+
+    /**
+     * Creates a Visitor object from a PSR-7 server request.
+     *
+     * @param ServerRequestInterface $request The server request of the visitor
+     * @param HttpFoundationFactory|null $httpFoundationFactory
+     *
+     * @return self
+     */
+    public static function fromPsr7(ServerRequestInterface $request, ?HttpFoundationFactory $httpFoundationFactory = null)
+    {
+        $httpFoundationFactory ??= new HttpFoundationFactory();
+        $request = $httpFoundationFactory->createRequest($request);
+
+        return new self($request);
     }
 
     /**
