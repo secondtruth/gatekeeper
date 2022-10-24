@@ -21,7 +21,7 @@ use Secondtruth\Gatekeeper\Exceptions\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class Gatekeeper
+ * The Gatekeeper class.
  *
  * @author   Christian Neff <christian.neff@gmail.com>
  */
@@ -30,35 +30,35 @@ class Gatekeeper
     /**
      * The storage to use
      *
-     * @var \Secondtruth\Gatekeeper\Storage\StorageInterface
+     * @var StorageInterface
      */
     protected $storage;
 
     /**
      * The explainer to use
      *
-     * @var \Secondtruth\Gatekeeper\Result\Explainer
+     * @var Explainer
      */
     protected $explainer;
 
     /**
      * The IP whitelist
      *
-     * @var \Secondtruth\Gatekeeper\Listing\IPList
+     * @var IPList
      */
     protected $whitelist;
 
     /**
      * The list of trusted user agents
      *
-     * @var \Secondtruth\Gatekeeper\Listing\StringList
+     * @var StringList
      */
     protected $trustedUserAgents;
 
     /**
      * The current visitor
      *
-     * @var \Secondtruth\Gatekeeper\Visitor
+     * @var Visitor
      */
     protected $visitor;
 
@@ -67,19 +67,19 @@ class Gatekeeper
      *
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
      * Creates a Gatekeeper object.
      *
-     * @param array $settings The settings
-     * @param \Secondtruth\Gatekeeper\Storage\StorageInterface $storage The storage to use
+     * @param array            $settings The settings
+     * @param StorageInterface $storage  The storage to use
      */
-    public function __construct(array $settings = [], StorageInterface $storage = null)
+    public function __construct(array $settings = [], ?StorageInterface $storage = null)
     {
-        $defaults = array(
+        $defaults = [
             'block_message' => "<p>Your request has been blocked.</p>\n<p>{explanation}</p>"
-        );
+        ];
 
         $this->settings = array_replace($defaults, $settings);
         $this->storage = $storage;
@@ -99,7 +99,7 @@ class Gatekeeper
      * Sets the value for the given setting.
      *
      * @param string $setting The setting
-     * @param mixed $value The value
+     * @param mixed  $value   The value
      */
     public function setSetting($setting, $value)
     {
@@ -109,7 +109,7 @@ class Gatekeeper
     /**
      * Returns the storage.
      *
-     * @return \Secondtruth\Gatekeeper\Storage\StorageInterface
+     * @return StorageInterface
      */
     public function getStorage()
     {
@@ -119,7 +119,7 @@ class Gatekeeper
     /**
      * Sets the storage to use.
      *
-     * @param \Secondtruth\Gatekeeper\Storage\StorageInterface $storage The storage to use
+     * @param StorageInterface $storage The storage to use
      */
     public function setStorage($storage)
     {
@@ -129,7 +129,7 @@ class Gatekeeper
     /**
      * Returns the explainer.
      *
-     * @return \Secondtruth\Gatekeeper\Result\Explainer
+     * @return Explainer
      */
     public function getExplainer()
     {
@@ -139,7 +139,7 @@ class Gatekeeper
     /**
      * Sets the explainer to use.
      *
-     * @param \Secondtruth\Gatekeeper\Result\Explainer $explainer The explainer to use
+     * @param Explainer $explainer The explainer to use
      */
     public function setExplainer($explainer)
     {
@@ -149,7 +149,7 @@ class Gatekeeper
     /**
      * Returns the IP whitelist.
      *
-     * @return \Secondtruth\Gatekeeper\Listing\IPList
+     * @return IPList
      */
     public function getWhitelist()
     {
@@ -159,7 +159,7 @@ class Gatekeeper
     /**
      * Sets the IP whitelist.
      *
-     * @param \Secondtruth\Gatekeeper\Listing\IPList $whitelist The IP whitelist
+     * @param IPList $whitelist The IP whitelist
      */
     public function setWhitelist(IPList $whitelist)
     {
@@ -169,7 +169,7 @@ class Gatekeeper
     /**
      * Returns the list of trusted user agents.
      *
-     * @return \Secondtruth\Gatekeeper\Listing\StringList
+     * @return StringList
      */
     public function getTrustedUserAgents()
     {
@@ -179,7 +179,7 @@ class Gatekeeper
     /**
      * Sets the list of trusted user agents.
      *
-     * @param \Secondtruth\Gatekeeper\Listing\StringList $trustedUserAgents The list of trusted user agents
+     * @param StringList $trustedUserAgents The list of trusted user agents
      */
     public function setTrustedUserAgents(StringList $trustedUserAgents)
     {
@@ -189,8 +189,10 @@ class Gatekeeper
     /**
      * Runs the system.
      *
-     * @param ServerRequestInterface|Request $request The request of the visitor
-     * @param \Secondtruth\Gatekeeper\ScreenerInterface $screener The screener to use
+     * @param ServerRequestInterface|Request $request  The request of the visitor
+     * @param ScreenerInterface              $screener The screener to use
+     *
+     * @throws AccessDeniedException
      */
     public function run(ServerRequestInterface|Request $request, ScreenerInterface $screener)
     {
@@ -220,8 +222,9 @@ class Gatekeeper
     /**
      * Perform actions for bad requests.
      *
-     * @param \Secondtruth\Gatekeeper\Result\PositiveResult $result The result
-     * @throws \Secondtruth\Gatekeeper\Exceptions\AccessDeniedException
+     * @param PositiveResult $result The result
+     *
+     * @throws AccessDeniedException
      */
     protected function blockRequest(PositiveResult $result)
     {
@@ -243,7 +246,7 @@ class Gatekeeper
     /**
      * Penalizes blocked visitors.
      *
-     * @param \Secondtruth\Gatekeeper\Result\PositiveResult $result The result
+     * @param PositiveResult $result The result
      */
     protected function penalize(PositiveResult $result)
     {
@@ -253,7 +256,8 @@ class Gatekeeper
     /**
      * Checks if the visitor is whitelisted.
      *
-     * @param \Secondtruth\Gatekeeper\Visitor $visitor The visitor
+     * @param Visitor $visitor The visitor
+     *
      * @return bool
      */
     protected function isWhitelisted(Visitor $visitor)
@@ -274,14 +278,15 @@ class Gatekeeper
      * Interpolates context values into the message placeholders.
      *
      * @param string $message The message
-     * @param array $context The context values
+     * @param array  $context The context values
+     *
      * @return string
      */
     protected function interpolate($message, array $context = [])
     {
-        $replace = array();
+        $replace = [];
         foreach ($context as $key => $value) {
-            $replace['{'.$key.'}'] = $value;
+            $replace['{' . $key . '}'] = $value;
         }
 
         return strtr($message, $replace);
