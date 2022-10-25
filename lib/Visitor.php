@@ -92,7 +92,7 @@ class Visitor
         $this->scheme = $request->getScheme();
         $this->protocol = $request->server->get('SERVER_PROTOCOL');
 
-        $userAgent = $request->headers->get('user-agent');
+        $userAgent = $request->headers->get('user-agent', '');
         $this->userAgent = new UserAgent($userAgent);
     }
 

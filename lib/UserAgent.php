@@ -49,7 +49,7 @@ class UserAgent
      * @param string $string The user agent string
      * @param \Secondtruth\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
      */
-    public function __construct($string = null, UserAgentStringParser $parser = null)
+    public function __construct($string = null, ?UserAgentStringParser $parser = null)
     {
         $this->configureFromUserAgentString($string, $parser);
     }
@@ -210,7 +210,7 @@ class UserAgent
      * @param string $string The user agent string
      * @param \Secondtruth\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
      */
-    public function configureFromUserAgentString($string, UserAgentStringParser $parser = null)
+    public function configureFromUserAgentString($string, ?UserAgentStringParser $parser = null)
     {
         if (!$parser) {
             $parser = new UserAgentStringParser();

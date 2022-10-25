@@ -34,7 +34,7 @@ class UserAgentStringParser
     {
         // use current user agent string as default
         if ($string === null) {
-            $string = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null;
+            $string = $_SERVER['HTTP_USER_AGENT'] ?? '';
         }
 
         // parse quickly (with medium accuracy)
@@ -283,22 +283,24 @@ class UserAgentStringParser
      */
     protected function filterBots(array $userAgent)
     {
-        // Yahoo bot has a special user agent string
-        if ($userAgent['browser_name'] === null && strpos($userAgent['string'], 'yahoo! slurp')) {
-            $userAgent['browser_name'] = 'yahoobot';
-            return $userAgent;
-        }
+        if ($userAgent['browser_name'] !== null) {
+            // Yandex Bot
+            if (stripos($userAgent['browser_name'], 'yandex') === 0) {
+                $userAgent['browser_name'] = 'yandexbot';
+                return $userAgent;
+            }
 
-        // Yandex Bot
-        if (substr($userAgent['browser_name'], 0, 6) == 'yandex') {
-            $userAgent['browser_name'] = 'yandexbot';
-            return $userAgent;
-        }
-
-        // Baidu Bot
-        if (substr($userAgent['browser_name'], 0, 11) == 'baiduspider') {
-            $userAgent['browser_name'] = 'baidubot';
-            return $userAgent;
+            // Baidu Bot
+            if (stripos($userAgent['browser_name'], 'baiduspider') === 0) {
+                $userAgent['browser_name'] = 'baidubot';
+                return $userAgent;
+            }
+        } else {
+            // Yahoo bot has a special user agent string
+            if (stripos($userAgent['string'], 'yahoo! slurp')) {
+                $userAgent['browser_name'] = 'yahoobot';
+                return $userAgent;
+            }
         }
 
         return $userAgent;
