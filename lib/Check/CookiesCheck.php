@@ -31,7 +31,7 @@ class CookiesCheck extends AbstractCheck
         // The only valid value for $Version is 1 and when present, the user agent MUST send a Cookie2 header.
         // NOTE: RFC 2965 is obsoleted by RFC 6265. Current software MUST NOT use Cookie2 or $Version in Cookie.
         // First-gen Amazon Kindle is broken.
-        if (strpos($headers->get('Cookie'), '$Version=0') !== false && !$headers->has('Cookie2') && !$uastring->contains('Kindle/', true)) {
+        if (strpos($headers->get('Cookie', ''), '$Version=0') !== false && !$headers->has('Cookie2') && !$uastring->contains('Kindle/', true)) {
             return '6c502ff1';
         }
 

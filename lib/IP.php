@@ -39,7 +39,7 @@ class IP
     public function __construct($ip)
     {
         $this->ip = (string) $ip;
-        $this->isIPv6 = strpos($ip, ':') !== false;
+        $this->isIPv6 = strpos($this->ip, ':') !== false;
     }
 
     /**

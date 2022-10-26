@@ -107,7 +107,7 @@ class StringList extends AbstractList
     {
         $strings = array_map('strval', (array) $string);
 
-        $this->equal = $this->merge($this->equal, $strings);
+        $this->equal = self::merge($this->equal, $strings);
     }
 
     /**
@@ -119,7 +119,7 @@ class StringList extends AbstractList
     {
         $strings = array_map('strval', (array) $string);
 
-        $this->beginsWith = $this->merge($this->beginsWith, $strings);
+        $this->beginsWith = self::merge($this->beginsWith, $strings);
     }
 
     /**
@@ -131,7 +131,7 @@ class StringList extends AbstractList
     {
         $strings = array_map('strval', (array) $string);
 
-        $this->endsWith = $this->merge($this->endsWith, $strings);
+        $this->endsWith = self::merge($this->endsWith, $strings);
     }
 
     /**
@@ -143,7 +143,7 @@ class StringList extends AbstractList
     {
         $strings = array_map('strval', (array) $string);
 
-        $this->contains = $this->merge($this->contains, $strings);
+        $this->contains = self::merge($this->contains, $strings);
     }
 
     /**
@@ -155,7 +155,7 @@ class StringList extends AbstractList
     {
         $regexes = array_map('strval', (array) $regex);
 
-        $this->regexes = $this->merge($this->regexes, $regexes);
+        $this->regexes = self::merge($this->regexes, $regexes);
     }
 
     /**
