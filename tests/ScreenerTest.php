@@ -14,9 +14,8 @@ use PHPUnit\Framework\TestCase;
 use Secondtruth\Gatekeeper\Result\NegativeResult;
 use Secondtruth\Gatekeeper\Result\PositiveResult;
 use Secondtruth\Gatekeeper\Result\ResultInterface;
-use Secondtruth\Gatekeeper\Check\IPBlacklistCheck;
-use Secondtruth\Gatekeeper\Listing\IPList;
 use Secondtruth\Gatekeeper\Screener;
+use Secondtruth\Gatekeeper\Tests\Check\DummyCheck;
 use Secondtruth\Gatekeeper\Visitor;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -33,20 +32,13 @@ class ScreenerTest extends TestCase
     protected function setUp(): void
     {
         $this->screener = new Screener();
-
-        $check = new IPBlacklistCheck();
-
-        $list = new IPList();
-        $list->add(['127.0.0.3/32']);
-        $check->setBlacklist($list);
-
-        $this->screener->addCheck($check);
+        $this->screener->addCheck(new DummyCheck());
     }
 
     public function testPositive()
     {
         /** @var PositiveResult $result */
-        $result = $this->runTestScreening('127.0.0.3');
+        $result = $this->runTestScreening(true);
 
         $this->assertInstanceOf(PositiveResult::class, $result);
 
@@ -57,7 +49,7 @@ class ScreenerTest extends TestCase
     public function testNegative()
     {
         /** @var NegativeResult $result */
-        $result = $this->runTestScreening('127.0.0.4');
+        $result = $this->runTestScreening();
 
         $this->assertInstanceOf(NegativeResult::class, $result);
         $this->assertEmpty($result->getReportingClasses());
@@ -67,9 +59,9 @@ class ScreenerTest extends TestCase
      * @param string $ip
      * @return ResultInterface
      */
-    protected function runTestScreening($ip)
+    protected function runTestScreening(bool $block = false)
     {
-        $request = Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => $ip]);
+        $request = Request::create('/', 'GET', [], [], [], $block ? ['HTTP_X_GATEKEEPER_BLOCK' => 'true'] : []);
         $visitor = new Visitor($request);
 
         return $this->screener->screenVisitor($visitor);

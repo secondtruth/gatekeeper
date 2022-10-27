@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use Secondtruth\Gatekeeper\Screener;
 use Secondtruth\Gatekeeper\Gatekeeper;
 use Secondtruth\Gatekeeper\Exceptions\AccessDeniedException;
-use Secondtruth\Gatekeeper\Check\IPBlacklistCheck;
+use Secondtruth\Gatekeeper\Tests\Check\DummyCheck;
 
 /**
  * Test class for Gatekeeper
@@ -36,14 +36,7 @@ class GatekeeperTest extends TestCase
     protected function setUp(): void
     {
         $this->screener = new Screener();
-
-        $check = new IPBlacklistCheck();
-
-        $list = new IPList();
-        $list->add(['127.0.0.3/32']);
-        $check->setBlacklist($list);
-
-        $this->screener->addCheck($check);
+        $this->screener->addCheck(new DummyCheck());
 
         $this->gatekeeper = new Gatekeeper();
 
@@ -66,7 +59,7 @@ class GatekeeperTest extends TestCase
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessageMatches('#<p>Your request has been blocked\.</p>#');
 
-        $request = new ServerRequest('GET', '/', [], null, '1.1', ['REMOTE_ADDR' => '127.0.0.3']);
+        $request = new ServerRequest('GET', '/', ['X-Gatekeeper-Block' => 'true'], null, '1.1', ['REMOTE_ADDR' => '127.0.0.1']);
         $this->gatekeeper->run($request, $this->screener);
     }
 
