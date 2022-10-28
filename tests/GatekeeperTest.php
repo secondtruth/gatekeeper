@@ -50,7 +50,7 @@ class GatekeeperTest extends TestCase
      */
     public function testWhitelist()
     {
-        $request = new ServerRequest('GET', '/', [], null, '1.1', ['REMOTE_ADDR' => '127.0.0.2']);
+        $request = $this->createRequest([], '127.0.0.2');
         $this->gatekeeper->run($request, $this->screener);
     }
 
@@ -59,7 +59,7 @@ class GatekeeperTest extends TestCase
         $this->expectException(AccessDeniedException::class);
         $this->expectExceptionMessageMatches('#<p>Your request has been blocked\.</p>#');
 
-        $request = new ServerRequest('GET', '/', ['X-Gatekeeper-Block' => 'true'], null, '1.1', ['REMOTE_ADDR' => '127.0.0.1']);
+        $request = $this->createRequest(['X-Gatekeeper-Block' => 'true']);
         $this->gatekeeper->run($request, $this->screener);
     }
 
@@ -69,10 +69,20 @@ class GatekeeperTest extends TestCase
     public function testNegative()
     {
         try {
-            $request = new ServerRequest('GET', '/', [], null, '1.1', ['REMOTE_ADDR' => '127.0.0.1']);
+            $request = $this->createRequest();
             $this->gatekeeper->run($request, $this->screener);
         } catch (AccessDeniedException) {
             $this->fail('AccessDeniedException was thrown.');
         }
+    }
+
+    /**
+     * @param array $headers
+     * @param string $ip
+     * @return ServerRequest
+     */
+    protected function createRequest(array $headers = [], string $ip = '127.0.0.1'): ServerRequest
+    {
+        return new ServerRequest('GET', '/', $headers, null, '1.1', ['REMOTE_ADDR' => $ip]);
     }
 }
