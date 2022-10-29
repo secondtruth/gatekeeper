@@ -16,6 +16,7 @@ use Secondtruth\Gatekeeper\Listing\StringList;
 use Secondtruth\Gatekeeper\Result\Explainer;
 use Secondtruth\Gatekeeper\Result\NegativeResult;
 use Secondtruth\Gatekeeper\Result\PositiveResult;
+use Secondtruth\Gatekeeper\Result\ResultInterface;
 use Secondtruth\Gatekeeper\Storage\StorageInterface;
 use Secondtruth\Gatekeeper\Exceptions\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
@@ -199,14 +200,7 @@ class Gatekeeper
         $visitor = $request instanceof Request ? new Visitor($request) : Visitor::fromPsr7($request);
         $this->visitor = $visitor;
 
-        if (!$this->isWhitelisted($visitor)) {
-            $result = $screener->screenVisitor($visitor);
-
-            $explainer = $this->explainer ?: new Explainer();
-            $result->setExplanation($explainer->explain($result));
-        } else {
-            $result = new NegativeResult(__CLASS__);
-        }
+        $result = $this->analyze($visitor, $screener);
 
         if ($this->storage) {
             $this->storage->insert($visitor, $result);
@@ -217,6 +211,30 @@ class Gatekeeper
         } else {
             $this->approveRequest();
         }
+    }
+
+    /**
+     * Analyzes the visitor.
+     *
+     * @param Visitor           $visitor  The visitor
+     * @param ScreenerInterface $screener The screener to use
+     *
+     * @return ResultInterface Returns a positive result if the visitor should be blocked, otherwise a negative result.
+     */
+    public function analyze(Visitor $visitor, ScreenerInterface $screener): ResultInterface
+    {
+        if ($this->isAllowed($visitor)) {
+            return new NegativeResult();
+        }
+
+        $result = $screener->screenVisitor($visitor);
+
+        if ($result instanceof PositiveResult) {
+            $explainer = $this->explainer ?: new Explainer();
+            $result->setExplanation($explainer->explain($result));
+        }
+
+        return $result;
     }
 
     /**
@@ -260,7 +278,7 @@ class Gatekeeper
      *
      * @return bool
      */
-    protected function isWhitelisted(Visitor $visitor)
+    protected function isAllowed(Visitor $visitor)
     {
         if ($this->whitelist && $this->whitelist->match($visitor->getIP())) {
             return true;
