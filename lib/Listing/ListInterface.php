@@ -23,5 +23,5 @@ interface ListInterface
      * @param string $value The value to test
      * @return bool Returns TRUE if the value matches the list, FALSE otherwise.
      */
-    public function match($value);
+    public function match(mixed $value);
 }

@@ -22,46 +22,46 @@ class StringList extends AbstractList
      *
      * @var string[]
      */
-    protected $equal = array();
+    protected array $equal = [];
 
     /**
      * List of strings to match at the beginning
      *
      * @var string[]
      */
-    protected $beginsWith = array();
+    protected array $startsWith = [];
 
     /**
      * List of strings to match at the end
      *
      * @var string[]
      */
-    protected $endsWith = array();
+    protected array $endsWith = [];
 
     /**
      * List of strings to match anywhere
      *
      * @var string[]
      */
-    protected $contains = array();
+    protected array $contains = [];
 
     /**
      * List of regular expressions to match
      *
      * @var string[]
      */
-    protected $regexes = array();
+    protected array $matching = [];
 
     /**
      * {@inheritdoc}
      */
-    public function match($value)
+    public function match(mixed $value)
     {
         if (in_array($value, $this->equal)) {
             return true;
         }
 
-        foreach ($this->beginsWith as $substring) {
+        foreach ($this->startsWith as $substring) {
             if (strpos($value, $substring) === 0) {
                 return true;
             }
@@ -79,7 +79,7 @@ class StringList extends AbstractList
             }
         }
 
-        foreach ($this->regexes as $regex) {
+        foreach ($this->matching as $regex) {
             if (preg_match($regex, $value)) {
                 return true;
             }
@@ -91,7 +91,7 @@ class StringList extends AbstractList
     /**
      * {@inheritdoc}
      */
-    public function add($values)
+    public function add(string|array $values)
     {
         foreach ((array) $values as $value) {
             $this->addPattern($value);
@@ -103,10 +103,9 @@ class StringList extends AbstractList
      *
      * @param string|string[] $string The string(s) to add
      */
-    public function is($string)
+    public function equal(string|array $string)
     {
-        $strings = array_map('strval', (array) $string);
-
+        $strings = self::toArrayOfStrings($string);
         $this->equal = self::merge($this->equal, $strings);
     }
 
@@ -115,11 +114,10 @@ class StringList extends AbstractList
      *
      * @param string|string[] $string The string(s) to add
      */
-    public function beginsWith($string)
+    public function startsWith(string|array $string)
     {
-        $strings = array_map('strval', (array) $string);
-
-        $this->beginsWith = self::merge($this->beginsWith, $strings);
+        $strings = self::toArrayOfStrings($string);
+        $this->startsWith = self::merge($this->startsWith, $strings);
     }
 
     /**
@@ -127,10 +125,9 @@ class StringList extends AbstractList
      *
      * @param string|string[] $string The string(s) to add
      */
-    public function endsWith($string)
+    public function endsWith(string|array $string)
     {
-        $strings = array_map('strval', (array) $string);
-
+        $strings = self::toArrayOfStrings($string);
         $this->endsWith = self::merge($this->endsWith, $strings);
     }
 
@@ -139,10 +136,9 @@ class StringList extends AbstractList
      *
      * @param string|string[] $string The string(s) to add
      */
-    public function contains($string)
+    public function contains(string|array $string)
     {
-        $strings = array_map('strval', (array) $string);
-
+        $strings = self::toArrayOfStrings($string);
         $this->contains = self::merge($this->contains, $strings);
     }
 
@@ -151,11 +147,10 @@ class StringList extends AbstractList
      *
      * @param string|string[] $regex The regular expression(s) to add
      */
-    public function matches($regex)
+    public function matching(string|array $regex)
     {
-        $regexes = array_map('strval', (array) $regex);
-
-        $this->regexes = self::merge($this->regexes, $regexes);
+        $regexes = self::toArrayOfStrings($regex);
+        $this->matching = self::merge($this->matching, $regexes);
     }
 
     /**
@@ -163,25 +158,25 @@ class StringList extends AbstractList
      *
      * @param string $value The pattern to add
      */
-    protected function addPattern($value)
+    protected function addPattern(string $value)
     {
         if ($value[0] == '*' && substr($value, -1) == '*') {
             $this->contains(trim(substr($value, 1, -1), '*'));
         } elseif ($value[0] == '*') {
             $this->endsWith(trim(substr($value, 1), '*'));
         } elseif (substr($value, -1) == '*') {
-            $this->beginsWith(trim(substr($value, 0, -1), '*'));
+            $this->startsWith(trim(substr($value, 0, -1), '*'));
         } elseif (substr($value, 0, 2) == 'r:') {
-            $this->matches(substr($value, 2));
+            $this->matching(substr($value, 2));
         } else {
-            $this->is($value);
+            $this->equal($value);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function addFileEntry($value)
+    protected function addFileEntry(string $value)
     {
         $this->addPattern($value);
     }

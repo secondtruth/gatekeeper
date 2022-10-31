@@ -22,16 +22,16 @@ class IPList extends AbstractList
      *
      * @var string[]
      */
-    protected $list = array();
+    protected array $list = [];
 
     /**
      * {@inheritdoc}
      */
-    public function match($value)
+    public function match(mixed $value)
     {
         foreach ($this->list as $checkValue) {
             if (strpos($checkValue, '/')) {
-                list($checkIP, $checkMask) = explode('/', $checkValue);
+                [$checkIP, $checkMask] = explode('/', $checkValue);
                 $checkMask = pow(2, 32) - pow(2, (32 - $checkMask));
 
                 if ((ip2long($value) & $checkMask) == (ip2long($checkIP) & $checkMask)) {
@@ -60,9 +60,9 @@ class IPList extends AbstractList
     /**
      * {@inheritdoc}
      */
-    public function add($values)
+    public function add(string|array $values)
     {
-        $ips = array_map('strval', (array) $values);
+        $ips = self::toArrayOfStrings($values);
 
         $this->list = self::merge($this->list, $ips);
     }
@@ -70,7 +70,7 @@ class IPList extends AbstractList
     /**
      * {@inheritdoc}
      */
-    protected function addFileEntry($value)
+    protected function addFileEntry(string $value)
     {
         $this->add($value);
     }

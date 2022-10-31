@@ -79,7 +79,7 @@ class BadBehaviorScreener extends CustomScreener
      */
     protected function setupUserAgentBlacklist()
     {
-        $this->uaBlacklist->beginsWith([
+        $this->uaBlacklist->startsWith([
             '8484 Boston Project', // video poker/porn spam
             'adwords', // referrer spam
             'autoemailspider', // spam harvester
@@ -193,7 +193,7 @@ class BadBehaviorScreener extends CustomScreener
             '\\\\)', // spam harvester
         ]);
 
-        $this->uaBlacklist->matches([
+        $this->uaBlacklist->matching([
             '/^[A-Z]{10}$/', // misc email spam
             '/[bcdfghjklmnpqrstvwxz ]{8,}/',
             '/MSIE [2345]/', // too old; assumed robot

@@ -38,8 +38,8 @@ class StringListTest extends ListingTestCase
     public function testMatchIs()
     {
         $list = new StringList();
-        $list->is('daz');
-        $list->is(['bar', 'foo']);
+        $list->equal('daz');
+        $list->equal(['bar', 'foo']);
 
         $this->assertMatchesList($list, 'foo');
     }
@@ -47,8 +47,8 @@ class StringListTest extends ListingTestCase
     public function testMatchBeginsWith()
     {
         $list = new StringList();
-        $list->beginsWith('d');
-        $list->beginsWith(['b', 'f']);
+        $list->startsWith('d');
+        $list->startsWith(['b', 'f']);
 
         $this->assertMatchesList($list, 'foo');
     }
@@ -74,8 +74,8 @@ class StringListTest extends ListingTestCase
     public function testMatchRegex()
     {
         $list = new StringList();
-        $list->matches('/daz/');
-        $list->matches(['/bar/', '/foo/']);
+        $list->matching('/daz/');
+        $list->matching(['/bar/', '/foo/']);
 
         $this->assertMatchesList($list, 'foo');
     }

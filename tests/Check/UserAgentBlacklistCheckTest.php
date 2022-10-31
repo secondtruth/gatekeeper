@@ -24,7 +24,7 @@ class UserAgentBlacklistCheckTest extends CheckTestCase
         $this->check = new UserAgentBlacklistCheck();
 
         $list = new StringList();
-        $list->is(['Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
+        $list->equal(['Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)']);
         $this->check->setBlacklist($list);
     }
 
