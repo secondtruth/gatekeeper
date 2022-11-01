@@ -48,9 +48,7 @@ class IPList extends AbstractList
     }
 
     /**
-     * Gets the IP list.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function get()
     {

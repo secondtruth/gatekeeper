@@ -91,6 +91,32 @@ class StringList extends AbstractList
     /**
      * {@inheritdoc}
      */
+    public function get()
+    {
+        $return = $this->equal;
+
+        foreach ($this->startsWith as $substring) {
+            $return[] = $substring . '*';
+        }
+
+        foreach ($this->endsWith as $substring) {
+            $return[] = '*' . $substring;
+        }
+
+        foreach ($this->contains as $substring) {
+            $return[] = '*' . $substring . '*';
+        }
+
+        foreach ($this->matching as $regex) {
+            $return[] = 'r:' . $regex;
+        }
+
+        return $return;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function add(string|array $values)
     {
         foreach ((array) $values as $value) {

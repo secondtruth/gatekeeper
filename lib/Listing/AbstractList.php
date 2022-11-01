@@ -30,6 +30,13 @@ abstract class AbstractList implements ListInterface
     }
 
     /**
+     * Returns the list values.
+     *
+     * @return string[]
+     */
+    abstract public function get();
+
+    /**
      * Sets the list values.
      *
      * @param string[] $values The values to set
