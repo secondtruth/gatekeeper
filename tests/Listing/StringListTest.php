@@ -17,6 +17,23 @@ use Secondtruth\Gatekeeper\Listing\StringList;
  */
 class StringListTest extends ListingTestCase
 {
+    public function testBasic()
+    {
+        $list1 = new StringList('foo');
+        $list1->add('bar');
+        $this->assertSame(['foo', 'bar'], $list1->get());
+
+        $list2 = new StringList(['foo', 'ba*']);
+        $list2->add(['*az', '*u*', 'r:/cat/']);
+        $this->assertSame(['foo', 'ba*', '*az', '*u*', 'r:/cat/'], $list2->get());
+
+        $list2->set(['quux', 'quuz']);
+        $this->assertSame(['quux', 'quuz'], $list2->get());
+
+        $list2->clear();
+        $this->assertSame([], $list2->get());
+    }
+
     public function testMatch()
     {
         $list = new StringList();

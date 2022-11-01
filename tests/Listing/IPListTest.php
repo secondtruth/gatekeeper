@@ -17,6 +17,23 @@ use Secondtruth\Gatekeeper\Listing\IPList;
  */
 class IPListTest extends ListingTestCase
 {
+    public function testBasic()
+    {
+        $list1 = new IPList('127.0.0.1');
+        $list1->add('127.0.0.2');
+        $this->assertSame(['127.0.0.1', '127.0.0.2'], $list1->get());
+
+        $list2 = new IPList(['127.0.0.1', '127.0.0.2/32']);
+        $list2->add(['127.0.0.3', '127.0.0.4/32']);
+        $this->assertSame(['127.0.0.1', '127.0.0.2/32', '127.0.0.3', '127.0.0.4/32'], $list2->get());
+
+        $list2->set(['127.0.0.5', '127.0.0.6/32']);
+        $this->assertSame(['127.0.0.5', '127.0.0.6/32'], $list2->get());
+
+        $list2->clear();
+        $this->assertSame([], $list2->get());
+    }
+
     public function testMatch()
     {
         $list = new IPList();
@@ -32,16 +49,5 @@ class IPListTest extends ListingTestCase
         $list->loadFile(__DIR__.'/fixtures/ips.txt');
 
         $this->assertMatchesList($list, ['127.0.0.1', '127.0.0.2', '127.0.0.3']);
-    }
-
-    public function testGet()
-    {
-        $list = new IPList();
-
-        $this->assertSame([], $list->get());
-
-        $list->add('127.0.0.1');
-
-        $this->assertSame(['127.0.0.1'], $list->get());
     }
 }
