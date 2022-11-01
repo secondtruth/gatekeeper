@@ -154,6 +154,18 @@ class StringList extends AbstractList
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function clear()
+    {
+        $this->equal = [];
+        $this->startsWith = [];
+        $this->endsWith = [];
+        $this->contains = [];
+        $this->matching = [];
+    }
+
+    /**
      * Adds an entry using a wildcard pattern or regular expression ("r:")
      *
      * @param string $value The pattern to add

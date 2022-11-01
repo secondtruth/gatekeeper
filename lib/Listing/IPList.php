@@ -70,6 +70,14 @@ class IPList extends AbstractList
     /**
      * {@inheritdoc}
      */
+    public function clear()
+    {
+        $this->list = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function addFileEntry(string $value)
     {
         $this->add($value);

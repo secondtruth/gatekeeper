@@ -30,11 +30,29 @@ abstract class AbstractList implements ListInterface
     }
 
     /**
+     * Sets the list values.
+     *
+     * @param string[] $values The values to set
+     */
+    public function set(array $list)
+    {
+        $this->clear();
+        $this->add($list);
+    }
+
+    /**
      * Adds the given value(s) to the list.
      *
      * @param string|string[] $values The value(s) to add
      */
     abstract public function add(string|array $values);
+
+    /**
+     * Clears the list.
+     *
+     * @return void
+     */
+    abstract public function clear();
 
     /**
      * Loads the list from the given file.
