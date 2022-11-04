@@ -10,6 +10,7 @@
 
 namespace Secondtruth\Gatekeeper\Result;
 
+use Secondtruth\Gatekeeper\Screener;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -220,7 +221,8 @@ class Explainer
     /**
      * Explains the given result.
      *
-     * @param \Secondtruth\Gatekeeper\Result\ResultInterface $result The result
+     * @param ResultInterface $result The result
+     *
      * @return array Returns the explanation.
      */
     public function explain(ResultInterface $result)
@@ -229,15 +231,16 @@ class Explainer
             return $this->explainPositiveResult($result);
         } elseif ($result instanceof NegativeResult) {
             return $this->explainNegativeResult($result);
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**
      * Explains a positive result.
      *
-     * @param \Secondtruth\Gatekeeper\Result\PositiveResult $result The result
+     * @param PositiveResult $result The result
+     *
      * @return array Returns the explanation.
      */
     protected function explainPositiveResult(PositiveResult $result)
@@ -258,15 +261,20 @@ class Explainer
     /**
      * Explains a negative result.
      *
-     * @param \Secondtruth\Gatekeeper\Result\NegativeResult $result The result
+     * @param NegativeResult $result The result
+     *
      * @return array Returns the explanation.
      */
     protected function explainNegativeResult(NegativeResult $result)
     {
-        if (in_array('Secondtruth\Gatekeeper\Screener', $result->getReportingClasses())) {
-            return ['logtext' => 'Visitor is whitelisted'];
+        if (in_array(Screener::class, $result->getReportingClasses())) {
+            return [
+                'logtext' => 'Visitor is whitelisted'
+            ];
         }
 
-        return ['logtext' => 'Request permitted'];
+        return [
+            'logtext' => 'Request permitted'
+        ];
     }
 }

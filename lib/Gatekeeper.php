@@ -230,7 +230,7 @@ class Gatekeeper
         $result = $screener->screenVisitor($visitor);
 
         if ($result instanceof PositiveResult) {
-            $explainer = $this->explainer ?: new Explainer();
+            $explainer = $this->explainer ?? new Explainer();
             $result->setExplanation($explainer->explain($result));
         }
 

@@ -36,7 +36,7 @@ abstract class AbstractResult implements ResultInterface
      *
      * @param string[]|string $reporting List of reporting Check classes
      */
-    public function __construct($reporting = [])
+    public function __construct(array|string $reporting = [])
     {
         $this->reporting = (array) $reporting;
     }

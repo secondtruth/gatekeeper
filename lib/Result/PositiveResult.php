@@ -22,15 +22,15 @@ class PositiveResult extends AbstractResult
      *
      * @var string|null
      */
-    protected $code;
+    protected ?string $code;
 
     /**
      * Creates a PositiveResult object.
      *
-     * @param string[] $reporting List of reporting Check classes
-     * @param string $code The result code
+     * @param string[]|string $reporting List of reporting Check classes
+     * @param string|null $code The result code
      */
-    public function __construct(array $reporting = [], $code = null)
+    public function __construct(array|string $reporting = [], ?string $code = null)
     {
         parent::__construct($reporting);
 
