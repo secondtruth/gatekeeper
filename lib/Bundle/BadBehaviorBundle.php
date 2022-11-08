@@ -8,78 +8,69 @@
  * above copyright notice and this permission notice appear in all copies.
  */
 
-namespace Secondtruth\Gatekeeper\Screener;
+namespace Secondtruth\Gatekeeper\Bundle;
 
+use Secondtruth\Gatekeeper\ACL\UserAgentACL;
 use Secondtruth\Gatekeeper\Check\CookiesCheck;
 use Secondtruth\Gatekeeper\Check\HeadersCheck;
 use Secondtruth\Gatekeeper\Check\PostRequestCheck;
 use Secondtruth\Gatekeeper\Check\ProtocolCheck;
 use Secondtruth\Gatekeeper\Check\UrlCheck;
-use Secondtruth\Gatekeeper\Check\UserAgentBlacklistCheck;
 use Secondtruth\Gatekeeper\Check\UserAgentCheck;
-use Secondtruth\Gatekeeper\Listing\IPList;
 use Secondtruth\Gatekeeper\Listing\StringList;
 
 /**
- * Check for known spam bots and block them.
+ * Check for known spambots and block them.
  *
- * @author   Michael Hampton <bad.bots@ioerror.us>
- * @author   Christian Neff <christian.neff@gmail.com>
+ * @author Michael Hampton <bad.bots@ioerror.us>
+ * @author Christian Neff <christian.neff@gmail.com>
  */
-class BadBehaviorScreener extends CustomScreener
+class BadBehaviorBundle extends AbstractBundle
 {
-    /**
-     * @var \Secondtruth\Gatekeeper\Listing\StringList
-     */
-    protected $uaBlacklist;
-
     /**
      * The settings
      *
      * @var array
      */
-    protected $settings = array();
+    protected $settings = [];
 
     /**
-     * {@inheritdoc}
+     * Creates a BadBehaviorBundle object.
      *
      * @param array $settings The settings
      */
     public function __construct(array $settings = [])
     {
-        $this->uaBlacklist = new StringList();
-        $this->setupUserAgentBlacklist();
-
         $this->settings = $settings;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function setup()
+    protected function createChecks(): array
     {
-        $this->addCheck(new UserAgentBlacklistCheck($this->uaBlacklist));
-        $this->addCheck(new UrlCheck());
+        return [
+            new UrlCheck(),
 
-        // Check for abnormalities in the request
-        $this->addCheck(new ProtocolCheck($this->settings));
-        $this->addCheck(new CookiesCheck());
-        $this->addCheck(new HeadersCheck($this->settings));
+            // Check for abnormalities in the request
+            new ProtocolCheck($this->settings),
+            new CookiesCheck(),
+            new HeadersCheck($this->settings),
 
-        $this->addCheck(new UserAgentCheck());
+            new UserAgentCheck(),
 
-        // More intensive screening applies to POST requests
-        $this->addCheck(new PostRequestCheck($this->settings));
+            // More intensive screening applies to POST requests
+            new PostRequestCheck($this->settings)
+        ];
     }
 
     /**
-     * Gets list of User Agent string parts at the beginning which determine a bad bot.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    protected function setupUserAgentBlacklist()
+    protected function createACLs(): array
     {
-        $this->uaBlacklist->startsWith([
+        $uaDenyList = new StringList();
+        $uaDenyList->startsWith([
             '8484 Boston Project', // video poker/porn spam
             'adwords', // referrer spam
             'autoemailspider', // spam harvester
@@ -142,8 +133,7 @@ class BadBehaviorScreener extends CustomScreener
             'Wordpress', // malicious software
             '"', // malicious software
         ]);
-
-        $this->uaBlacklist->contains([
+        $uaDenyList->contains([
             "\r", // A really dumb bot
             '<sc', // XSS exploit attempts
             '; Widows ', // misc comment/email spam
@@ -192,11 +182,14 @@ class BadBehaviorScreener extends CustomScreener
             'ZmEu', // exploit scanner
             '\\\\)', // spam harvester
         ]);
-
-        $this->uaBlacklist->matching([
+        $uaDenyList->matching([
             '/^[A-Z]{10}$/', // misc email spam
             '/[bcdfghjklmnpqrstvwxz ]{8,}/',
             '/MSIE [2345]/', // too old; assumed robot
         ]);
+
+        return [
+            new UserAgentACL(null, $uaDenyList)
+        ];
     }
 }
