@@ -10,6 +10,7 @@
 
 namespace Secondtruth\Gatekeeper\Result;
 
+use Secondtruth\Gatekeeper\ACL\ACLInterface;
 use Secondtruth\Gatekeeper\Screener;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -267,10 +268,12 @@ class Explainer
      */
     protected function explainNegativeResult(NegativeResult $result)
     {
-        if (in_array(Screener::class, $result->getReportingClasses())) {
-            return [
-                'logtext' => 'Visitor is whitelisted'
-            ];
+        foreach ($result->getReportingClasses() as $class) {
+            if (is_a($class, ACLInterface::class, true)) {
+                return [
+                    'logtext' => 'Visitor is explicitly allowed'
+                ];
+            }
         }
 
         return [

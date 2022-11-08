@@ -11,6 +11,7 @@
 namespace Secondtruth\Gatekeeper\Tests\Result;
 
 use PHPUnit\Framework\TestCase;
+use Secondtruth\Gatekeeper\ACL\IPAddressACL;
 use Secondtruth\Gatekeeper\Result\Explainer;
 use Secondtruth\Gatekeeper\Result\NegativeResult;
 use Secondtruth\Gatekeeper\Result\PositiveResult;
@@ -68,13 +69,13 @@ class ExplainerTest extends TestCase
         $this->assertEquals($expectedExplanation, $this->explainer->explain($result));
     }
 
-    public function testExplainNegativeResultWhitelist()
+    public function testExplainNegativeResultFromACL()
     {
         $expectedExplanation = [
-            'logtext' => 'Visitor is whitelisted'
+            'logtext' => 'Visitor is explicitly allowed'
         ];
 
-        $result = new NegativeResult(['Secondtruth\Gatekeeper\Screener']);
+        $result = new NegativeResult(IPAddressACL::class);
 
         $this->assertEquals($expectedExplanation, $this->explainer->explain($result));
     }

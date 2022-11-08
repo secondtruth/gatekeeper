@@ -11,8 +11,7 @@
 namespace Secondtruth\Gatekeeper;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Secondtruth\Gatekeeper\Listing\IPList;
-use Secondtruth\Gatekeeper\Listing\StringList;
+use Secondtruth\Gatekeeper\ACL\ACLInterface;
 use Secondtruth\Gatekeeper\Result\Explainer;
 use Secondtruth\Gatekeeper\Result\NegativeResult;
 use Secondtruth\Gatekeeper\Result\PositiveResult;
@@ -20,6 +19,7 @@ use Secondtruth\Gatekeeper\Result\ResultInterface;
 use Secondtruth\Gatekeeper\Storage\StorageInterface;
 use Secondtruth\Gatekeeper\Exceptions\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * The Gatekeeper class.
@@ -43,18 +43,11 @@ class Gatekeeper
     protected $explainer;
 
     /**
-     * The IP whitelist
+     * The list of ACLs
      *
-     * @var IPList
+     * @var ACLInterface[]
      */
-    protected $whitelist;
-
-    /**
-     * The list of trusted user agents
-     *
-     * @var StringList
-     */
-    protected $trustedUserAgents;
+    protected array $acls = [];
 
     /**
      * The current visitor
@@ -148,43 +141,13 @@ class Gatekeeper
     }
 
     /**
-     * Returns the IP whitelist.
+     * Adds an Access Control List (ACL).
      *
-     * @return IPList
+     * @param ACLInterface $acl The ACL to add
      */
-    public function getWhitelist()
+    public function addACL(ACLInterface $acl): void
     {
-        return $this->whitelist;
-    }
-
-    /**
-     * Sets the IP whitelist.
-     *
-     * @param IPList $whitelist The IP whitelist
-     */
-    public function setWhitelist(IPList $whitelist)
-    {
-        $this->whitelist = $whitelist;
-    }
-
-    /**
-     * Returns the list of trusted user agents.
-     *
-     * @return StringList
-     */
-    public function getTrustedUserAgents()
-    {
-        return $this->trustedUserAgents;
-    }
-
-    /**
-     * Sets the list of trusted user agents.
-     *
-     * @param StringList $trustedUserAgents The list of trusted user agents
-     */
-    public function setTrustedUserAgents(StringList $trustedUserAgents)
-    {
-        $this->trustedUserAgents = $trustedUserAgents;
+        $this->acls[] = $acl;
     }
 
     /**
@@ -223,8 +186,21 @@ class Gatekeeper
      */
     public function analyze(Visitor $visitor, ScreenerInterface $screener): ResultInterface
     {
-        if ($this->isAllowed($visitor)) {
-            return new NegativeResult();
+        foreach ($this->acls as $acl) {
+            if ($acl->isAllowed($visitor)) {
+                return new NegativeResult($acl::class);
+            }
+
+            if ($acl->isDenied($visitor)) {
+                $result = new PositiveResult($acl::class);
+                $result->setExplanation([
+                    'response' => Response::HTTP_FORBIDDEN,
+                    'explanation' => 'You do not have permission to access this server.',
+                    'logtext' => sprintf('Request blocked by: %s', $acl::class)
+                ]);
+
+                return $result;
+            }
         }
 
         $result = $screener->screenVisitor($visitor);
@@ -269,27 +245,6 @@ class Gatekeeper
     protected function penalize(PositiveResult $result)
     {
         // reserved for future use, maybe for reporting to stopforumspam.com or so
-    }
-
-    /**
-     * Checks if the visitor is whitelisted.
-     *
-     * @param Visitor $visitor The visitor
-     *
-     * @return bool
-     */
-    protected function isAllowed(Visitor $visitor)
-    {
-        if ($this->whitelist && $this->whitelist->match($visitor->getIP())) {
-            return true;
-        }
-
-        $uastring = $visitor->getUserAgent()->getUserAgentString();
-        if ($this->trustedUserAgents && $this->trustedUserAgents->match((string) $uastring)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

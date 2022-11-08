@@ -11,8 +11,9 @@
 namespace Secondtruth\Gatekeeper\Tests;
 
 use Nyholm\Psr7\ServerRequest;
-use Secondtruth\Gatekeeper\Listing\IPList;
 use PHPUnit\Framework\TestCase;
+use Secondtruth\Gatekeeper\ACL\IPAddressACL;
+use Secondtruth\Gatekeeper\Listing\IPList;
 use Secondtruth\Gatekeeper\Screener;
 use Secondtruth\Gatekeeper\Gatekeeper;
 use Secondtruth\Gatekeeper\Exceptions\AccessDeniedException;
@@ -40,17 +41,27 @@ class GatekeeperTest extends TestCase
 
         $this->gatekeeper = new Gatekeeper();
 
-        $list = new IPList();
-        $list->add(['127.0.0.2/32']);
-        $this->gatekeeper->setWhitelist($list);
+        $allowed = new IPList('127.0.0.2');
+        $denied = new IPList('127.0.0.3');
+        $acl = new IPAddressACL($allowed, $denied);
+        $this->gatekeeper->addACL($acl);
     }
 
     /**
      * @doesNotPerformAssertions
      */
-    public function testWhitelist()
+    public function testAllowList()
     {
         $request = $this->createRequest([], '127.0.0.2');
+        $this->gatekeeper->run($request, $this->screener);
+    }
+
+    public function testDenyList()
+    {
+        $this->expectException(AccessDeniedException::class);
+        $this->expectExceptionMessageMatches('#<p>Your request has been blocked\.</p>\n<p>You do not have permission to access this server\.</p>#');
+
+        $request = $this->createRequest([], '127.0.0.3');
         $this->gatekeeper->run($request, $this->screener);
     }
 
