@@ -47,7 +47,7 @@ class UserAgentACL implements ACLInterface
      */
     public function isAllowed(Visitor $visitor)
     {
-        return $this->allowed->match((string) $visitor->getUserAgent()->getUserAgentString());
+        return $this->allowed->match((string) $visitor->getUserAgent());
     }
 
     /**
@@ -55,6 +55,6 @@ class UserAgentACL implements ACLInterface
      */
     public function isDenied(Visitor $visitor)
     {
-        return $this->denied->match((string) $visitor->getUserAgent()->getUserAgentString());
+        return $this->denied->match((string) $visitor->getUserAgent());
     }
 }

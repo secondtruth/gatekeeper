@@ -13,43 +13,28 @@ namespace Secondtruth\Gatekeeper;
 /**
  * The UserAgent class
  *
- * @author   Thibault Duplessis <thibault.duplessis at gmail dot com>
- * @author   Christian Neff <christian.neff@gmail.com>
+ * @author Thibault Duplessis <thibault.duplessis at gmail dot com>
+ * @author Christian Neff <christian.neff@gmail.com>
  */
 class UserAgent
 {
-    /**
-     * @var \Secondtruth\Gatekeeper\UserAgentString
-     */
-    protected $string;
+    protected UserAgentString $string;
 
-    /**
-     * @var string
-     */
-    protected $browserName;
+    protected ?string $browserName = null;
 
-    /**
-     * @var string
-     */
-    protected $browserVersion;
+    protected ?string $browserVersion = null;
 
-    /**
-     * @var string
-     */
-    protected $browserEngine;
+    protected ?string $browserEngine = null;
 
-    /**
-     * @var string
-     */
-    protected $operatingSystem;
+    protected ?string $operatingSystem = null;
 
     /**
      * Creates a UserAgent object.
      *
-     * @param string $string The user agent string
-     * @param \Secondtruth\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
+     * @param string|null                $string $string The user agent string
+     * @param UserAgentStringParser|null $parser The parser used to parse the string
      */
-    public function __construct($string = null, ?UserAgentStringParser $parser = null)
+    public function __construct(?string $string = null, ?UserAgentStringParser $parser = null)
     {
         $this->configureFromUserAgentString($string, $parser);
     }
@@ -59,17 +44,17 @@ class UserAgent
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getFullName();
+        return (string) $this->string;
     }
 
     /**
      * Gets the user agent string.
      *
-     * @return \Secondtruth\Gatekeeper\UserAgentString
+     * @return UserAgentString
      */
-    public function getUserAgentString()
+    public function getUserAgentString(): UserAgentString
     {
         return $this->string;
     }
@@ -79,7 +64,7 @@ class UserAgent
      *
      * @param string $string The user agent string
      */
-    public function setUserAgentString($string)
+    public function setUserAgentString(string $string): void
     {
         $this->string = new UserAgentString($string);
     }
@@ -87,9 +72,9 @@ class UserAgent
     /**
      * Gets the browser name.
      *
-     * @return string
+     * @return string|null Returns the browser name or `NULL` if it could not be determined.
      */
-    public function getBrowserName()
+    public function getBrowserName(): ?string
     {
         return $this->browserName;
     }
@@ -99,7 +84,7 @@ class UserAgent
      *
      * @param string $name The browser name
      */
-    public function setBrowserName($name)
+    public function setBrowserName(string $name): void
     {
         $this->browserName = $name;
     }
@@ -107,9 +92,9 @@ class UserAgent
     /**
      * Gets the browser version.
      *
-     * @return string
+     * @return string|null Returns the browser version or `NULL` if it could not be determined.
      */
-    public function getBrowserVersion()
+    public function getBrowserVersion(): ?string
     {
         return $this->browserVersion;
     }
@@ -119,7 +104,7 @@ class UserAgent
      *
      * @param string $version The browser version
      */
-    public function setBrowserVersion($version)
+    public function setBrowserVersion(string $version): void
     {
         $this->browserVersion = $version;
     }
@@ -127,19 +112,27 @@ class UserAgent
     /**
      * Gets the full name of the browser. This combines browser name and version.
      *
-     * @return string
+     * @return string|null Returns the full name of the browser or `NULL` if it could not be determined.
      */
-    public function getFullName()
+    public function getFullName(): ?string
     {
-        return $this->getBrowserName().' '.$this->getBrowserVersion();
+        $name = $this->getBrowserName();
+
+        if ($name === null) {
+            return null;
+        }
+
+        $version = $this->getBrowserVersion();
+
+        return $name . ($version ? ' ' . $version : '');
     }
 
     /**
      * Gets the browser engine name.
      *
-     * @return string
+     * @return string|null Returns the browser engine name or `NULL` if it could not be determined.
      */
-    public function getBrowserEngine()
+    public function getBrowserEngine(): ?string
     {
         return $this->browserEngine;
     }
@@ -149,7 +142,7 @@ class UserAgent
      *
      * @param string $browserEngine The browser engine name
      */
-    public function setBrowserEngine($browserEngine)
+    public function setBrowserEngine(string $browserEngine): void
     {
         $this->browserEngine = $browserEngine;
     }
@@ -157,9 +150,9 @@ class UserAgent
     /**
      * Gets the operating system name.
      *
-     * @return string
+     * @return string|null Returns the operating system name or `NULL` if it could not be determined.
      */
-    public function getOperatingSystem()
+    public function getOperatingSystem(): ?string
     {
         return $this->operatingSystem;
     }
@@ -169,7 +162,7 @@ class UserAgent
      *
      * @param string $operatingSystem The operating system name
      */
-    public function setOperatingSystem($operatingSystem)
+    public function setOperatingSystem(string $operatingSystem): void
     {
         $this->operatingSystem = $operatingSystem;
     }
@@ -179,7 +172,7 @@ class UserAgent
      *
      * @return bool Returns TRUE if this user agent is unknown, FALSE otherwise.
      */
-    public function isUnknown()
+    public function isUnknown(): bool
     {
         return empty($this->browserName);
     }
@@ -189,7 +182,7 @@ class UserAgent
      *
      * @return bool
      */
-    public function isBrowser()
+    public function isBrowser(): bool
     {
         return in_array($this->getBrowserName(), $this->getKnownBrowsers());
     }
@@ -199,7 +192,7 @@ class UserAgent
      *
      * @return bool Returns TRUE if this user agent is a bot, FALSE otherwise.
      */
-    public function isBot()
+    public function isBot(): bool
     {
         return in_array($this->getBrowserName(), $this->getKnownBots());
     }
@@ -207,10 +200,10 @@ class UserAgent
     /**
      * Configures the user agent information from a user agent string.
      *
-     * @param string $string The user agent string
-     * @param \Secondtruth\Gatekeeper\UserAgentStringParser $parser The parser used to parse the string
+     * @param string                     $string The user agent string
+     * @param UserAgentStringParser|null $parser The parser used to parse the string
      */
-    public function configureFromUserAgentString($string, ?UserAgentStringParser $parser = null)
+    public function configureFromUserAgentString(string $string, ?UserAgentStringParser $parser = null): void
     {
         if (!$parser) {
             $parser = new UserAgentStringParser();
@@ -225,14 +218,14 @@ class UserAgent
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
-        return array(
+        return [
             'browser_name' => $this->getBrowserName(),
             'browser_version' => $this->getBrowserVersion(),
             'browser_engine' => $this->getBrowserEngine(),
             'operating_system' => $this->getOperatingSystem()
-        );
+        ];
     }
 
     /**
@@ -240,15 +233,26 @@ class UserAgent
      *
      * @param array $data The data array
      */
-    public function fromArray(array $data)
+    public function fromArray(array $data): void
     {
-        $this->setBrowserName($data['browser_name']);
-        $this->setBrowserVersion($data['browser_version']);
-        $this->setBrowserEngine($data['browser_engine']);
-        $this->setOperatingSystem($data['operating_system']);
+        if (isset($data['browser_name'])) {
+            $this->setBrowserName($data['browser_name']);
+        }
+
+        if (isset($data['browser_version'])) {
+            $this->setBrowserVersion($data['browser_version']);
+        }
+
+        if (isset($data['browser_engine'])) {
+            $this->setBrowserEngine($data['browser_engine']);
+        }
+
+        if (isset($data['operating_system'])) {
+            $this->setOperatingSystem($data['operating_system']);
+        }
     }
 
-    protected function getKnownBrowsers()
+    protected function getKnownBrowsers(): array
     {
         return [
             'msie',
@@ -267,9 +271,9 @@ class UserAgent
      *
      * @return array
      */
-    protected function getKnownBots()
+    protected function getKnownBots(): array
     {
-        return array(
+        return [
             'googlebot',
             'bingbot',
             'msnbot',
@@ -277,6 +281,6 @@ class UserAgent
             'yandexbot',
             'baidubot',
             'facebookbot'
-        );
+        ];
     }
 }
