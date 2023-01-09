@@ -34,8 +34,9 @@ namespace Acme\MyApplication;
 
 use Secondtruth\Gatekeeper\Screener;
 use Secondtruth\Gatekeeper\Gatekeeper;
+use Secondtruth\Gatekeeper\ACL\IPAddressACL;
+use Secondtruth\Gatekeeper\Check\UrlCheck;
 use Secondtruth\Gatekeeper\Listing\IPList;
-use Secondtruth\Gatekeeper\Check\IPBlacklistCheck;
 use Laminas\Diactoros\ServerRequestFactory; // or any other PSR-7 ServerRequest factory
 
 require 'vendor/autoload.php';
@@ -46,7 +47,7 @@ Create a `Screener` object and add the `Check` object(s) you want to use:
 ```php
 $screener = new Screener();
 
-$check = new IPBlacklistCheck(new IPList(['127.0.0.2', '127.0.0.3/32']));
+$check = new UrlCheck();
 $screener->addCheck($check);
 ```
 
@@ -56,7 +57,10 @@ Create a `Gatekeeper` object and run it using the screener:
 $request = ServerRequestFactory::fromGlobals(); // or a PSR-7 ServerRequest object you already have
 
 $gatekeeper = new Gatekeeper();
-$gatekeeper->setWhitelist(new IPList('127.0.0.1'));
+
+$allowed = new IPList('127.0.0.1');
+$denied = new IPList(['127.0.0.2', '127.0.0.3/32']);
+$gatekeeper->addACL(new IPAddressACL($allowed, $denied));
 
 $gatekeeper->run($request, $screener);
 ```
