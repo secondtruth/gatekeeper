@@ -62,7 +62,7 @@ class ScreenerTest extends TestCase
     protected function runTestScreening(bool $block = false)
     {
         $request = Request::create('/', 'GET', [], [], [], $block ? ['HTTP_X_GATEKEEPER_BLOCK' => 'true'] : []);
-        $visitor = new Visitor($request);
+        $visitor = Visitor::fromSymfonyRequest($request);
 
         return $this->screener->screenVisitor($visitor);
     }

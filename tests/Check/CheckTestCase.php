@@ -47,7 +47,7 @@ abstract class CheckTestCase extends TestCase
      */
     protected function runCustomTestCheck(Request $request)
     {
-        $visitor = new Visitor($request);
+        $visitor = Visitor::fromSymfonyRequest($request);
         return $this->check->checkVisitor($visitor);
     }
 }

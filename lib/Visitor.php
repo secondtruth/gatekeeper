@@ -12,6 +12,8 @@ namespace Secondtruth\Gatekeeper;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Component\HttpFoundation\HeaderBag;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -26,90 +28,124 @@ class Visitor
      *
      * @var IP
      */
-    protected $ip;
+    protected IP $ip;
 
     /**
      * The request headers
      *
-     * @var \Symfony\Component\HttpFoundation\HeaderBag
+     * @var HeaderBag
      */
-    protected $headers;
+    protected HeaderBag $headers;
 
     /**
      * The request method
      *
      * @var string
      */
-    protected $method;
+    protected string $method;
 
     /**
      * The request URI
      *
      * @var string
      */
-    protected $uri;
+    protected string $uri;
 
     /**
      * The request data
      *
-     * @var \Symfony\Component\HttpFoundation\ParameterBag
+     * @var ParameterBag
      */
-    protected $data;
+    protected ParameterBag $data;
 
     /**
      * The request scheme
      *
      * @var string
      */
-    protected $scheme;
+    protected string $scheme;
 
     /**
      * The server protocol
      *
      * @var string
      */
-    protected $protocol;
+    protected string $protocol;
 
     /**
      * The user agent information
      *
-     * @var \Secondtruth\Gatekeeper\UserAgent
+     * @var UserAgent
      */
-    protected $userAgent;
+    protected UserAgent $userAgent;
 
     /**
      * Creates a Visitor object.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request The request of the visitor
+     * @param IP|string          $ip        The client IP address
+     * @param HeaderBag|array    $headers   The request headers
+     * @param string             $method    The request method
+     * @param string             $uri       The request URI
+     * @param ParameterBag|array $data      The request data
+     * @param string             $scheme    The request scheme
+     * @param string             $protocol  The server protocol
+     * @param UserAgent|string   $userAgent The user agent information object or the user agent string
      */
-    public function __construct(Request $request)
-    {
-        $this->ip = new IP($request->getClientIp());
-        $this->headers = $request->headers;
-        $this->method = $request->getRealMethod();
-        $this->uri = $request->getRequestUri();
-        $this->data = $request->request;
-        $this->scheme = $request->getScheme();
-        $this->protocol = $request->server->get('SERVER_PROTOCOL');
+    public function __construct(
+        IP|string $ip,
+        HeaderBag|array $headers,
+        string $method,
+        string $uri,
+        ParameterBag|array $data,
+        string $scheme,
+        string $protocol,
+        UserAgent|string $userAgent
+    ) {
+        $this->ip = $ip instanceof IP ? $ip : new IP($ip);
+        $this->headers = $headers instanceof HeaderBag ? $headers : new HeaderBag($headers);
+        $this->method = $method;
+        $this->uri = $uri;
+        $this->data = $data instanceof ParameterBag ? $data : new ParameterBag($data);
+        $this->scheme = $scheme;
+        $this->protocol = $protocol;
+        $this->userAgent = $userAgent instanceof UserAgent ? $userAgent : new UserAgent($userAgent);
+    }
 
-        $userAgent = $request->headers->get('user-agent', '');
-        $this->userAgent = new UserAgent($userAgent);
+    /**
+     * Creates a Visitor object from a Symfony HttpFoundation Request.
+     *
+     * @param Request $request The request of the visitor
+     *
+     * @return self
+     */
+    public static function fromSymfonyRequest(Request $request): self
+    {
+        return new self(
+            $request->getClientIp(),
+            $request->headers,
+            $request->getRealMethod(),
+            $request->getRequestUri(),
+            $request->request,
+            $request->getScheme(),
+            $request->server->get('SERVER_PROTOCOL', ''),
+            $request->headers->get('user-agent', '')
+        );
     }
 
     /**
      * Creates a Visitor object from a PSR-7 server request.
      *
-     * @param ServerRequestInterface $request The server request of the visitor
+     * @param ServerRequestInterface     $request               The server request of the visitor
      * @param HttpFoundationFactory|null $httpFoundationFactory
      *
      * @return self
      */
-    public static function fromPsr7(ServerRequestInterface $request, ?HttpFoundationFactory $httpFoundationFactory = null)
+    public static function fromPsr7Request(ServerRequestInterface $request, ?HttpFoundationFactory $httpFoundationFactory = null)
     {
         $httpFoundationFactory ??= new HttpFoundationFactory();
         $request = $httpFoundationFactory->createRequest($request);
 
-        return new self($request);
+        return self::fromSymfonyRequest($request);
     }
 
     /**
@@ -125,7 +161,7 @@ class Visitor
     /**
      * Gets the request headers.
      *
-     * @return \Symfony\Component\HttpFoundation\HeaderBag
+     * @return HeaderBag
      */
     public function getRequestHeaders()
     {
@@ -155,7 +191,7 @@ class Visitor
     /**
      * Gets the request data.
      *
-     * @return \Symfony\Component\HttpFoundation\ParameterBag
+     * @return ParameterBag
      */
     public function getRequestData()
     {
@@ -185,7 +221,7 @@ class Visitor
     /**
      * Gets the user agent information.
      *
-     * @return \Secondtruth\Gatekeeper\UserAgent
+     * @return UserAgent
      */
     public function getUserAgent()
     {
@@ -199,15 +235,15 @@ class Visitor
      */
     public function toArray()
     {
-        return array(
-            'ip'         => (string) $this->ip,
-            'headers'    => $this->headers->all(),
-            'method'     => $this->method,
-            'uri'        => $this->uri,
-            'data'       => $this->data->all(),
-            'protocol'   => $this->protocol,
-            'scheme'     => $this->scheme,
+        return [
+            'ip' => (string) $this->ip,
+            'headers' => $this->headers->all(),
+            'method' => $this->method,
+            'uri' => $this->uri,
+            'data' => $this->data->all(),
+            'protocol' => $this->protocol,
+            'scheme' => $this->scheme,
             'user_agent' => $this->userAgent->getUserAgentString()
-        );
+        ];
     }
 }

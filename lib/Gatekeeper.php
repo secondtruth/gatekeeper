@@ -160,7 +160,7 @@ class Gatekeeper
      */
     public function run(ServerRequestInterface|Request $request, ScreenerInterface $screener)
     {
-        $visitor = $request instanceof Request ? new Visitor($request) : Visitor::fromPsr7($request);
+        $visitor = $request instanceof Request ? new Visitor($request) : Visitor::fromPsr7Request($request);
         $this->visitor = $visitor;
 
         $result = $this->analyze($visitor, $screener);

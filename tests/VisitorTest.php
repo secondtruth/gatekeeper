@@ -34,7 +34,7 @@ class VisitorTest extends TestCase
         );
 
         $request = Request::create('/', 'POST', [], [], [], $serverParams);
-        $this->visitor = new Visitor($request);
+        $this->visitor = Visitor::fromSymfonyRequest($request);
     }
 
     public function testGetIP()
