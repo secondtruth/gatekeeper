@@ -39,3 +39,10 @@ jobs:
 
       - name: PHPUnit Tests
         run: phpunit --coverage-text --coverage-clover=coverage.clover
+
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.clover
+          verbose: true
