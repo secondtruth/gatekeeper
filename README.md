@@ -1,13 +1,12 @@
 # Gatekeeper
 
-[![Build Status](https://img.shields.io/travis/secondtruth/gatekeeper.svg)](https://travis-ci.org/secondtruth/gatekeeper)
-[![Scrutinizer](http://img.shields.io/scrutinizer/g/secondtruth/gatekeeper.svg)](https://scrutinizer-ci.com/g/secondtruth/gatekeeper)
-[![Coverage](http://img.shields.io/scrutinizer/coverage/g/secondtruth/gatekeeper.svg)](https://scrutinizer-ci.com/g/secondtruth/gatekeeper)
-[![License](http://img.shields.io/packagist/l/secondtruth/gatekeeper.svg)](https://packagist.org/packages/secondtruth/gatekeeper)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/secondtruth/gatekeeper/tests.yml.svg)](https://github.com/secondtruth/gatekeeper/actions/workflows/tests.yml)
+[![Quality](https://img.shields.io/codeclimate/maintainability/secondtruth/gatekeeper.svg)](https://codeclimate.com/github/secondtruth/gatekeeper)
+[![Coverage](https://img.shields.io/codecov/c/gh/secondtruth/gatekeeper.svg?token=pmX6z4UHDJ)](https://codecov.io/gh/secondtruth/gatekeeper)
+[![License](https://img.shields.io/github/license/secondtruth/gatekeeper.svg?color=blue)](https://packagist.org/packages/secondtruth/gatekeeper)
 
 The Gatekeeper library protects websites from spam and other attacks. It prevents bad bots from delivering their junk, and in many cases,
 from ever reading your site in the first place.
-
 
 ## Description
 
@@ -23,7 +22,6 @@ Gatekeeper is designed to work alongside existing spam prevention services to in
 Whenever possible, you should run it in combination with a more traditional spam prevention service.
 
 The library is inspired by the **Bad Behavior** anti-spam system by **Michael Hampton**.
-
 
 ## Usage
 
@@ -65,7 +63,6 @@ $gatekeeper->addACL(new IPAddressACL($allowed, $denied));
 $gatekeeper->run($request, $screener);
 ```
 
-
 ## Installation
 
 ### Install via Composer
@@ -74,13 +71,13 @@ $gatekeeper->run($request, $screener);
 
 To install the library, run the following command and you will get the latest development version:
 
-    $ php composer.phar require secondtruth/gatekeeper:dev-master
-
+```bash
+composer require secondtruth/gatekeeper:dev-master
+```
 
 ## Requirements
 
-* You must have at least PHP version 8.1 installed on your system.
-
+- You must have at least PHP version 8.1 installed on your system.
 
 ## Author, Credits and License
 
@@ -91,4 +88,4 @@ Based on the work of:
 
 * Michael Hampton
 
-Thanks to [all other Contributors](https://github.com/secondtruth/wumbo/graphs/contributors)!
+Thanks to [all other contributors](https://github.com/secondtruth/wumbo/graphs/contributors)!
