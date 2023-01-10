@@ -1,9 +1,9 @@
 # Gatekeeper
 
-[![Build Status](https://img.shields.io/travis/secondtruth/gatekeeper.svg)](https://travis-ci.org/secondtruth/gatekeeper)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/secondtruth/gatekeeper/tests.yml)](https://github.com/secondtruth/gatekeeper/actions/workflows/tests.yml)
 [![Scrutinizer](http://img.shields.io/scrutinizer/g/secondtruth/gatekeeper.svg)](https://scrutinizer-ci.com/g/secondtruth/gatekeeper)
 [![Coverage](http://img.shields.io/scrutinizer/coverage/g/secondtruth/gatekeeper.svg)](https://scrutinizer-ci.com/g/secondtruth/gatekeeper)
-[![License](http://img.shields.io/packagist/l/secondtruth/gatekeeper.svg)](https://packagist.org/packages/secondtruth/gatekeeper)
+[![License](https://img.shields.io/github/license/secondtruth/gatekeeper.svg?color=blue)](https://packagist.org/packages/secondtruth/gatekeeper)
 
 The Gatekeeper library protects websites from spam and other attacks. It prevents bad bots from delivering their junk, and in many cases,
 from ever reading your site in the first place.
