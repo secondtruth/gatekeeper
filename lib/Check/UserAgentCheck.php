@@ -1,7 +1,7 @@
 <?php
 /*
  * Gatekeeper
- * Copyright (C) 2022 Christian Neff
+ * Copyright (C) 2024 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -31,6 +31,26 @@ class UserAgentCheck extends AbstractCheck
      * @var BotInterface[]
      */
     protected $bots = [];
+
+    /**
+     * Constructor.
+     *
+     * @param UserAgentInterface[] $userAgents The UserAgent objects to use
+     *
+     * @throws \InvalidArgumentException If an unsupported user agent type is given.
+     */
+    public function __construct(array $userAgents = [])
+    {
+        foreach ($userAgents as $userAgent) {
+            if ($userAgent instanceof BrowserInterface) {
+                $this->browsers[] = $userAgent;
+            } elseif ($userAgent instanceof BotInterface) {
+                $this->bots[] = $userAgent;
+            } else {
+                throw new \InvalidArgumentException('Unsupported user agent type');
+            }
+        }
+    }
 
     /**
      * {@inheritdoc}
