@@ -1,7 +1,7 @@
 <?php
 /*
  * Gatekeeper
- * Copyright (C) 2022 Christian Neff
+ * Copyright (C) 2024 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -10,20 +10,23 @@
 
 namespace Secondtruth\Gatekeeper\Tests\Check;
 
-use Secondtruth\Gatekeeper\Exceptions\StopScreeningException;
+use Symfony\Component\HttpFoundation\Request;
 use Secondtruth\Gatekeeper\Check\CheckInterface;
-use Secondtruth\Gatekeeper\Check\UserAgent\Bot\BaiduBot;
-use Secondtruth\Gatekeeper\Check\UserAgent\Bot\GoogleBot;
+use Secondtruth\Gatekeeper\Check\UserAgentCheck;
+use Secondtruth\Gatekeeper\Check\UserAgent\BotInterface;
+use Secondtruth\Gatekeeper\Check\UserAgent\BrowserInterface;
 use Secondtruth\Gatekeeper\Check\UserAgent\Bot\MsnBot;
+use Secondtruth\Gatekeeper\Check\UserAgent\Bot\BaiduBot;
 use Secondtruth\Gatekeeper\Check\UserAgent\Bot\YahooBot;
-use Secondtruth\Gatekeeper\Check\UserAgent\Browser\KonquerorBrowser;
+use Secondtruth\Gatekeeper\Check\UserAgent\Bot\GoogleBot;
 use Secondtruth\Gatekeeper\Check\UserAgent\Browser\LynxBrowser;
-use Secondtruth\Gatekeeper\Check\UserAgent\Browser\MozillaBrowser;
 use Secondtruth\Gatekeeper\Check\UserAgent\Browser\MsieBrowser;
 use Secondtruth\Gatekeeper\Check\UserAgent\Browser\OperaBrowser;
 use Secondtruth\Gatekeeper\Check\UserAgent\Browser\SafariBrowser;
-use Secondtruth\Gatekeeper\Check\UserAgentCheck;
-use Symfony\Component\HttpFoundation\Request;
+use Secondtruth\Gatekeeper\Check\UserAgent\Browser\MozillaBrowser;
+use Secondtruth\Gatekeeper\Check\UserAgent\Browser\KonquerorBrowser;
+use Secondtruth\Gatekeeper\Exceptions\StopScreeningException;
+use Secondtruth\Gatekeeper\Tests\Check\CheckTestCase;
 
 /**
  * Test class for UserAgentCheck
@@ -41,22 +44,52 @@ class UserAgentCheckTest extends CheckTestCase
     const UA_YAHOOBOT = 'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)';
     const UA_BAIDUBOT = 'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)';
 
+    protected $userAgents;
+
     protected function setUp(): void
     {
-        $check = new UserAgentCheck();
+        $this->userAgents = [
+            new MsnBot(),
+            new GoogleBot(),
+            new YahooBot(),
+            new BaiduBot(),
+            new MsieBrowser(),
+            new OperaBrowser(),
+            new KonquerorBrowser(),
+            new SafariBrowser(),
+            new LynxBrowser(),
+            new MozillaBrowser(),
+        ];
 
-        $check->addBrowser(new MsieBrowser());
-        $check->addBrowser(new OperaBrowser());
-        $check->addBrowser(new KonquerorBrowser());
-        $check->addBrowser(new SafariBrowser());
-        $check->addBrowser(new LynxBrowser());
-        $check->addBrowser(new MozillaBrowser());
-        $check->addBot(new MsnBot());
-        $check->addBot(new GoogleBot());
-        $check->addBot(new YahooBot());
-        $check->addBot(new BaiduBot());
+        $this->check = new UserAgentCheck($this->userAgents);
+    }
 
-        $this->check = $check;
+    public function testEntries()
+    {
+        $bots = [];
+        $browsers = [];
+
+        $check1 = new UserAgentCheck();
+        foreach ($this->userAgents as $userAgent) {
+            if ($userAgent instanceof BotInterface) {
+                $check1->addBot($userAgent);
+                $bots[] = $userAgent;
+            } elseif ($userAgent instanceof BrowserInterface) {
+                $check1->addBrowser($userAgent);
+                $browsers[] = $userAgent;
+            }
+        }
+
+        $this->assertEquals($bots, $check1->getBots());
+        $this->assertEquals($browsers, $check1->getBrowsers());
+        $this->assertEquals($this->userAgents, $check1->getUserAgents());
+
+        $check2 = new UserAgentCheck();
+        foreach ($this->userAgents as $userAgent) {
+            $check2->addUserAgent($userAgent);
+        }
+
+        $this->assertEquals($this->userAgents, $check2->getUserAgents());
     }
 
     public function testCheckPositiveMsie()
