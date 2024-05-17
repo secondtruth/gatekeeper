@@ -37,18 +37,16 @@ class UserAgentCheck extends AbstractCheck
      *
      * @param UserAgentInterface[] $userAgents The UserAgent objects to use
      *
-     * @throws \InvalidArgumentException If an unsupported user agent type is given.
+     * @throws \InvalidArgumentException If an unsupported type is given.
      */
     public function __construct(array $userAgents = [])
     {
         foreach ($userAgents as $userAgent) {
-            if ($userAgent instanceof BrowserInterface) {
-                $this->browsers[] = $userAgent;
-            } elseif ($userAgent instanceof BotInterface) {
-                $this->bots[] = $userAgent;
-            } else {
-                throw new \InvalidArgumentException('Unsupported user agent type');
+            if (!$userAgent instanceof UserAgentInterface) {
+                throw new \InvalidArgumentException('Unsupported type');
             }
+
+            $this->addUserAgent($userAgent);
         }
     }
 
@@ -58,7 +56,7 @@ class UserAgentCheck extends AbstractCheck
     public function checkVisitor(Visitor $visitor)
     {
         /** @var UserAgentInterface[] $userAgents */
-        $userAgents = array_merge($this->bots, $this->browsers);
+        $userAgents = $this->getUserAgents();
 
         foreach ($userAgents as $userAgent) {
             if ($userAgent->is($visitor->getUserAgent())) {
@@ -67,6 +65,24 @@ class UserAgentCheck extends AbstractCheck
         }
 
         return CheckInterface::RESULT_OKAY;
+    }
+
+    /**
+     * Adds the given user agent.
+     *
+     * @param UserAgentInterface $userAgent The UserAgent object to add
+     *
+     * @throws \InvalidArgumentException If an unsupported user agent type is given.
+     */
+    public function addUserAgent(UserAgentInterface $userAgent)
+    {
+        if ($userAgent instanceof BrowserInterface) {
+            $this->browsers[] = $userAgent;
+        } elseif ($userAgent instanceof BotInterface) {
+            $this->bots[] = $userAgent;
+        } else {
+            throw new \InvalidArgumentException('Unsupported user agent type');
+        }
     }
 
     /**
@@ -90,7 +106,17 @@ class UserAgentCheck extends AbstractCheck
     }
 
     /**
-     * Gets list of browsers.
+     * Gets the list of user agents.
+     *
+     * @return UserAgentInterface[]
+     */
+    public function getUserAgents()
+    {
+        return array_merge($this->bots, $this->browsers);
+    }
+
+    /**
+     * Gets the list of browsers.
      *
      * @return BrowserInterface[]
      */
@@ -100,7 +126,7 @@ class UserAgentCheck extends AbstractCheck
     }
 
     /**
-     * Gets list of bots.
+     * Gets the list of bots.
      *
      * @return BotInterface[]
      */
