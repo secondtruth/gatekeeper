@@ -1,7 +1,7 @@
 <?php
 /*
  * Gatekeeper
- * Copyright (C) 2022 Christian Neff
+ * Copyright (C) 2024 Christian Neff
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -57,7 +57,7 @@ class UrlCheck extends AbstractCheck
     /**
      * Gets list of request URI parts which determine a bad bot.
      *
-     * @return string[]
+      * @return array<string, array<array{pattern: string, ignore_case: bool}>>
      */
     protected function getBadPatterns()
     {
